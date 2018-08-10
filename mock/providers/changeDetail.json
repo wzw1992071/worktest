@@ -1,0 +1,26 @@
+{
+    "code":0,
+    "message":"OK",
+    "data":{
+        "all_change":
+            {
+                "type" : 2,
+                "val" : "2.00"
+            }
+        ,
+        "info_change":[
+            {
+                "type" : 3,
+                "val" : "-12.00",
+                "min" : "201",
+                "max" :"300"
+            },  
+            {
+                "type" : 4,
+                "val" : "12.00",
+                "min" : "100",
+                "max" :"200"
+            }
+        ]
+    }
+}

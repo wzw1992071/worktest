@@ -1,0 +1,105 @@
+{
+	"code": 0,
+	"message": "OK",
+	"data": {
+	  "goods": [
+		{
+		  "id": 1,
+		  "title": "中和澳亚西冷牛排， 每袋150g中和澳亚西冷牛排， 每袋150g",
+		  "pic": "Public/Uploads/goodsimg/20160421/01396800_1461214147.jpg",
+		  "sell_num": 0,
+		  "price_rules": [
+			   {
+				  "buy_num": 10,
+				  "rule_type": "减",
+				  "max_preferential": "1元"
+				}
+		  ],
+		  "shop_name": "蒙达",
+		  "market_name": "海霸王",
+		  "on_sale_time":"2016-12-11 12:21:11",
+		  "signed": false,
+		  "serial": true,
+		  "appraise_num": 0,
+		  "total_sell_num": 0,
+		  "origin_price":16.00,
+			"price": "16.00",
+			"sort_id": 12
+		},
+		{
+			"id": 2,
+			"title": "中和澳亚西冷牛",
+			"pic": "Public/Uploads/goodsimg/20160421/01396800_1461214147.jpg",
+			"sell_num": 0,
+			"price_rules": [
+				 {
+					"buy_num": 10,
+					"rule_type": "减",
+					"max_preferential": "1元"
+				  }
+			],
+			"shop_name": "蒙达",
+			"market_name": "海霸王",
+			"on_sale_time":"2016-12-11 12:21:11",
+			"signed": false,
+			"serial": false,
+			"appraise_num": 0,
+			"total_sell_num": 0,
+			"origin_price":16.00,
+			"price": "16.00",
+			"sort_id":12
+			},
+			{
+				"id": 4,
+				"title": "中和澳3dfds亚西冷牛",
+				"pic": "Public/Uploads/goodsimg/20160421/01396800_1461214147.jpg",
+				"sell_num": 0,
+				"price_rules": [
+					 {
+						"buy_num": 10,
+						"rule_type": "减",
+						"max_preferential": "1元"
+						}
+				],
+				"shop_name": "蒙达",
+				"market_name": "海霸王",
+				"on_sale_time":"2016-12-11 12:21:11",
+				"signed": false,
+				"serial": false,
+				"appraise_num": 0,
+				"total_sell_num": 0,
+				"origin_price":16.00,
+				"price": "16.00",
+				"sort_id": 10
+				},
+				{
+					"id": 5,
+					"title": "中和澳3dfds亚西冷牛2",
+					"pic": "Public/Uploads/goodsimg/20160421/01396800_1461214147.jpg",
+					"sell_num": 0,
+					"price_rules": [
+						 {
+							"buy_num": 10,
+							"rule_type": "减",
+							"max_preferential": "1元"
+							}
+					],
+					"shop_name": "蒙达",
+					"market_name": "海霸王",
+					"on_sale_time":"2016-12-11 12:21:11",
+					"signed": false,
+					"serial": false,
+					"appraise_num": 0,
+					"total_sell_num": 0,
+					"origin_price":16.00,
+					"price": "16.00",
+					"sort_id": 10
+					}
+	  ],
+	  "page_all": 587,
+	  "page": 1,
+	  "size": 10,
+	  "total": 5862,
+	  "new_put_time": "2016-12-11 12:21:11"
+	}
+  }

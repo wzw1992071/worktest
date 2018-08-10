@@ -1,0 +1,17 @@
+{
+    "code": 0,
+    "message": "success",
+    "total": 233,
+    "data": [
+        {
+            "supplier": "供应商名称",
+            "supplier_id": 21145,
+            "offer": 75.0
+        },
+        {
+            "supplier": "供应商名称",
+            "supplier_id": 21155,
+            "offer": 74.0
+        }
+    ]
+}

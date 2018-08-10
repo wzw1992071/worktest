@@ -1,0 +1,56 @@
+{
+    "code": 0,
+    "message": "OK",
+    "data": {
+      "goods_id": 689,
+      "goods_title": "1111",
+      "goods_name": "渝达鸭肠",
+      "desc": "",
+      "halal": 0,
+      "goods_brand": "渝达",
+      "goods_origin": "山东",
+      "putaway": 2,
+      "is_sign": 2,
+      "special_attribute": [
+        {
+          "name": "品名",
+          "value": "渝达鸭肠"
+        }
+      ],
+      "goods_picture": [
+        {
+          "goods_id": 689,
+          "pic": "Public/Uploads/goodsimg/20150822/55d818519cbb9.jpg"
+        },
+          {
+              "goods_id": 690,
+              "pic": "Public/Uploads/goodsimg/20150822/55d818519cbb9.jpg"
+            }
+      ],
+      "unit": "件",
+      "old_price": "125.00",
+      "new_price": "125.00",
+      "net_weight": 16,
+      "guigei": "2KG×8袋",
+      "goods_xinghao": "大鸭肠",
+      "near_sale_num": 0,
+      "total_sale_num": 0,
+      "shop_id": 2,
+      "shop_name": "食品房子",
+      "send_num": "4.5313",
+      "service_num": "4.5625",
+      "goods_quality": "4.3621",
+      "goods_appraise_num": 0,
+      "brands": [
+        {
+          "id": 0,
+          "name": "渝达"
+        }
+      ],
+      "year": 3,
+      "on_sale_num": 6,
+      "send_address": "海霸王",
+      "shop_address": "四川省成都市郫县2栋10号",
+      "main_sale": "鸭副，包括鸭肠、鸭天堂。渝达厂家直销。"
+    }
+  }

@@ -1,0 +1,320 @@
+input {
+  outline: none;
+  border: none;
+}
+.actions_area {
+  margin-bottom: 2px;
+}
+.dcanmou_so_area {
+  width: 315px;
+  height: 40px;
+  border: 1px solid #f5f5f5;
+  border-radius: 4px;
+}
+.dcanmou_so_area .dcm_ipt {
+  width: 249px;
+  height: 38px;
+  border: none;
+  font-size: 14px;
+  outline: none;
+}
+.ivu-page {
+  float: right;
+  margin-top: 5px;
+}
+.dcm_so_btn {
+  background: #45c8dc;
+  height: 39px;
+  width: 60px;
+  display: inline-block;
+  border: none;
+  font-size: 14px;
+  color: #fff;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 39px;
+}
+.dcanmou_newUpload_time {
+  float: right;
+}
+.dcanmou_newUpload_time span {
+  color: #ff7979;
+}
+.dcanmou_modal_shade {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 901;
+  top: 0;
+  left: 0;
+}
+.dcm_changeName {
+  width: 420px;
+  height: 240px;
+  background: #fff;
+  z-index: 10;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -210px;
+  margin-top: -120px;
+}
+.dcm_changeName p {
+  text-align: center;
+  height: 55px;
+  border: 1px solid #e5e7e6;
+  line-height: 55px;
+  font-size: 16px;
+}
+.dcm_changeName input {
+  width: 320px;
+  height: 42px;
+  margin: 50px;
+  border: 1px solid #e5e7e6;
+  border-radius: 4px;
+  background: #f0f0f0;
+  color: #737373;
+}
+.dcm_changeName .btbs .dcm_so_btn {
+  width: 210px;
+  height: 50px;
+  border-radius: 0;
+  outline: none;
+}
+.dcm_changeName .btbs .cancelBtn {
+  background: #e5e7e6;
+}
+.dcanmou_modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -207px;
+  margin-top: -125px;
+  width: 485px;
+  min-height: 250px;
+  border: 1px solid #f5f5f5;
+  background: #fff;
+  z-index: 10;
+}
+.dcanmou_modal .section p {
+  padding-left: 5px;
+}
+.dcanmou_modal .rmbchange {
+  text-align: center;
+}
+.dcanmou_modal .rmbchange span {
+  font-size: 15px;
+  padding-right: 12px;
+}
+.dcanmou_modal .ivu-tabs {
+  margin-right: 0px !important;
+}
+.dcanmou_modal .dcanmou_close {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #f5f5f5;
+  color: #45c8dc;
+  font-size: 20px;
+  z-index: 11;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+}
+.dcanmou_modal .modal_title {
+  font-size: 18px;
+  text-align: center;
+  height: 35px;
+  line-height: 60px;
+}
+.dcanmou_modal .ivu-tabs {
+  z-index: 11;
+}
+.dcanmou_modal .ivu-tabs .ivu-tabs-ink-bar .ivu-tabs-ink-bar-animated {
+  display: none !important;
+}
+.dcanmou_modal .ivu-tabs .ivu-tabs-nav .ivu-tabs-ink-bar {
+  left: 0;
+  display: none !important;
+}
+.dcanmou_modal .ivu-tabs .ivu-tabs-nav .ivu-tabs-tab {
+  margin-right: 0px;
+}
+.dcanmou_modal .ivu-tabs .ivu-tabs-bar {
+  margin-bottom: 0px;
+}
+.dcanmou_modal .ivu-tabs .ivu-tabs-nav-container {
+  margin-left: 0 !important;
+}
+.dcanmou_modal .ivu-tabs .ivu-icon-checkmark-circled {
+  font-size: 16px;
+  margin-right: 3px !important;
+}
+.dcanmou_modal .ivu-tabs .ivu-tabs-tab-active .ivu-icon-checkmark-circled {
+  color: #45c8dc;
+}
+.dcanmou_modal .btns {
+  display: flex;
+  justify-content: space-around;
+}
+.dcanmou_modal .btns .dcm_so_btn {
+  width: 120px;
+  height: 37px;
+  margin-right: 0;
+}
+.dcanmou_modal .ivu-btn-primary {
+  background: #45c8dc;
+  border-color: #45c8dc;
+}
+.dcanmou_modal .iptPrice {
+  width: 90px;
+  height: 36px;
+  display: inline-block;
+  border: 1px solid #45c8dc;
+  margin: 40px  10px 30px 10px;
+}
+.dcanmou_modal .iptPrice input {
+  width: 60px;
+  height: 34px;
+}
+.dcanmou_modal .actionInfo {
+  display: flex;
+  justify-content: space-around;
+}
+.dcanmou_modal .actionInfo input {
+  width: 50px;
+  height: 35px;
+  border: 1px solid #45c8dc;
+}
+.dcanmou_modal .actionInfo .jian {
+  font-size: 20px;
+  color: #45c8dc;
+  padding: 0 2px;
+}
+.dcanmou_modal .actionInfo .ivu-select ivu-select-single {
+  display: inline-block;
+}
+.dcanmou_modal .actionInfo .ivu-select-selection {
+  height: 35px;
+  border: 1px solid #45c8dc;
+  border-radius: 0;
+}
+.dcanmou_modal .actionInfo .ivu-icon-ios-trash-outline {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  color: #fff;
+  background: #45c8dc;
+  font-size: 30px;
+  text-align: center;
+  line-height: 36px;
+}
+.dcanmou_modal .actionInfo {
+  margin-bottom: 15px;
+}
+.dcanmou_modal .section .btns {
+  margin-top: 10px;
+}
+.dcanmou_modal .add {
+  background: #fff;
+  border: 1px solid #45c8dc;
+  color: #45c8dc;
+}
+.dcanmou_modal .add .ivu-icon-plus-circled {
+  font-size: 20px;
+  padding-right: 10px;
+  position: relative;
+  top: 2px;
+}
+.dcm_price_info {
+  width: 180px;
+  height: 175px;
+  display: none;
+  border: 1px solid #45c8dc;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  background: #fff;
+}
+.dcm_price_info .sanjiao {
+  width: 15px;
+  height: 10px;
+  background-image: url(../../../img/sanjiao.png);
+  position: absolute;
+  top: -9px;
+  left: 22px;
+}
+.dcm_sellsort {
+  width: 70px;
+  height: 165px;
+  border: 1px solid #45c8dc;
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  background: #fff;
+}
+.dcm_sellsort .sanjiao {
+  width: 15px;
+  height: 10px;
+  transform: rotate(-90deg);
+  background-image: url(../../../img/sanjiao.png);
+  position: absolute;
+  top: 10px;
+  left: -12px;
+}
+.shop_text li .inner_txt {
+  display: inline-block;
+  width: 115px;
+  color: #383838;
+}
+.shop_text li p {
+  color: #383838;
+  margin-left: 40px;
+  border-bottom: 1px solid #e8e8e8;
+  line-height: 50px;
+}
+.shop_text li p .iconfont {
+  font-size: 17px;
+  padding-right: 18px;
+}
+.shop_text li p span {
+  color: #a3a3a3;
+  padding-right: 3px;
+}
+.shop_text li p .pd_rt_20 {
+  padding-right: 20px;
+}
+.shop_text li p .icon {
+  width: 200px;
+  display: inline-block;
+}
+.shop_text li p .icon-huangguan {
+  color: #f9c53a;
+}
+.shop_text li p .icon-pingjia {
+  color: #ff5e39;
+}
+.shop_text li .brands {
+  padding: 10px 0 15px 0;
+}
+.shop_text li .brands span {
+  display: inline-block;
+  height: 30px;
+  width: 90px;
+  background: #daf6fa;
+  text-align: center;
+  line-height: 30px;
+  margin-left: 20px;
+}
+.shop_text li .no_border {
+  border: none;
+}
+.dcanmou_modal .rmbchange input {
+  text-align: center;
+}
