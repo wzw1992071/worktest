@@ -1,39 +1,42 @@
-/**
- * Created by YYM on 2017.06.20.
- */
-import 'normalize.css';
-import 'font-awesome/css/font-awesome.css';
-import 'cropperjs/dist/cropper.css';
-import 'babel-polyfill';
-import Vue from 'vue';
-import App from './App.vue';
-import vueResource from 'vue-resource';
-import store from './store';
-import router from './router';
-import iView from 'iview';
-import 'iview/dist/styles/iview.css';
-import './components';
-import Dialog from  './common/dialog.js';
-import Base from './common/base.js';
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue'
+import App from './App'
+import router from './router'
+import store from "src/vuex/store"
 
-Vue.use(iView);
-Vue.use(vueResource);
+//初始化css样式
+import "src/assets/css/normalize.css"
+import "src/assets/font/iconfont.css"
 
-Vue.prototype.$dialog = Dialog;
-Vue.mixin(Base);
-// 使用加载进度条
-router.beforeEach((to, from, next) => {
-    iView.LoadingBar.start();
-    next();
-});
-router.afterEach(route => {
-    iView.LoadingBar.finish();
-});
-// 完成
+// 引入饿了么UI组件库
+import Mint from 'mint-ui';
+import 'mint-ui/lib/style.css'
+Vue.use(Mint);
+
+
+// 引入全局的指令和过滤器及工具
+import directives from "src/directives.js"
+import "src/filters.js"
+import utils from "@/utils/utils.js"
+Vue.prototype.$utils = utils
+// 引入剪切板功能
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
+
+Vue.config.productionTip = false
+
+// 引入封装过的axios()
+import axios from "src/api/http"
+import * as Allhttp from "src/api/Allhttp"
+Vue.prototype.$axios = axios
+Vue.prototype.$http = Allhttp
+
+/* eslint-disable no-new */
 new Vue({
-	store,
-    el: '#app',
-    router,
-    template: '<App/>',
-    components: { App }
-});
+  el: '#app',
+  router,
+  store,
+  template: '<App/>',
+  components: { App }
+})
