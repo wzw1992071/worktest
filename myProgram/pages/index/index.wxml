@@ -1,0 +1,14 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="userinfo" bindtap="showNumber">
+    1111111
+  </view>
+  <view vx:if="{{isShow}}">
+    现在是显示
+  </view>
+  <!-- <block wx:else>
+    <view>现在不显示</view>
+    <view>这里还有数据</view>
+  </block> -->
+
+</view>
