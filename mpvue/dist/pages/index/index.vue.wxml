@@ -1,0 +1,5 @@
+<template name="31263bda">
+  <view class="_div data-v-1db75f28 mainBox">
+    <view class="_p data-v-1db75f28 title">{{msg}}</view>
+  </view>
+</template>

@@ -1,0 +1,11 @@
+
+.mainBox.data-v-1db75f28 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.mainBox .title.data-v-1db75f28 {
+  color: red;
+}
