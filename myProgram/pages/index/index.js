@@ -6,7 +6,7 @@ Page({
   data: {
     motto: 'Hello World',
     userInfo: {},
-    isShow: false,
+    isShow: true,
    
   },
   //事件处理函数
@@ -19,7 +19,8 @@ Page({
 
   },
   showNumber(e) {
-    console.log(this);
-    this.isShow = !this.isShow
+    this.setData({
+      isShow: !this.data.isShow
+    })
   }
 })
