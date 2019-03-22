@@ -1,0 +1,77 @@
+<style>
+    #content {
+        position: relative;
+    }
+    
+    #slideDown {
+        width: 100%;
+        position: absolute;
+        top: -70px;
+    }
+    
+    #slideDown1 {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+    }
+    
+    #slideDown1 img {
+        width: 15px;
+    }
+    
+    #slideDown1>p {
+        font-size: 14px;
+        opacity: 0;
+        color: #37bbf5;
+    }
+    
+    .ContactName {
+        margin-left: 0.1rem;
+    }
+    
+    .hideList {
+        height: 0;
+        overflow: hidden
+    }
+</style>
+<div id="content">
+    <div id="slideDown">
+        <div id="slideDown1">
+            <img id="slideImg" src="./imgs/touchDown.png" alt="">
+            <p id="slideDownTips">松开刷新</p>
+        </div>
+    </div>
+    <div id="order-list" ng-class="{false:'hideList'}[showOrderList]">
+        <div class="repeat-box" ng-repeat="(key,app) in orderList" id="order-list-down{{key}}" on-finish-render-filters>
+            <div class="box" ng-click="goDetail(app);">
+                <div class="order-list-title">
+                    <span class="car-type" ng-if="app.ServiceType==2">专车</span>
+                    <span class="car-type" ng-if="app.ServiceType==1">拼车</span>
+
+                    <span class="order-type">{{app.showStatusName}}</span>
+
+                    <img class="go-detail" src="./imgs/arrow-right.png">
+                </div>
+                <div class="order-date"><img src="./imgs/clock.png" alt="" class="order-icon">{{app.PickupTime | date:'yyyy-MM-dd HH:mm'}}
+                </div>
+                <div class="order-address"><img class="car-pickup" src="./imgs/car-pickup.png" alt="" class="order-icon">{{app.PickupAddress}}</div>
+                <div class="order-address"><img class="car-pickup" src="./imgs/car-down.png" alt="" class="order-icon">{{app.DestAddress}}</div>
+                <!-- <div class="order-address">
+                    <img src="./imgs/user.png" alt="" class="order-icon">{{app.ContactNumber}}
+
+                    <span ng-if="app.ContactName && app.ContactNumber != userInfo.phone" class="ContactName">{{app.ContactName}}</span>
+                    <span ng-if="app.ContactNumber == userInfo.phone" class="ContactName">本人乘车</span>
+                </div> -->
+                <!-- <img src="./imgs/car.png" alt="" class="order-car"> -->
+            </div>
+        </div>
+        <div class="bw-no-more" ng-show="showNoMore">没有更多了……</div>
+        <div class="bw-null" ng-show="noMessage">
+            <img src="./imgs/orderListNone.png" />
+            <div class="no-data-words">您还没有预约过免费接送机</div>
+            <div class="no-data-words">如有需要可通过‘预约查询’进行查看</div>
+        </div>
+    </div>
+    <div ui-view="payOrder"></div>
+    <div ui-view="orderInvalid"></div>
+</div>

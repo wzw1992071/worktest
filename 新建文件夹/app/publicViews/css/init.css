@@ -1,0 +1,322 @@
+/*全局预定义*/
+
+html {
+    background-color: #faf9f9;
+    width: 100%;
+    min-height: 100%;
+    color: #3a3a3a;
+    font-family: Arial;
+    display: flex
+}
+
+body {
+    display: flex;
+    min-height: 100%;
+    /* IOS禁止微信调整字体大小 */
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+    -moz-text-size-adjust: 100% !important;
+}
+
+#app {
+    display: none;
+    flex: auto;
+    background-color: #fff;
+    padding-bottom: 0.2rem;
+}
+
+#app,
+body {
+    width: 100%;
+    font-size: 0.3rem;
+}
+
+body {
+    /* IOS禁止微信调整字体大小 */
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+    -moz-text-size-adjust: 100% !important;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    color: #3a3a3a;
+    outline: none;
+    text-decoration: none
+}
+
+input:focus {
+    outline: none
+}
+
+.box {
+    background-color: #FFF;
+    padding: 0 0.24rem;
+    overflow: hidden;
+}
+
+.pul-l {
+    float: left
+}
+
+.pul-r {
+    float: right
+}
+
+.bw-nowrap {
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bw-hide {
+    display: none
+}
+
+
+/*按钮*/
+
+.btn-box {
+    text-align: center;
+    padding: 0.2rem 0
+}
+
+.bw-big-btn {
+    height: 0.96rem;
+    line-height: 0.96rem;
+    font-size: 0.3rem;
+}
+
+.bw-big-btn img {
+    width: 0.3rem;
+    vertical-align: text-top;
+}
+
+.bw-small-btn {
+    height: 0.65rem;
+    line-height: 0.65rem;
+    padding: 0 0.31rem;
+    font-size: 0.3rem;
+}
+
+.bw-btn {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    transition: all 0.5s;
+}
+
+.bw-btn-default {
+    background-color: #d3d3d3;
+    border-color: #d3d3d3;
+    color: #fff;
+}
+
+.bw-btn-default:hover {
+    background-color: #B7B7B7;
+    border-color: #B7B7B7;
+    color: #fff;
+}
+
+.bw-btn-yellow {
+    background-color: #FF8C15;
+    border-color: #FF8C15;
+    color: #fff;
+}
+
+.bw-btn-yellow:hover {
+    background-color: #FF7E15;
+    border-color: #FF7E15;
+    color: #fff;
+}
+
+.bw-btn-yellow:active:focus,
+.bw-btn-yellow:active:hover {
+    background-color: #FF7E15;
+    border-color: #FF7E15;
+    color: #fff;
+}
+
+.bw-btn-brown {
+    background-color: #c5a981;
+    border-color: #c5a981;
+    color: #fff;
+}
+
+.bw-btn-brown:hover {
+    background-color: #b99e76;
+    border-color: #b99e76;
+    color: #fff;
+}
+
+.bw-btn-brown:active:focus,
+.bw-btn-red:active:hover {
+    background-color: #b99e76;
+    border-color: #b99e76;
+    color: #fff;
+}
+
+.bw-btn-red {
+    background-color: #d23f36;
+    border-color: #d23f36;
+    color: #fff;
+}
+
+.bw-btn-red:hover {
+    background-color: #d03734;
+    border-color: #d03734;
+    color: #fff;
+}
+
+.bw-btn-red:active:focus,
+.bw-btn-red:active:hover {
+    background-color: #d03734;
+    border-color: #d03734;
+    color: #fff;
+}
+
+.bw-btn-white {
+    background-color: #FFF;
+    color: #D23930;
+}
+
+
+/*颜色*/
+
+.c-red {
+    color: #e54e4b !important
+}
+
+.c-green {
+    color: #5cb85c
+}
+
+.c-yellow {
+    color: #B5955E
+}
+
+
+/*栅格*/
+
+.col-6 {
+    width: 30%
+}
+
+.col-7 {
+    width: 35%
+}
+
+.col-13 {
+    width: 65%
+}
+
+.col-14 {
+    width: 70%
+}
+
+.col-18 {
+    width: 90%
+}
+
+.col-19 {
+    width: 95%
+}
+
+.col-20 {
+    width: 100%
+}
+
+.rule img {
+    width: .35rem;
+    margin-right: .1rem;
+}
+
+.rule {
+    font-size: .24rem;
+    color: #626262;
+    text-align: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.evaluate-top {
+    padding-top: 0.64rem;
+    padding-bottom: 0.64rem;
+    color: #2b2b2b;
+    border-bottom: solid 1px #ecedee;
+}
+
+.evaluate-header {
+    width: 1.12rem;
+    float: left;
+    padding-top: 0.15rem;
+}
+
+.evaluate-header img {
+    display: block;
+    width: 100%
+}
+
+.evaluate-driver-info {
+    float: left;
+    margin-left: 0.24rem;
+    text-align: left;
+}
+
+.driver-name {
+    font-size: 0.3rem;
+    margin-right: 0.7rem;
+    line-height: 0.55rem;
+}
+
+.driver-total {
+    color: #F5BD4D
+}
+
+.driver-total-img {
+    width: 0.25rem;
+    position: relative;
+    top: 0.14rem;
+    margin: 0 0.05rem;
+}
+
+.driver-car-num {
+    padding: 0 0.15rem;
+    font-size: 0.26rem;
+    display: inline-block;
+    line-height: 0.44rem;
+    background-color: #f3f3f3;
+    border: solid 1px #d5d5d5
+}
+
+.driver-car-type {
+    font-size: 0.24rem;
+    color: #666;
+    line-height: 0.5rem;
+}
+
+.driver-phone {
+    float: right;
+    display: block;
+}
+
+.driver-phone img {
+    width: 0.58rem;
+    position: relative;
+    top: 0.5rem;
+}

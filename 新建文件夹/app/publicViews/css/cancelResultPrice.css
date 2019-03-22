@@ -1,0 +1,100 @@
+#app {
+    background-color: #fff
+}
+
+.price-detail {
+    text-align: center;
+    font-size: 0.28rem;
+    padding-top: 0.6rem;
+}
+
+.total-price {
+    font-size: 0.8rem;
+    margin-right: 0.1rem;
+    color: #2b2b2b
+}
+
+.price-d-title {
+    padding-top: 1.12rem;
+    padding-bottom: 0.88rem;
+    font-size: 0.24rem;
+    position: relative;
+}
+
+.line-img {
+    width: 3.32rem;
+    position: absolute;
+    left: 2.09rem;
+    top: 1.25rem;
+}
+
+.price-info-list {
+    padding: 0.46rem 1.12rem 0 1.12rem;
+    text-align: left;
+    color: #3a3a3a;
+}
+
+.title {
+    display: inline-block;
+    margin-bottom: 0.36rem;
+    width: 49%;
+}
+
+.info {
+    display: inline-block;
+    width: 49%;
+    text-align: right;
+    padding-bottom: 0.35rem
+}
+
+.yellow-box {
+    color: #D23F36
+}
+
+.time-box {}
+
+.rule {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0.7rem;
+}
+
+.tips-top {
+    border-bottom: solid 1px #dcdcdc;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 0.35rem;
+}
+
+.tips-top-title {
+    position: absolute;
+    left: 0;
+    top: -0.2rem;
+    height: 0.42rem;
+    background-color: #D23F36;
+    font-size: 0.24rem;
+    display: inline-block;
+    line-height: 0.42rem;
+    color: #fff;
+    padding: 0 0.1rem;
+    border-radius: 2px;
+}
+
+.price-detail-tips {
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.24rem;
+    padding-left: 1.1rem;
+}
+
+.total-box {
+    border-top: solid 1px #DCDCDC;
+    padding-top: 0.35rem;
+}
+
+.subsidy-list {
+    border-bottom: solid 1px #DCDCDC;
+    margin-bottom: 0.35rem;
+}

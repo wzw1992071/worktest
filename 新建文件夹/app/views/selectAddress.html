@@ -1,0 +1,37 @@
+<div id="address" class="fixed-box" ng-show="showSelectAddress">
+    <div class="addr-top">
+        <span class="select-city-name" ng-click="toSelectCity()">{{selectedInteriorCity || selAddressCity ||
+curCityName}}</span>
+        <img class="select-city-down" src="../imgs/select-city-down.png" alt="">
+        <input class="bw-input" type="text" input-placeholder="请输入地址" ng-model="addressWords" ng-change="getAddress()" ng-keydown="addressKeyDown($event)" />
+        <!-- <img class="search" src="./imgs/search.png" alt="" ng-click="getAddress()"> -->
+    </div>
+    <div id="commAddr">
+        <div class="c-a-list" ng-click="clickAddr('home')">
+            <img class="c-a-type" src="./imgs/addr-home.png">
+            <div class="c-a-box">
+                <div class="c-a-name">家</div>
+                <div class="c-a-addr" ng-if="!addrInfo.home">设置家庭地址</div>
+                <div class="c-a-addr" ng-if="addrInfo.home">{{addrInfo.home.Address}}</div>
+            </div>
+        </div>
+        <div class="c-a-list" ng-click="clickAddr('company')">
+            <img class="c-a-type" src="./imgs/addr-company.png">
+            <div class="c-a-box">
+                <div class="c-a-name">公司</div>
+                <div class="c-a-addr" ng-if="!addrInfo.company">设置公司地址</div>
+                <div class="c-a-addr" ng-if="addrInfo.company">{{addrInfo.company.Address}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="box">
+        <div class="addr-list" ng-click="selectAddress(app)" ng-repeat="app in mapData">
+            <img class="addr-img" src="./imgs/address.png" alt="">
+            <div class="addr-info-box">
+                <div class="addr-title bw-nowrap">{{app.name}}</div>
+                <div class="addr-info bw-nowrap">{{app.addressInfo}}</div>
+            </div>
+        </div>
+    </div>
+    <div ui-view="selectCity"></div>
+</div>

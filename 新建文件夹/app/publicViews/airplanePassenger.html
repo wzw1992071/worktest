@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>乘机人</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <link rel="stylesheet" media="screen" href="css/init-05fcb87a71.css">
+    <link rel="stylesheet" href="./css/main-9657c92848.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/airplanePassenger.css" />
+    <!-- <script src="main.js"></script> -->
+    <script src="./plug/vue.min.js"></script>
+    <style>
+        html {
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="add-chengji-box" id="add-chengji">
+        <div class="add-chengji">
+            <div class="add-chengji-btn" @click="add_editPassenger()">
+                <img class="add-chengji-img" src="../imgs/chengjiren-add.png" alt="">
+                <span class="add-chengji-span">新增乘机人</span>
+            </div>
+        </div>
+        <div class="chengji-person">
+            <img v-show="personNo" class="chengji-person-noimg" src="../imgs/chengjiren-noren.png" alt="">
+            <ul v-show="!personNo" class="person-ul">
+                <li class="person-li" v-for="itemp in persons">
+                    <div class="person-li-left">
+                        <span @click="selectP(itemp,false)" v-show="itemp.isCheck && !isSet" class="person-li-pitch-on iconfont">&#xe629;</span>
+                        <div @click="selectP(itemp,true)" v-show="!itemp.isCheck && !isSet" class="person-li-no-pitch-on"></div>
+                        <div class="person-li-info">
+                            <span class="person-li-info-username">{{itemp.PassengerName}}</span>
+                            <span>{{itemp.IDCardNo}}</span>
+                        </div>
+                    </div>
+
+                    <img @click="add_editPassenger(itemp)" class="person-li-edit-compile" src="../imgs/edit-compile.png" alt="">
+                </li>
+            </ul>
+        </div>
+        <!--确认按钮-->
+        <div class="confirm-box" v-show="!isSet">
+            <div class="confirm-box-left flex-com">
+                <span class="confirm-box-left-t">已选择 <strong class="confirm-box-left-e">{{selectNum}}人</strong></span>
+            </div>
+            <div @click="addConfirm" class="confirm-box-right flex-com">确认添加</div>
+        </div>
+    </div>
+
+    <script src="./js/ini.js"></script>
+    <script>
+        var app;
+
+
+        function display() {
+            app = new Vue({
+                el: "#add-chengji",
+                data: {
+                    personNo: false,
+                    persons: [],
+                    selectNum: 0,
+                    appointmentInfo: {},
+                    isSet: false,
+                    verifyNum: [],
+                    resultSuccess: [],
+                    selNew: [],
+                    stroke: '',
+                    carType: ''
+
+                },
+                mounted() {
+                    var _this = this;
+                    addStorage({
+                        info: this.selNew,
+                        name: "selNew"
+                    })
+                    setTimeout(_this.getcommonpassenger,500)
+                    _this.isSet = $bw.getUrlInfo('setting') || false;
+                    _this.carType = $bw.getUrlInfo('carType') || '';
+                    _this.stroke = $bw.getUrlInfo('stroke') || '';
+                    
+                },
+                methods: {
+                    getcommonpassenger() {
+                        var _this = this;
+                        _this.verifyNum = getSession("verifyNum") || [];
+                        _this.resultSuccess = getSession("resultSuccess") || [];
+                        _this.appointmentInfo = getStorage("AppBridgeOrderAppointmentInfoStorge") || {};
+                        var verf = _this.verifyNum.concat(_this.resultSuccess);
+                        verifyLogin(
+                            function() {
+                                $bw.ajax({
+                                    url: "commonpassenger/list",
+                                    type: "get",
+                                    data: {},
+                                    callback: function(reseponse) {
+                                        if (reseponse.Status == 1) {
+                                            reseponse.Data.forEach(function(val, index) {
+                                                reseponse.Data[index].isSel = false;
+                                                verf.forEach(function(pval, pindex) {
+                                                    if (val.IDCardNo == pval.IDCardNo) {
+                                                        reseponse.Data[index].isSel = true;
+                                                    }
+                                                })
+                                                _this.persons.push(reseponse.Data[index]);
+                                            });
+                                        }
+                                    }
+                                })
+                            });
+                    },
+                    selectP(item, bool) {
+                        if (item.isSel) {
+                            $toast.showToast("已选择此乘机人！", 1000);
+                            return;
+                        }
+                        if (bool) {
+                            this.selNew.push({
+                                uuid: this.generateUUID(),
+                                IDCardNo: item.IDCardNo,
+                                Name: item.PassengerName
+                            });
+                        } else {
+                            this.selNew = this.selNew.filter(function(val) {
+                                return val.IDCardNo !== item.IDCardNo;
+                            });
+                        }
+
+                        for (var j = 0, jlen = this.persons.length; j < jlen; j++) {
+                            if (this.persons[j].ID == item.ID) {
+                                if (bool) {
+                                    this.persons[j].isCheck = true;
+                                    this.selectNum++;
+                                } else {
+                                    this.persons[j].isCheck = false;
+                                    this.selectNum--;
+                                }
+                            }
+                        }
+                    },
+                    addConfirm() { //确认添加
+                        if (!this.selectNum) {
+                            $toast.showToast("请选择乘机人", 1500);
+                            return;
+                        }
+                        if (this.appointmentInfo.ServiceType == 2) { //专车
+                            if (this.appointmentInfo.CarSeats && this.selectNum + this.verifyNum.length + this.resultSuccess.length > this.appointmentInfo.CarSeats) {
+                                $toast.showToast("已超过当前车型的最大乘车人数", 1500);
+                                return;
+                            }
+                        } else { //拼车
+                            if (this.selectNum + this.verifyNum.length + this.resultSuccess.length > 6) {
+                                $toast.showToast("已超过最大乘车人数", 1500);
+                                return;
+                            }
+                        }
+                        addStorage({
+                            info: this.selNew,
+                            name: "selNew"
+                        })
+
+                        window.history.go(-1);
+
+                        // window.location.href = "./verification.html?timeStr=" +
+                        //     new Date().getTime() + "&cityId=" + $bw.getUrlInfo('cityId') +
+                        //     "&carType=" + ($bw.getUrlInfo('carType') || '') +
+                        //     "&stroke=" + ($bw.getUrlInfo('stroke') || '') + "&selP=true" + "&nowtime=" + (getStorage('nowtime') || '');
+                    },
+                    //添加、修改乘机人
+                    add_editPassenger(par) {
+
+                        var tem = "";
+                        if (par) {
+                            tem = "&ID=" + par.ID + "&PassengerName=" + par.PassengerName + "&IDCardNo=" + par.IDCardNo;
+                        }
+                        window.location.href =
+                            "/publicViews/airplanePassengerEdit.html?timeStr=" + new Date().getTime() + tem +
+                            "&carType=" + this.carType +
+                            "&stroke=" + this.stroke;
+
+                    },
+                    generateUUID: function() {
+                        var d = new Date().getTime();
+                        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                            var r = (d + Math.random() * 16) % 16 | 0;
+                            d = Math.floor(d / 16);
+                            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                        });
+                        return uuid;
+                    },
+
+                }
+            });
+            document.body.setAttribute('style', 'opacity:1');
+            (function () {
+                var isPageHide = false;
+                    window.addEventListener('pageshow', function () {
+                if (isPageHide) {
+                window.location.reload();
+                }
+                });
+                window.addEventListener('pagehide', function () {
+                    isPageHide = true;
+                });
+            })()
+
+        }
+    </script>
+    
+</body>
+
+</html>

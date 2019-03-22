@@ -1,0 +1,103 @@
+/*行程详情开始*/
+#order-detail{height:100%;
+  #map{top:0;left:0;width:100%;height:100%;}
+  .order-info{position: fixed;top:0;left:0;width:100%;padding:0.16rem 0.18rem;}
+  .action:last-child span{border-bottom: none}
+  .action:hover{background-color:#ebebeb }
+  .order-tipx-box{position: fixed;bottom:0;left:0;width:100%;padding:0.16rem 0.18rem;transition: all 1s;z-index: 2;
+    .action-top{z-index: -1;text-align: center;padding:0.16rem 0; 
+        img{width:0.8rem;display: block;margin: 0 auto;}
+      }
+  }
+  .order-tipx-box-bg{box-shadow: 0 0 8px 1px rgba(212,212,212,0.9);border-radius: 4px;background-color: #fff}
+  .hide-ongoing {transform: translateY(100%);}
+  .arrow-bottom{position: fixed;bottom:0.5rem;bottom:0;width: 100%;text-align: center;z-index: 1;
+    img{width:1.5rem}
+  }
+  .order-type-box{text-align: center;}
+  .order-type{font-size: 0.32rem;color:#d23f36;padding:0.24rem 0;
+    img{width: 0.44rem;position: relative;top: 0.08rem;}
+  }
+  .order-tips{font-size: 0.26rem;color:#666;padding-bottom: 0.16rem;
+    div{margin-bottom:0.1rem;}
+  }
+  .driver-box{float:left;padding-left: 0.27rem;color:#2b2b2b;font-size: 0.26rem;}
+  .driver-info{background-color: #FFF;padding:0.3rem;overflow: hidden;border-radius: 4px;box-shadow: 0 0 8px 1px rgba(212,212,212,0.9);}
+  .header-box{float:left;width:1.1rem;
+    img{display: block;width:100%}
+  }
+  .phone-box{float:right;width:0.57rem;margin-top:0.34rem;
+    img{display:block;width:100%}
+  }
+  .driver-total{font-size: 0.26rem;color: #666;vertical-align: top;}
+  .driver-name{overflow: hidden;font-size: 0.32rem;line-height: 0.4rem;}
+  .driver-total-img{width:0.25rem;position: relative;top: 0.05rem;margin-left:0 0.05rem;}
+  .driver-car-num{padding:0 0.1rem;line-height:0.44rem;background-color: #f3f3f3;margin:0.05rem 0;display: inline-block;letter-spacing: 1px;}
+  .driver-model{font-size: 0.24rem;color: #666;}
+  .look-address{color: #666;font-size: 0.26rem;
+    img{width:0.25rem;position: relative;top:0.08rem;}
+  }
+  .look-address-word{color:#c5a981;display: inline-block;border-bottom: solid 1px #c5a981;padding-bottom: 0.04rem;}
+  .code-box{z-index: 101;padding:0 0.25rem;padding-top:1.2rem;background-color:initial}
+  .code-bg{background-color: #FFF;text-align: center;padding-top:1.13rem;border-radius: 5px;color:#C3A57F;
+    .code-img{width:4.5rem;padding:1rem 0 0.55rem 0;margin:0 auto}
+    .code-info{font-size: 0.42rem;padding-bottom:0.5rem;color:#C5A781}
+    .code-info2{font-size: 0.28rem;padding-bottom:0.4rem;color:#ccc}
+  }
+  .registered-time{
+    background-color: #fff;
+    /*height: 1rem;
+    line-height: 1rem;
+    color: #d23f36;
+    border-radius: 0.08rem;*/
+
+    text-align: center;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .iconfont{
+      font-size: 0.4rem;
+    }
+  }
+  .other-tips-img{width: 0.3rem;vertical-align: sub;margin-right: 0.1rem;}
+  .arrived-total{margin-bottom: 0.2rem;font-size: 0.24rem;color: #2b2b2b;
+    .iconfont{    vertical-align: sub;font-size: 0.35rem;}
+  }
+  .arrived-total-price{font-size: 0.7rem;}
+  .arrived-price-list{font-size: 0.28rem;line-height: 0.45rem}
+  .arrived-price-title{display: inline-block;width: 1.8rem;text-align: left}
+  .arrived-price-info{display: inline-block;width: 1.8rem;text-align: right}
+  .wallet-deduction{height: 1rem;line-height: 1rem;text-align: left;padding: 0 0.35rem;border-top:solid 1px #e3e3e3;border-bottom:solid 1px #e3e3e3;margin-top: 0.2rem;
+    .iconfont{color:#4CBF83}
+    .pul-r{height: 100%}
+  }
+  .difference-price{text-align: right;padding: 0 0.35rem;margin-top: 0.3rem;}
+  .pay-derivative{position: fixed;z-index: 5; bottom: 0;left: 0;background: #fff;width: 100%;color: #2b2b2b;padding-bottom: 0.4rem;
+    .arrived-total{text-align: center;border-bottom: solid 1px #e9e9e9;line-height: 1.8rem;margin-bottom:0}
+    .pay-way-list{line-height: 1.1rem;border-bottom: solid 1px #e9e9e9;padding: 0 0.45rem ;}
+    .iconfont{font-size: 0.35rem;color:#CCCCD0}
+  }
+  .pay-img{height: 0.4rem;vertical-align: sub;}
+  .wallet-pay-box{padding: 0.2rem 0.45rem;border-bottom: solid 1px #e9e9e9;
+       .pay-img{vertical-align: super;}
+  }
+  .wallet-pay{display: inline-block;}
+  .balance{font-size: 0.24rem;color: #929196;}
+  .wallet-tips{font-size: 0.22rem;color: #929196;margin-top: 0.1rem;}
+  .wallet-ico{margin-top: 0.14rem;}
+
+  .map-label-pickup{color:#3a3a3a;line-height: 0.6rem;border:none;background-color: #fff;border-radius: 1rem;padding:0 0.2rem;}
+  .map-label-aboard{/*width: 4.5rem;*/background-color: #fff;border-radius: 1rem;padding:0.2rem 0.3rem;overflow: hidden}
+  .aboard-info{/*width:56%;float:left;*/line-height: 0.3rem;font-size: 0.24rem;color: #3a3a3a}
+  .aboard-price{display: none;line-height: 0.3rem;vertical-align: top;float:left;width: 44%;text-align: center;font-size: 0.24rem;border-left: solid 1px #e5e6e6;color:#3a3a3a}
+
+  .cancel-box{padding-bottom: 0.16rem;}
+  .cancel-btn{font-size: 0.26rem;line-height: 0.7rem;height:0;overflow: hidden;transition:all 0.5s;}
+  .cancel-ico{img{width: 0.25rem;}}
+  .cancel-show{height:0.9rem;border-top: solid 1px #eee;padding-top: 0.16rem;}
+  .refresh{position: fixed;z-index: 1000;right: 0;top: 30%;width: 1.2rem;height: 1.2rem;}
+  .refresh-bg{opacity: 0;transition:all 0.3s;z-index: 999;border-radius: 4px;}
+  .refreshClick{opacity: 0.6;background:#666;z-index: 1001}
+}
+/*行程详情结束*/

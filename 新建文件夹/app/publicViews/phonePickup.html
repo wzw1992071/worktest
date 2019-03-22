@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>上车地点</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+    <div id="pickup-address">
+        <div id="cityId_510700" style="display: none">
+            <img class="mine-img" src="../imgs/pickup-bg.png" alt="">
+            <div class="info-box">
+                <div class="box-left">
+                    <div class="address">(510700)上车地点-T1航站楼停车场B1区</div>
+                    <div class="tips">司机会在这里等候您</div>
+                </div>
+                <div class="box-right">
+                    <a class="tell">
+                        <img src="../imgs/phone.png" alt=""> 联系客服
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="cityId_510100" style="display: none">
+            <img class="mine-img" src="../imgs/pickup-bg.png" alt="">
+            <div class="info-box">
+                <div class="box-left">
+                    <div class="address">(510100)上车地点-T1航站楼停车场B1区</div>
+                    <div class="tips">司机会在这里等候您</div>
+                </div>
+                <div class="box-right">
+                    <a class="tell">
+                        <img src="../imgs/phone.png" alt=""> 联系客服
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="./plug/jquery.min.js"></script>
+    <script src="./js/simpleini.js"></script>
+    <script>
+        function display() {
+            $('.tell').attr('href', 'tel:028-86868686');
+        }
+    </script>
+</body>
+
+</html>

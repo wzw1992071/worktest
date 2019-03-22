@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>退款详情</title>
+    <script type="text/javascript" src="./plug/vue.min.js"></script>
+    <link rel="stylesheet" href="./css/init.css">
+    <link rel="stylesheet" href="./css/cancelResultPrice.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="price-detail bw-chlid-html">
+            <div class="result-price-box">
+                <span class="total-price">{{orderDetail.CancelModel.Rebate|toFixed(1)}}</span>
+                <span>元</span>
+            </div>
+            <div class="price-info-list">
+                <div>
+                    <span class="title">订单编号</span>
+                    <span class="info">{{orderDetail.OrderNo}}</span>
+                </div>
+                <div>
+                    <span class="title">付款金额</span>
+                    <span class="info">{{orderDetail.CancelModel.PaidPrice|toFixed(1)}}元</span>
+                </div>
+                <div class="yellow-box">
+                    <span class="title">爽约金额</span>
+                    <span class="info">{{orderDetail.CancelModel.CoolJokin|toFixed(1)}}元</span>
+                </div>
+                <div class="yellow-box">
+                    <span class="title">退款金额</span>
+                    <span class="info">{{orderDetail.CancelModel.Rebate|toFixed(1)}}元</span>
+                </div>
+                <div class="time-box">
+                    <span class="title">到账时间</span>
+                    <span class="info">3个工作日</span>
+                </div>
+            </div>
+            <div class="rule" @click="showRole">
+                <img src="../imgs/question.png" alt="">
+                <span>查看取消规则</span>
+            </div>
+        </div>
+    </div>
+    <script src="./js/ini.js"></script>
+
+    <script>
+    var app
+
+        function display() {
+            app = new Vue({
+                el: '#app',
+                data: {
+                    orderDetail: {
+                        CancelModel: {}
+                    },
+                    stroke: '',
+                    carType: ''
+                },
+                methods: {
+                    showRole: showRole
+                },
+                filters: {
+                    toFixed: function(text, num) {
+                        if (!num) num = 2;
+                        if (!text) return '0';
+                        text = parseFloat(text);
+                        if (num == 1 && text == text.toFixed(0)) {
+                            return text.toFixed(0);
+                        }
+                        return text.toFixed(num);
+                    }
+                }
+            })
+            verifyLogin(function() {
+                getOrderDetail();
+            });
+        }
+
+        function showRole() {
+            if (app.carType === 'special') {
+                jumpByTime('./phoneCancelRoleSpecial.html', {
+                    type: app.stroke,
+                    cityId: $bw.getUrlInfo('cityId')
+                })
+            } else {
+                jumpByTime('./phoneCancelRole.html', {
+                    type: app.stroke,
+                    cityId: $bw.getUrlInfo('cityId')
+                })
+            }
+        }
+
+
+    function getOrderDetail() {
+        $bw.ajax({
+            url: 'Booking/GetDetail',
+            type: 'get',
+            data: { bookingId: $bw.getUrlInfo('id') },
+            callback: function(reseponse) {
+                app.orderDetail = reseponse.Data;
+                var orderDetail = reseponse.Data;
+                if (orderDetail.TripType == '2') {
+                    app.stroke = 'songji';
+                } else {
+                    app.stroke = 'jieji';
+                }
+                if (orderDetail.ServiceType == '1') {
+                    //如果是拼车
+                    app.carType = 'carpooling';
+                } else {
+                    app.carType = 'special';
+                }
+                setTimeout(function(){$('#app').show();},500)
+            }
+        })
+    }
+    </script>
+</body>
+
+</html>

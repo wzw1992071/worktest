@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>拼车取消规则</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+
+    <div id="cancel-role">
+        <div id="cityId_510700" style="display:none">
+            <div class="songjibox bw-chlid-html role-box">
+                <div class="role-title">
+                    拼车-送机(510700)
+                </div>
+                <div class="role-info">
+                    <div class="role-info-list">
+                        <span>1.起飞时间<span class="c-red">4小时</span>前，乘客可免费取消；</span>
+                    </div>
+                    <div class="role-info-list">
+                        <span>2.起飞时间<span class="c-red">4小时</span>内取消，需扣除<span class="c-red">5元</span>作为取消费，剩余金额将在3个工作日内自动退还到支付账户；</span>
+                    </div>
+                    <div class="role-info-list">
+                        <span>3.乘客上车后，不可取消</span>
+                    </div>
+                </div>
+            </div>
+            <div class="jiejibox bw-chlid-html role-box">
+                <div class="role-title">
+                    拼车-接机
+                </div>
+                <div class="role-info">
+                    <div class="role-info-list">
+                        <span>1.确认上车前，乘客可免费取消；</span>
+                    </div>
+                    <div class="role-info-list">
+                        <span>2.确认上车后，需扣除<span class="c-red">5元</span>作为取消费；剩余金额将在3个工作日内自动退还到支付账户；</span>
+                    </div>
+                    <div class="role-info-list">
+                        <span>3.司机发车后，不可取消</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="cityId_510100" style="display:none">
+            <div class="songjibox bw-chlid-html role-box">
+                <div class="role-title">
+                    拼车-送机(510100)
+                </div>
+                <div class="role-info">
+                    <div class="role-info-list">
+                        <span>1.起飞时间<span class="c-red">4小时</span>前，乘客可免费取消；</span>
+                    </div>
+                    <div class="role-info-list">
+                        <span>2.起飞时间<span class="c-red">4小时</span>内取消，需扣除<span class="c-red">5元</span>作为取消费，剩余金额将在3个工作日内自动退还到支付账户；</span>
+                    </div>
+                    <div class="role-info-list">
+                        <span>3.乘客上车后，不可取消</span>
+                    </div>
+                </div>
+            </div>
+            <div class="jiejibox bw-chlid-html role-box">
+                <div class="role-title">
+                    拼车-接机
+                </div>
+                <div class="role-info">
+                    <div class="role-info-list">
+                        <span>1.确认上车前，乘客可免费取消；</span>
+                    </div>
+                    <div class="role-info-list">
+                        <span>2.确认上车后，需扣除<span class="c-red">5元</span>作为取消费；剩余金额将在3个工作日内自动退还到支付账户；</span>
+                    </div>
+                    <div class="role-info-list">
+                        <span>3.司机发车后，不可取消</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/ini.js"></script>
+    <script>
+        function display() {
+            //var type = getUrlParams(location.href)['type'];
+            $('body').attr('style', 'opacity:1');
+            $('.jiejibox').show();
+            $('.songjibox').show();
+        }
+    </script>
+</body>
+
+</html>

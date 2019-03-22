@@ -1,0 +1,17 @@
+<div id="recharge">
+    <div class="recharge-top box bw-shadow">
+        <div class="recharge-title">充值金额</div>
+        <input type="text" class="recharge-price" ng-model="rechargeNum" input-placeholder="请输入充值金额" ng-change="rechargeNumChange()" ng-keydown="rechargeKeyDown()" />
+        <i class="iconfont" ng-click="setEmpty()">&#xe6ca;</i>
+        <div ng-if="typeParams.isCreateOrder" class="create-order-tips">充值金额不低于<span class="c-red">{{rechargePrice|toFixed:1}}</span>元</div>
+    </div>
+    <div class="recharge-sel box bw-shadow" ng-if="!typeParams.isCreateOrder">
+        <div class="recharge-title">选择充值金额 (元)</div>
+        <div class="recharge-label">
+            <span ng-repeat="app in amountList" ng-class="{'true':'select-amount'}[app.select]" ng-click="selectAmount(app)">￥{{app.amount}}</span>
+        </div>
+    </div>
+    <div class="btn-box">
+        <div class="bw-btn bw-big-btn col-19 bw-btn-red" ng-click="goRecharge()">立即充值</div>
+    </div>
+</div>

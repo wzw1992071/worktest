@@ -1,0 +1,50 @@
+<div id="order-invalid" class="fixed-box">
+    <div class="pay-invalid pay-box">
+        <img class="pay-invalid-img" src="./imgs/warning.png">
+        <div class="pay-invalid-title">本次行程已过期！</div>
+    </div>
+    <div class="info-box pay-box">
+        <div class="info-list">
+            <span class="info-title">订单编号</span>
+            <span class="info-msg">{{orderDetail.OrderNo}}</span>
+        </div>
+        <div class="info-list">
+            <span class="info-title">乘客电话</span>
+            <span class="info-msg">{{orderDetail.ContactNumber}}</span>
+        </div>
+        <div class="info-list" ng-if="orderDetail.FlightNo">
+            <span class="info-title">航班号</span>
+            <span class="info-msg">{{orderDetail.FlightNo}}</span>
+        </div>
+        <div class="info-list" ng-if="isSongji">
+            <span class="info-title">乘车时间</span>
+            <span class="info-msg">{{orderDetail.PickupTime| date:'yyyy-MM-dd HH:mm'}}</span>
+        </div>
+        <div class="info-list address-info-list">
+            <span class="info-title">上车地址</span>
+            <div class="a-i-l-box">
+                <span class="a-i-l-title info-msg">{{orderDetail.PickupAddress}}</span>
+                <span class="a-i-l-info bw-nowrap" ng-if="isSongji">{{orderDetail.PickupDetailAddress}}</span>
+            </div>
+        </div>
+        <div class="info-list address-info-list">
+            <span class="info-title">下车地址</span>
+            <div class="a-i-l-box">
+                <span class="a-i-l-title info-msg">{{orderDetail.DestAddress}}</span>
+                <span class="a-i-l-info bw-nowrap" ng-if="isJieji">{{orderDetail.DestDetailAddress}}</span>
+            </div>
+        </div>
+        <div class="info-list">
+            <span class="info-title">座位数</span>
+            <span class="info-msg">{{orderDetail.SeatNum}}个座位</span>
+        </div>
+        <div class="info-list">
+            <span class="info-title">下单时间</span>
+            <span class="info-msg">{{orderDetail.Cdt| date:'yyyy-MM-dd HH:mm'}}</span>
+        </div>
+    </div>
+    <div class="invalid-tips">
+        <div>如对该行程有任何异议</div>
+        <div>请拨打客服电话<a class="c-red" href="tel:028-86868686">028-86868686</a>进行反馈</div>
+    </div>
+</div>

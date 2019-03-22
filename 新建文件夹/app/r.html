@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title></title>
+</head>
+
+<body>
+    <script>
+        function getUrlParams(url) {
+            var args = {};
+            url = url || location.href;
+            try {
+                var pairs = url.split("?")[1].split('&');
+                for (var i = 0; i < pairs.length; i++) {
+                    var pos = pairs[i].split('=');
+                    if (pos.length == 1) {
+                        continue;
+                    }
+                    args[pos[0]] = decodeURIComponent(pos[1]);
+                }
+            } catch (e) {}
+            return args;
+        }
+        var getParmas = getUrlParams(location.href);
+        sessionStorage['UserClientType'] = JSON.stringify({
+            info: getParmas.c
+        });
+        sessionStorage['OtherLoginParmas'] = JSON.stringify({
+            info: getParmas
+        });
+        history.replaceState(null, null, './index.html?random=' + new Date().getTime() + '#/createOrder');
+        window.location.reload();
+        //window.location.href = './index.html?random=' + new Date().getTime();
+    </script>
+</body>
+
+</html>

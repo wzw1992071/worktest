@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>价格明细</title>
+    <script type="text/javascript" src="./plug/vue.js"></script>
+    <link rel="stylesheet" href="./css/init.css">
+    <link rel="stylesheet" href="./css/priceDetail.css">
+</head>
+
+<body>
+
+    <div id="app" class="price-detail bw-chlid-html">
+        <!--绵阳市-->
+        <!-- <div id="cityId_510700" style="display:none">
+            <div class="result-price-box">
+                <span class="total-price" v-if="!isDerivative">{{orderDetail.ActualPrice|toFixed(1)}}</span>
+                <span class="total-price" v-if="isDerivative">{{orderDetail.NotPaidPrice|toFixed(1)}}</span>
+                <span>元</span>
+            </div>
+            <div class="price-info-list" v-if="carType === 'carpooling'">
+                <div>
+                    <span class="title">一口价({{orderDetail.SeatNum}}位)</span>
+                    <span class="info">{{orderDetail.TotalPrice|toFixed(1)}}元</span>
+                </div>
+                <div class="yellow-box">
+                    <span class="title">免费乘客({{PriceDetaileInfo.freeNum}}位)</span>
+                    <span class="info">{{PriceDetaileInfo.freePriceTwo}}元</span>
+                </div>
+                <div class="yellow-box">
+                    <span class="title">优惠抵扣</span>
+                    <span class="info">{{PriceDetaileInfo.discountPrice}}元</span>
+                </div>
+                <div class="time-box" v-if="orderDetail.ActualPrice>0 && isPayEva==true" v-for="list in payList">
+                    <span class="title">支付方式</span>
+                    <span class="info">{{list.PayWay}}</span>
+                </div>
+            </div>
+            <div class="price-info-list" v-if="carType === 'special'">
+                <div class="tips-top">
+                    <span class="tips-top-title">{{orderDetail.CarTypeName}}</span>
+                </div>
+                <div>
+                    <span class="title">起步价</span>
+
+                    <span class="info">{{bookingRule.StartingPrice|toFixed(1)}}元</span>
+                </div>
+                <div>
+                    <span class="title">时长费({{bookingExtPrice.ActualTime}}分钟)</span>
+                    <span class="info">{{bookingExtPrice.ActualTimeFee|toFixed(1) }}元</span>
+                </div>
+                <div>
+                    <span class="title">里程费({{bookingExtPrice.ActualMile}}公里)</span>
+                    <span class="info">{{bookingExtPrice.ActualMileFee|toFixed(1) }}元</span>
+                </div>
+                <div>
+                    <span class="title">远途费({{bookingExtPrice.ActualFarMile}}公里)</span>
+                    <span class="info">{{bookingExtPrice.ActualFarMileFee|toFixed(1) }}元</span>
+                </div>
+                <div v-if="bookingExtPrice.ActualNightMileFee>0">
+                    <span class="title">夜间费({{bookingExtPrice.ActualNightMile}}公里)</span>
+                    <span class="info">{{bookingExtPrice.ActualNightMileFee|toFixed(1) }}元</span>
+                </div>
+                <div v-if="bookingExtPrice.ActualPriceOffset!=1">
+                    <span class="title">动态调价</span>
+                    <span class="info">{{bookingExtPrice.ActualPriceOffset}}倍</span>
+                </div>
+
+
+                <div class="total-box">
+                    <div v-if="bookingExtPrice.SubsidyFee>0 || bookingRule.StartingPrice-bookingExtPrice.StartingPrice>0">
+                        <span class="title"></span>
+                        <span class="info">合计 {{orderDetail.EstimatedTotalPrice}}元</span>
+                    </div>
+                    <div class="yellow-box subsidy-list" v-if="bookingExtPrice.SubsidyFee>0">
+                        <div class="subsidy-list-row">
+                            <span class="title">川航减免抵扣</span>
+                            <span class="info" v-if="bookingExtPrice.SubsidyFee < orderDetail.TotalPrice">-{{bookingExtPrice.SubsidyFee|toFixed(1)}}元</span>
+                            <span class="info" v-else>-{{orderDetail.TotalPrice|toFixed(1) }}元</span>
+                        </div>
+
+                    </div>
+                    <div class="yellow-box subsidy-list" v-if="bookingRule.StartingPrice-bookingExtPrice.StartingPrice>0">
+                        <div class="subsidy-list-row">
+                            <span class="title">起步价减半</span>
+                            <span class="info">-{{bookingRule.StartingPrice-bookingExtPrice.StartingPrice|toFixed(1) }}元</span>
+                        </div>
+
+                        <span class="start-price-tips">起步价减半优惠只针对全付费用户，使用川航减免抵扣的用户不享受此优惠</span>
+                    </div>
+                    <div>
+                        <span class="title"></span>
+                        <span class="info">一口价 {{orderDetail.ActualPrice|toFixed(1)}}元</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="rule" @click="showValuationRules()">
+                <img src="../imgs/question.png" alt="">
+                <span>查看计价规则</span>
+            </div>
+        </div> -->
+        <!--成都市-->
+        <div>
+            <div class="result-price-box">
+                <span class="total-price" v-if="!isDerivative">{{orderDetail.ActualPrice|toFixed(1)}}</span>
+                <span class="total-price" v-if="isDerivative">{{orderDetail.NotPaidPrice|toFixed(1)}}</span>
+                <span>元</span>
+            </div>
+            <div class="price-info-list" v-if="carType === 'carpooling'">
+                <div>
+                    <span class="title">一口价({{orderDetail.TotalSeatNum}}位)</span>
+                    <span class="info">{{orderDetail.TotalPrice|toFixed(1)}}元</span>
+                </div>
+                <div class="yellow-box">
+                    <span class="title">免费乘客({{PriceDetaileInfo.freeNum}}位)</span>
+                    <span class="info">{{PriceDetaileInfo.freePriceTwo}}元</span>
+                </div>
+                <div class="yellow-box">
+                    <span class="title">优惠抵扣</span>
+                    <span class="info">{{PriceDetaileInfo.discountPrice}}元</span>
+                </div>
+                <div class="time-box" v-if="orderDetail.ActualPrice>0 && isPayEva==true" v-for="list in payList">
+                    <span class="title">支付方式</span>
+                    <span class="info">{{list.PayWay}}</span>
+                </div>
+            </div>
+            <div class="price-info-list" v-if="carType === 'special'">
+                <div class="tips-top">
+                    <span class="tips-top-title">{{orderDetail.CarTypeName}}</span>
+                </div>
+                <div>
+                    <span class="title">起步价</span>
+                    <!-- <span class="info" v-if="bookingExtPrice.SubsidyFee<=0">{{bookingExtPrice.StartingPrice*2|toFixed(1)}}元</span>
+                    <span class="info" v-else>{{bookingExtPrice.StartingPrice|toFixed(1)}}元</span> -->
+                    <span class="info">{{bookingRule.StartingPrice|toFixed(1)}}元</span>
+                </div>
+                <div>
+                    <span class="title">时长费({{bookingExtPrice.ActualTime}}分钟)</span>
+                    <span class="info">{{bookingExtPrice.ActualTimeFee|toFixed(1) }}元</span>
+                </div>
+                <div>
+                    <span class="title">里程费({{bookingExtPrice.ActualMile}}公里)</span>
+                    <span class="info">{{bookingExtPrice.ActualMileFee|toFixed(1) }}元</span>
+                </div>
+                <div>
+                    <span class="title">远途费({{bookingExtPrice.ActualFarMile}}公里)</span>
+                    <span class="info">{{bookingExtPrice.ActualFarMileFee|toFixed(1) }}元</span>
+                </div>
+                <div v-if="bookingExtPrice.ActualNightMileFee>0">
+                    <span class="title">夜间费({{bookingExtPrice.ActualNightMile}}公里)</span>
+                    <span class="info">{{bookingExtPrice.ActualNightMileFee|toFixed(1) }}元</span>
+                </div>
+                <div v-if="bookingExtPrice.ActualPriceOffset!=1">
+                    <span class="title">动态调价</span>
+                    <span class="info">{{bookingExtPrice.ActualPriceOffset}}倍</span>
+                </div>
+
+
+                <div class="total-box" v-if="orderDetail.ActivityDetails.length==0">
+                    <div v-if="bookingExtPrice.SubsidyFee>0 || bookingRule.StartingPrice-bookingExtPrice.StartingPrice>0">
+                        <span class="title"></span>
+                        <span class="info">合计 {{orderDetail.EstimatedTotalPrice}}元</span>
+                    </div>
+                    <div class="yellow-box subsidy-list" v-if="bookingExtPrice.SubsidyFee>0">
+                        <div class="subsidy-list-row">
+                            <span class="title">川航减免抵扣({{PriceDetaileInfo.freeNum}}人)</span>
+                            <span class="info" v-if="bookingExtPrice.SubsidyFee < orderDetail.TotalPrice">-{{bookingExtPrice.SubsidyFee|toFixed(1)}}元</span>
+                            <span class="info" v-else>-{{orderDetail.TotalPrice|toFixed(1) }}元</span>
+                        </div>
+                    </div>
+                    <div class="yellow-box subsidy-list" v-if="bookingRule.StartingPrice-bookingExtPrice.StartingPrice>0">
+                        <div class="subsidy-list-row">
+                            <span class="title">起步价减半</span>
+                            <span class="info">-{{bookingRule.StartingPrice-bookingExtPrice.StartingPrice|toFixed(1) }}元</span>
+                        </div>
+
+                        <span class="start-price-tips">起步价减半优惠只针对全付费用户，使用川航减免抵扣的用户不享受此优惠</span>
+                    </div>
+                    <div>
+                        <span class="title"></span>
+                        <span class="info">一口价 {{orderDetail.ActualPrice|toFixed(1)}}元</span>
+                    </div>
+                    <div class="one-price-tips">
+                        一口价不包括高速费、过桥费、停车费，需要用户额外支付，以司机实际支付为准
+                    </div>
+                </div>
+                <div class="total-box" v-else>
+                    <div>
+                        <span class="title"></span>
+                        <span class="info">合计 {{orderDetail.EstimatedTotalPrice}}元</span>
+                    </div>
+                    <div class="yellow-box subsidy-list" v-for="(item,index) in orderDetail.ActivityDetails" :key="index">
+                        <div class="subsidy-list-row">
+                            <span class="title">{{item.Name}}</span>
+                            <span class="info">-{{item.Price|toFixed(1) }}元</span>
+                        </div>
+                        <span class="start-price-tips">{{item.Notes}}</span>
+                    </div>
+                    <div>
+                        <span class="title"></span>
+                        <span class="info">一口价 {{orderDetail.ActualPrice|toFixed(1)}}元</span>
+                    </div>
+                    <div class="one-price-tips">
+                        一口价不包括高速费、过桥费、停车费，需要用户额外支付，以司机实际支付为准
+                    </div>
+                </div>
+
+            </div>
+            <div class="rule" @click="showValuationRules()">
+                <img src="../imgs/question.png" alt="">
+                <span>查看计价规则</span>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="./js/ini.js"></script>
+    <script>
+        var app;
+        var carTypes;
+
+        function display() {
+
+            app = new Vue({
+                el: '#app',
+                data: {
+                    orderDetail: {},
+                    bookingRule: {},
+                    isPayEva: false,
+                    payList: {},
+                    PriceDetaileInfo: {},
+                    carType: 'carpooling',
+                    isDerivative: false,
+                },
+                methods: {
+                    goCancelResultPrice() {
+                        jumpByTime('./cancelResultPrice.html', {
+                            id: $bw.getUrlInfo('id')
+                        });
+                    },
+                    showValuationRules() {
+                        if (this.orderDetail.ServiceType == '1') {
+                            jumpByTime('./phonePriceRole.html', {
+                                cityId: $bw.getUrlInfo('cityId'),
+                                bookingId: $bw.getUrlInfo('id') || ''
+                            })
+                        } else {
+                            jumpByTime('./phonePriceRoleSpecial.html', {
+                                cityId: $bw.getUrlInfo('cityId'),
+                                bookingId: $bw.getUrlInfo('id') || ''
+                            })
+                        }
+                    }
+                },
+                filters: {
+                    toFixed: function(text, num) {
+                        if (!num) num = 2;
+                        if (!text) return '0';
+                        text = parseFloat(text);
+                        if (num == 1 && text == text.toFixed(0)) {
+                            return text.toFixed(0);
+                        }
+                        return text.toFixed(num);
+                    }
+                }
+            });
+            verifyLogin(function() {
+                getOrderDetail();
+            })
+        }
+
+        function getOrderDetail() {
+            console.log($bw.getUrlInfo('id'))
+            var _this=this;
+            if ($bw.getUrlInfo('id')) {
+                // $toast.showToast($bw.getUrlInfo('id'));
+                $bw.ajax({
+                    url: 'Booking/GetDetail',
+                    type: 'get',
+                    data: {
+                        bookingId: $bw.getUrlInfo('id')
+                    },
+                    callback: function(reseponse) {
+                        app.orderDetail = reseponse.Data;
+                        setTimeout(function() {
+                            $('#app').show();
+                        }, 500);
+                        show();
+                    }
+                })
+            } else {
+                verifyLogin(function() {
+                    GetCarTypes(function() {
+                        contactApp('AppBridgeOrderPriceDetail', {}, function(orderDetail) {
+                            if (orderDetail.ServiceType != '1') {
+                                var estimated = orderDetail.BookingExt;
+                                console.log(orderDetail)
+                                orderDetail.BookingExt = {
+                                    StartingPrice: estimated.StartingPrice,
+                                    ActualTime: estimated.EstimatedTime,
+                                    ActualTimeFee: estimated.EstimatedTimeFee,
+                                    ActualMile: estimated.EstimatedMile,
+                                    ActualMileFee: estimated.EstimatedMileFee,
+                                    ActualFarMile: estimated.EstimatedFarMile,
+                                    ActualFarMileFee: estimated.EstimatedFarMileFee,
+                                    ActualNightMile: estimated.EstimatedNightMile,
+                                    ActualNightMileFee: estimated.EstimatedNightMileFee,
+                                    SubsidyFee: estimated.SubsidyFee,
+                                    ActualPriceOffset: estimated.EstimatedPriceOffset
+                                }
+                                orderDetail.ActualPrice = orderDetail.EstimatedActualPrice;
+                            }
+                            for (var i = 0, len = carTypes.length; i < len; i++) {
+                                if (carTypes[i].CarTypeId == orderDetail.CarTypeId) {
+                                    orderDetail.CarTypeName = carTypes[i].CarTypeName;
+                                }
+                            }
+                            app.orderDetail = orderDetail;
+                            setTimeout(function() {
+                                $('#app').show();
+                            }, 500);
+                            show();
+
+                        })
+                    });
+                })
+            }
+
+        };
+
+        function show() {
+            var orderDetail = app.orderDetail;
+           
+            if (!orderDetail) return;
+            if (orderDetail.Status == "Completed") app.isPayEva = true;
+
+            var Passengers = orderDetail.Passengers;
+            var freeNum = 0;
+            var freePrice = 0;
+            var freePriceTwo = 0;
+            var discountPrice = 0;
+
+            for (var j in Passengers) {
+                if (Passengers[j].HasBooked === false && Passengers[j].IsValid === true) {
+                    freeNum++;
+                    freePrice += Passengers[j].Price;
+                }
+            }
+            app.PriceDetaileInfo.freeNum = freeNum;
+            if (freePrice != 0) {
+                freePriceTwo = '-' + freePrice.toFixed(2);
+            } else {
+                freePriceTwo = freePrice.toFixed(2);
+            }
+            app.PriceDetaileInfo.freePriceTwo = freePriceTwo;
+            discountPrice = orderDetail.TotalPrice - orderDetail.ActualPrice - freePrice;
+
+            if (discountPrice != 0) {
+                discountPrice = '-' + discountPrice.toFixed(2);
+            } else {
+                discountPrice = discountPrice.toFixed(2);
+            }
+            app.PriceDetaileInfo.discountPrice = discountPrice;
+
+
+            //获取拼车还是专车
+            if (orderDetail.ServiceType == '1') {
+                //如果是拼车
+                app.carType = 'carpooling';
+                app.payList = orderDetail.PayableInfoList;
+                for (var i in app.payList) {
+                    switch (app.payList[i].PayMethod) {
+                        case 'WeChat':
+                            app.payList[i].PayWay = '微信支付';
+                            break;
+                        case 'AliPay':
+                            app.payList[i].PayWay = '支付宝支付';
+                            break;
+                        case 'Aallet':
+                            app.payList[i].PayWay = '钱包支付';
+                            break;
+                        default:
+                            app.payList[i].PayWay = '微信支付';
+                            break;
+                    }
+                }
+            } else {
+                app.carType = 'special';
+                app.bookingExtPrice = orderDetail.BookingExt;
+                app.bookingRule = orderDetail.PriceRule;
+                //如果是专车 显示差价还是费用详情 
+                if (orderDetail.NotPaidPrice > 0) {
+                    app.isDerivative = true;
+                }
+            }
+        };
+
+        function GetCarTypes(back) {
+            $bw.ajax({
+                url: 'CarType/GetCarTypes',
+                type: 'get',
+                data: {
+                    // serviceType: app.orderDetail.ServiceType
+                },
+                callback: function(res) {
+                    carTypes = res.Data;
+                    back();
+                }
+            })
+
+        }
+    </script>
+    <!-- <script>
+        var src = 'https://eruda.liriliri.io/eruda.min.js';
+        // if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+        var script = document.createElement('script');
+        script.setAttribute('src', src);
+        document.body.appendChild(script);
+        script.onload = function() {
+            eruda.init()
+        }
+    </script>     -->
+</body>
+
+</html>

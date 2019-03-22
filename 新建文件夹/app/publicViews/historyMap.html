@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>行程详情</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/historyMap.css">
+    <title>行程详情</title>
+    <script type="text/javascript" src="./plug/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div id="history-map">
+        <div class="h-order-box" v-if="serviceType=='carpooling'">
+            <div class="h-btn" @click="switchOrderList"></div>
+            <div :style="userScrollBox">
+                <div class="h-order-top">
+                    <div class="h-order-style">
+                        <span class="h-service-type">{{stroke}}</span>
+                        <span class="h-car-type">拼车</span>
+                    </div>
+                    <div class="h-order-title">
+                        <img src="../imgs/clock.png">
+                        <span class="h-order-time">
+{{format(orderDetail.StartDate,'month')}}
+{{format(orderDetail.StartDate,'time')}}发车-{{format(orderDetail.EndDate,'time')}}到达
+                    </span>
+                        <img src="../imgs/contact_user.png">
+                        <span>{{orderDetail.PassengerCount}}人</span>
+                    </div>
+                </div>
+                <div class="user-box" :style="showOrderList">
+                    <div class="h-u-list" v-for="app in orderDetail.Bookings" v-show="app.Status != 'Cancel'">
+
+                        <div class="h-u-order">
+                            <span class="h-u-o-list h-u-o-time">{{format(app.PickupTime,'time')}}</span>
+                            <div class="h-u-o-list">
+                                <span>{{app.SeatNum}}人</span>
+                                <span class="h-u-o-freenum">{{app.FreeNum}}免</span>
+                            </div>
+                            <span class="h-u-o-list h-u-o-flight">{{app.FlightNo}}</span>
+                        </div>
+                        <div class="h-u-address bw-nowrap">
+                            <img src="../imgs/address.png">
+                            <span v-if="orderDetail.TripType == '1'">{{app.DestAddress}}-{{app.DestDetailAddress}}</span>
+                            <span v-else>{{app.PickupAddress}}-{{app.PickupDetailAddress}}</span>
+                        </div>
+                        <a class="h-u-phone" :href="'tel:'+app.Phone" v-if="allowPhone">
+                            <img src="../imgs/phone-click.png">
+                            <span class="h-u-p-num">{{app.Phone | encodePhone}}</span>
+                        </a>
+                        <div class="h-u-phone" v-else @click="noCallPhone()">
+                            <img src="../imgs/phone.png">
+                            <span class="h-u-p-num">{{app.Phone | encodePhone}}</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="h-order-box special" v-else-if="serviceType=='special'">
+            <div class="h-btn" @click="switchOrderList"></div>
+            <div class="h-order-top">
+                <div class="h-order-style">
+                    <span class="h-service-type">{{stroke}}</span>
+                    <span class="h-car-type">专车</span>
+                </div>
+                <div class="h-order-title" v-for="app in orderDetail.Bookings">
+                    <img src="../imgs/clock.png">
+                    <span class="h-order-time" v-for="app in orderDetail.Bookings">
+                        {{format(app.PickupTime,'month')}} {{format(app.PickupTime,'time')}}
+                    </span>
+                    <div v-if="app.FlightNo" class="h-flightno">
+                        <span class="h-order-flight">{{app.FlightNo}}</span>
+                        <span class="h-order-flighttime" v-if="orderDetail.TripType == '1'">{{format(app.ArriveTime,'time')}}到达</span>
+                        <span class="h-order-flighttime" v-else="">{{format(app.TakeOffTime,'time')}}起飞</span>
+                    </div>
+                </div>
+                <a class="h-u-phone" :href="'tel:'+app.Phone" v-if="allowPhone" v-for="app in orderDetail.Bookings">
+                    <img src="../imgs/phone-click.png">
+                    <span class="h-u-p-num">{{app.Phone | encodePhone}}</span>
+                </a>
+                <div class="h-u-phone" v-else @click="noCallPhone()">
+                    <img src="../imgs/phone.png">
+                    <span class="h-u-p-num">{{app.Phone | encodePhone}}</span>
+                </div>
+            </div>
+            <div class="user-box">
+                <div class="s-u-box">
+                    <div class="s-u-address bw-nowrap" v-for="app in orderDetail.Bookings" :style="showOrderList">
+                        <div>{{app.PickupAddress}}</div>
+                        <div>{{app.DestAddress}}</div>
+                        <img src="../imgs/driver-history-address.png" alt="">
+                    </div>
+                    <div class="price-box" @click="jumpPrice()">
+                        <span class="price-num">{{orderDetail.DriverIncome}}</span>
+                        <span>元</span>
+                        <img src="../imgs/arrow-right-c.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="./js/ini.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=if2nx4S512iN1l72ZjPQYdFOsb4F56lQ"></script>
+    <script type="text/javascript" src="./js/historyMap.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+body {
+    background: #fff;
+}
+
+.flex-com {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.person-li-no-pitch-on {
+    width: 0.32rem;
+    height: 0.32rem;
+    border: 1px solid rgba(216, 216, 216, 1);
+    border-radius: 100%;
+    margin-right: 0.26rem;
+}
+
+.confirm-box-left-e {
+    font-size: 0.28rem;
+    color: #333333;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.confirm-box-left-t {
+    color: #747480;
+    font-size: 0.24rem;
+}
+
+.confirm-box {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    height: 0.96rem;
+    width: 100%;
+}
+
+.confirm-box-left {
+    flex: 1;
+    height: 100%;
+    border-top: 1px solid rgba(236, 236, 236, 1);
+    background: #fff;
+}
+
+.confirm-box-right {
+    flex: 2;
+    height: 100%;
+    background: #FF2741;
+    font-size: 0.32rem;
+    color: #fff;
+    font-weight: bold;
+    border-top: 1px solid #FF2741;
+}
+
+.person-li-info-username {
+    font-weight: bold;
+    margin-bottom: 0.1rem;
+}
+
+.chengji-person-noimg {
+    width: 4.24rem;
+}
+
+.person-li-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.person-ul {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 1.4rem;
+    background: #fff;
+}
+
+.person-li-left {
+    display: flex;
+    align-items: center;
+}
+
+.person-li-pitch-on {
+    margin-right: 0.26rem;
+    font-size: 0.38rem;
+    color: #FF2741;
+}
+
+.person-li-edit-compile {
+    width: 0.36rem;
+    margin-right: 0.4rem;
+}
+
+.person-li {
+    margin-left: 0.4rem;
+    height: 1.4rem;
+    border-bottom: 1px solid rgba(236, 236, 236, 1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chengji-person {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.4rem;
+}
+
+.add-chengji-box {
+    width: 100%;
+}
+
+.add-chengji {
+    position: fixed;
+    top: 0;
+    background: #fff;
+    height: 1.4rem;
+    width: 100vw;
+    box-shadow: 0px 0px 20px 0px rgba(42, 56, 86, 0.15);
+}
+
+.add-chengji-btn {
+    margin: 0.32rem 0.6rem;
+    height: 0.8rem;
+    border-radius: 0.44rem;
+    border: 1px solid rgba(255, 39, 65, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-chengji-img {
+    width: 0.24rem;
+}
+
+.add-chengji-span {
+    color: #FF2741;
+    margin-left: 0.1rem;
+}

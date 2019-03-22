@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>下载铁航专线</title>
+    <style>
+        body,
+        html {
+            font-size: .3rem;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mine {
+            height: 100%;
+            position: relative;
+            /*transition: all 0.5s;*/
+        }
+
+        #downLoadBg,
+        #downLoadBg2 {
+            display: block;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+
+        #downLoadBg2 {
+            display: none;
+            height: auto;
+        }
+
+        #downLoadBtn {
+            top: 30%;
+            left: 0;
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            z-index: 1;
+        }
+
+        #bwBtn {
+            background-color: #cf0f1d;
+            border-radius: 0.5rem;
+            color: #fff;
+            display: inline-block;
+            height: 0.96rem;
+            line-height: 0.96rem;
+            width: 80%;
+        }
+
+        #tips {
+            color: #fff;
+            display: none;
+            font-size: 0.5rem;
+        }
+
+        #imgTips {
+            display: none;
+            height: 100%;
+            left: 0;
+            opacity: 0.9;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 99;
+        }
+
+        #loading {
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            text-align: center;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+        }
+
+            #loading img {
+                margin-top: 60%;
+                width: 35px;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="mine">
+        <img id="downLoadBg" src="/imgs/singlePage/download-bg.jpg">
+        <!-- <img id="downLoadBg2" src="/app/image/download-bg-heng.png"> -->
+        <div id="downLoadBtn">
+            <span id="bwBtn" class="bw-btn">立即下载</span>
+        </div>
+        <img id="imgTips" src="/imgs/singlePage/download-tips.png">
+    </div>
+    <div id="loading">
+        <img src="/imgs/singlePage/load.gif" alt="">
+    </div>
+    <script src="./js/ini.js"></script>
+    <script>
+        window.onload = function () {
+            setRem();
+            window.onresize = function () {
+                setRem();
+            };
+            //微信安卓点击显示引导
+            byId('bwBtn').onclick = function () {
+                if (/iphone|ipad|ipod/.test(ua)) {
+                    window.location
+                        .href =
+                        "https://itunes.apple.com/us/app/%E9%93%81%E8%88%AA%E4%B8%93%E7%BA%BF/id1231405375?mt=8&ign-mpt=uo%3D4";
+                } else if (/android/.test(ua)) {
+                    if (!isWX) {
+                        window.location.href = getDownloadUrl();
+                    } else {
+                        showTips();
+                    }
+                } else {
+                    window.location.href = getDownloadUrl();
+                }
+
+            };
+            //微信点击引导隐藏引导
+            byId('imgTips').onclick = function () {
+                hideTips();
+            };
+
+            //判断系统
+            var isWX = false;
+            var ua = window.navigator.userAgent.toLowerCase();
+
+            var download = function () {
+                //是否微信
+                if (ua.match(/MicroMessenger/i) == 'micromessenger') isWX = true;
+                //是否ios
+                if (/iphone|ipad|ipod/.test(ua)) {
+                    byId('bwBtn').style.display = "inline-block";
+                    window.location.href =
+                        "https://itunes.apple.com/us/app/%E9%93%81%E8%88%AA%E4%B8%93%E7%BA%BF/id1231405375?mt=8&ign-mpt=uo%3D4";
+                } else if (/android/.test(ua)) {
+                    if (!isWX) {
+                        window.location.href = getDownloadUrl();
+                    } else {
+                        byId('bwBtn').style.display = "inline-block";
+                    }
+                } else {
+                    window.location.href = getDownloadUrl();
+                }
+            };
+
+            if (false) {
+                showLoading();
+                //把code传给后台统计
+                get('url',
+                    function () {
+                        download();
+                        hideLoading();
+                    });
+            } else {
+                download();
+            }
+
+        };
+
+        function getDownloadUrl() { 
+            var baseUrl = (window.location.origin=="https://wechat.jichangzhuanxian.com")?"https://mgr.jichangzhuanxian.com":"https://pre.jichangzhuanxian.com/";
+            var code = getUrlParams()['code'];
+            if (code) return baseUrl + "/DownloadPassenger?code=" + code;
+            return baseUrl + "/DownloadPassenger";
+        }
+
+        function showLoading() {
+            byId('loading').style.display = 'block';
+        }
+
+        function hideLoading() {
+            byId('loading').style.display = 'none';
+        }
+
+        function getUrlParams(url) {
+            var args = {};
+            url = url || location.href;
+            try {
+                var pairs = url.split("?")[1].split('&');
+                for (var i = 0; i < pairs.length; i++) {
+                    var pos = pairs[i].split('=');
+                    if (pos.length == 1) {
+                        continue;
+                    }
+                    args[pos[0]] = decodeURIComponent(pos[1]);
+                }
+            } catch (e) {
+            }
+            return args;
+        };
+
+        function setRem() {
+            var windowWidth = document.body.offsetWidth;
+            if (window.orientation === 90 || window.orientation === -90) {
+                //横屏
+                RootFontSize = windowWidth / 750 * 100 * 0.6;
+            } else {
+                RootFontSize = windowWidth / 750 * 100;
+            }
+            document.getElementsByTagName("html")[0].style.fontSize = RootFontSize + "px";
+        }
+
+        function byId(id) {
+            return document.getElementById(id);
+        }
+
+        function showTips() {
+            byId('imgTips').style.display = 'block';
+        }
+
+        function hideTips() {
+            byId('imgTips').style.display = 'none';
+        }
+
+        function get(url, fn) {
+            var obj = new XMLHttpRequest(); // XMLHttpRequest对象用于在后台与服务器交换数据
+            obj.open('GET', url, true);
+            obj.onreadystatechange = function () {
+                if (obj.readyState == 4 && obj.status == 200 || obj.status == 304) { // readyState==4说明请求已完成
+                    fn.call(this, obj.responseText); //从服务器获得数据
+                }
+            };
+            obj.send(null);
+        }
+    </script>
+</body>
+</html>

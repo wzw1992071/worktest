@@ -1,0 +1,79 @@
+<div id="pay-order" ng-show="showPay" style="z-index: 100">
+    <div class="pay-top" ng-if="!isInvalidation">
+        <div class="pay-time">
+            <i class="iconfont">&#xe60b;</i>
+            <span class="time-num" ng-if="!isInvalidation">剩余：{{differenceTime | date:'mm分钟ss秒'}}</span>
+            <span class="time-num" ng-if="isInvalidation">订单已过期</span>
+        </div>
+        <div class="pul-r pay-price-box">
+            <div class="pay-top-title">需付款</div>
+            <div><span>￥</span><span class="pay-price">{{orderDetail.ActualPrice | toFixed:1}}</span></div>
+        </div>
+    </div>
+    <div class="pay-invalid pay-box" ng-if="isInvalidation">
+        <img class="pay-invalid-img" src="./imgs/warning.png">
+        <div class="pay-invalid-title">本次行程已失效！</div>
+        <div class="pay-invalid-info">
+            <span>失效原因：</span>
+            <span>未支付订单</span>
+        </div>
+    </div>
+    <div class="pay-box pay-way" ng-if="!isInvalidation">
+        <div class="info-list" ng-repeat="app in payWayList" ng-click="selectPayWay(app)">
+            <div ng-if="app.payMethod==='Wallet' && walletInfo.EnableBalance<orderDetail.ActualPrice">
+                <img class="pay-img" src="./imgs/pay-wallet-null.png">
+                <span class="info-title" style="color:#929196">钱包支付<label class="wallet-tips">(可用余额不足)</label></span>
+            </div>
+            <div ng-if="app.payMethod!=='Wallet' || walletInfo.EnableBalance>orderDetail.ActualPrice">
+                <img class="pay-img" src="{{app.img}}">
+                <span class="info-title">{{app.name}}<label class="wallet-tips" ng-if="app.payMethod==='Wallet'">(可用余额￥{{walletInfo.EnableBalance|toFixed:1}})</label></span>
+                <span class="info-msg iconfont" ng-if="!app.select" ng-show="app.payMethod!=='Wallet' || walletInfo.EnableBalance>orderDetail.ActualPrice">&#xe6d6;</span>
+                <span class="info-msg iconfont select-icon" ng-if="app.select">&#xe629;</span>
+            </div>
+        </div>
+    </div>
+    <div class="info-box pay-box" ng-class="{'true':'invalid-info-list'}[isInvalidation]">
+        <div class="info-list">
+            <span class="info-title">订单编号</span>
+            <span class="info-msg">{{orderDetail.OrderNo}}</span>
+        </div>
+        <div class="info-list">
+            <span class="info-title">乘客电话</span>
+            <span class="info-msg">{{orderDetail.ContactNumber}}</span>
+        </div>
+        <div class="info-list" ng-if="orderDetail.FlightNo">
+            <span class="info-title">航班号</span>
+            <span class="info-msg">{{orderDetail.FlightNo}}</span>
+        </div>
+        <div class="info-list" ng-if="isSongji || orderDetail.ServiceType==2">
+            <span class="info-title">乘车时间</span>
+            <span class="info-msg">{{orderDetail.PickupTime| date:'yyyy-MM-dd HH:mm'}}</span>
+        </div>
+        <div class="info-list address-info-list">
+            <span class="info-title">上车地址</span>
+            <div class="a-i-l-box">
+                <span class="a-i-l-title info-msg">{{orderDetail.PickupAddress}}</span>
+                <span class="a-i-l-info bw-nowrap" ng-if="isSongji">{{orderDetail.PickupDetailAddress}}</span>
+            </div>
+        </div>
+        <div class="info-list address-info-list">
+            <span class="info-title">下车地址</span>
+            <div class="a-i-l-box">
+                <span class="a-i-l-title info-msg">{{orderDetail.DestAddress}}</span>
+                <span class="a-i-l-info bw-nowrap" ng-if="isJieji">{{orderDetail.DestDetailAddress}}</span>
+            </div>
+        </div>
+        <div class="info-list" ng-if="orderDetail.ServiceType==1">
+            <span class="info-title">座位数</span>
+            <span class="info-msg">{{orderDetail.SeatNum}}个座位</span>
+        </div>
+        <div class="info-list" ng-if="orderDetail.ServiceType==2">
+            <span class="info-title">车型</span>
+            <span class="info-msg">专车：{{carType[orderDetail.PriceRule.CarTypeId]}}</span>
+        </div>
+    </div>
+    <div class="btn-box" ng-if="!isInvalidation">
+        <span class="bw-btn bw-btn-default bw-big-btn col-6" ng-click="cancelOrder()">取消行程</span>
+        <span class="bw-btn bw-btn-red bw-big-btn col-13" ng-click="pay()">去支付</span>
+    </div>
+</div>

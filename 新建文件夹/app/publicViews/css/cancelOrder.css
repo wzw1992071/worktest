@@ -1,0 +1,273 @@
+#app {
+    position: relative;
+}
+
+#cancel {
+    padding-bottom: 2.2rem;
+    height: 100%;
+}
+
+#cancel .cancel-price-box {
+    color: #fff;
+    text-align: center;
+    padding-top: .96rem;
+    font-size: .28rem
+}
+
+#cancel .cancel-price-title {
+    color: #626262
+}
+
+#cancel .cancel-price {
+    font-size: .8rem;
+    margin-right: .1rem;
+    color: #2b2b2b;
+    margin-top: .2rem
+}
+
+#cancel .cancel-tips {
+    margin-top: .2rem;
+    color: #a3a2a6;
+    font-size: .26rem
+}
+
+#cancel .info-title {
+    padding: 0 .8rem;
+    color: #626262;
+    line-height: .68rem;
+    font-size: .28rem;
+    padding-top: .36rem
+}
+
+#cancel .info-box {
+    width: 5.9rem;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#cancel .info-list {
+    color: #5a5a5a;
+    padding: 0 .32rem;
+    height: .72rem;
+    line-height: .72rem;
+    display: inline-block;
+    width: 48%;
+    border: solid 1px #dadbdd;
+    margin-top: .23rem;
+    text-align: center
+}
+
+#cancel .reasons-select {
+    border-color: #d23f36;
+    color: #d23f36;
+    position: relative
+}
+
+#cancel .reasons-select:after {
+    content: '';
+    background-image: url('../imgs/cancel-select.png');
+    width: .3rem;
+    height: .3rem;
+    position: absolute;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    right: 0;
+    top: 0
+}
+
+#cancel .other-info {
+    height: 1.8rem;
+    margin-top: .46rem;
+    text-align: center
+}
+
+#cancel .other-info textarea {
+    outline: none;
+    resize: none;
+    width: 5.9rem;
+    height: 100%;
+    padding: .21rem .32rem;
+    border: none;
+    font-size: .28rem;
+    color: #3a3a3a;
+    background-color: #f5f5f5;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+#cancel .driver-header {
+    width: 1.4rem;
+    display: block;
+    margin: 0 auto;
+    padding-top: .5rem;
+    z-index: 1
+}
+
+#cancel .car-no {
+    border: solid 1px #eee;
+    font-size: .26rem;
+    background-color: #f3f3f3;
+    margin: 0 auto;
+    width: 1.5rem;
+    line-height: .55rem;
+    z-index: 2;
+    position: relative;
+    margin-top: -0.2rem
+}
+
+#cancel .driver-info {
+    margin-top: .14rem
+}
+
+#cancel .driver-info img {
+    width: .36rem;
+    position: relative;
+    top: .05rem;
+    left: .02rem
+}
+
+#cancel .driver-info .driver-score {
+    font-size: .26rem
+}
+
+#cancel .result-tips {
+    padding-bottom: 1rem
+}
+
+#cancel .result-info-list {
+    position: relative;
+    color: #5a5a5a;
+    line-height: .7rem;
+    width: 48%;
+    margin-bottom: .22rem;
+    font-size: .28rem;
+    border: solid 1px #dadbdd;
+}
+
+#cancel .result-info-box {
+    padding-bottom: .5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#cancel .cancel-result-other {
+    width: 100%;
+    text-align: left;
+    font-size: .28rem;
+    color: #3a3a3a;
+    padding: .25rem;
+    border: solid 1px #dadbdd;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+#cancel .cancel-bottom {
+    position: absolute;
+    width: 100%;
+    bottom: 0
+}
+
+#cancel .cancel-bottom .rule {
+    margin-bottom: .4rem
+}
+
+#cancel .IsFreeCancel-box {
+    padding-top: .6rem;
+    padding-bottom: .2rem
+}
+
+#cancel .IsFreeCancel-tips {
+    line-height: 1rem
+}
+
+#cancel .cancel-success-img {
+    width: 1.54rem
+}
+
+.result-price-box {
+    margin-bottom: .42rem;
+    color: #b2b2b2;
+    padding-top: 1rem
+}
+
+.result-price-box img {
+    width: .17rem;
+    top: .05rem;
+    position: relative
+}
+
+.cancel-result {
+    text-align: center;
+    color: #5a5a5a
+}
+
+.cancel-result .result-mine {
+    padding: 0 .69rem
+}
+
+.cancel-result .result-words {
+    color: #2b2b2b;
+    font-size: .96rem;
+    line-height: 1.5rem
+}
+
+.cancel-result .result-words .iconfont {
+    font-size: .4rem
+}
+
+.cancel-result .cancelResult-price {
+    font-size: .28rem;
+    color: #626262;
+    padding-top: .6rem
+}
+
+.cancel-result .cancelResult-tips {
+    line-height: .8rem;
+    padding-bottom: .4rem
+}
+
+.cancel-result .rule {
+    left: 0;
+    width: 100%;
+    position: absolute;
+    bottom: .55rem
+}
+
+.evaluated-box {
+    text-align: center;
+    padding-bottom: 0.46rem;
+    padding-top: 0.15rem;
+}
+
+.evaluated-title-right,
+.evaluated-title-left {
+    display: inline-block;
+    width: 1.7rem;
+    height: 0.04rem;
+    vertical-align: middle;
+}
+
+.evaluated-title-left {
+    background: -webkit-linear-gradient(left, rgba(222, 222, 222, 0), rgba(222, 222, 222, 0.9));
+    /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, rgba(222, 222, 222, 0), rgba(222, 222, 222, 0.9));
+    /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, rgba(222, 222, 222, 0), rgba(222, 222, 222, 0.9));
+    /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, rgba(222, 222, 222, 0), rgba(222, 222, 222, 0.9));
+    /* 标准的语法 */
+}
+
+.evaluated-title-right {
+    background: -webkit-linear-gradient(left, rgba(222, 222, 222, 0.9), rgba(222, 222, 222, 0));
+    /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, rgba(222, 222, 222, 0.9), rgba(222, 222, 222, 0));
+    /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, rgba(222, 222, 222, 0.9), rgba(222, 222, 222, 0));
+    /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, rgba(222, 222, 222, 0.9), rgba(222, 222, 222, 0));
+    /* 标准的语法 */
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="x5-orientation" content="portrait">
+
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/all.css">
+    <link rel="stylesheet" type="text/css" href="font/icon/iconfont.css">
+    <link rel="stylesheet" href="bower_components/lcalendar/LCalendar.css?v1.1">
+    <link rel="stylesheet" href="bower_components/lcalendar/lArea.css">
+
+</head>
+
+<body id="big-box" ng-controller="indexCtrl" ng-class="{'true':'hidden-box'}[showUserCenter]">
+    <div class="user-center" ng-class="{'true':'show-user-center'}[showUserCenter]" style="transform: translate3d(-100%,0,0);">
+        <div class="user-name-box">
+            <img class="user-center-header" ng-src="./imgs/user-header.png" alt="">
+            <span class="user-phone">{{userInfo.phone | showPhone}}</span>
+        </div>
+        <!-- <div class="user-action" ng-click="userCenterJump('wallet')" touch-bg>
+            <img class="aciton-img" ng-src="./imgs/wallet-user-center.png" alt="">
+            <span class="action-name">钱包</span>
+        </div> -->
+        <div class="user-action" ng-click="userCenterJump('orderList')" touch-bg>
+            <img class="aciton-img" ng-src="./imgs/user-center-list.png" alt="">
+            <span class="action-name">行程</span>
+        </div>
+        <div class="user-action" ng-click="userCenterJump('openInvoice')" touch-bg>
+            <img class="aciton-img" ng-src="./imgs/invoice.png" alt="">
+            <span class="action-name">开票</span>
+        </div>
+        <div class="user-action" ng-click="userCenterJump('setting')" touch-bg>
+            <img class="aciton-img" ng-src="./imgs/setting-user-center.png" alt="">
+            <span class="action-name">设置</span>
+        </div>
+        <div class="user-action" ng-click="goHelp()" touch-bg>
+            <img class="aciton-img" ng-src="./imgs/help.png" alt="">
+            <span class="action-name">帮助</span>
+        </div>
+    </div>
+    <div class="all-box" ui-view="" ng-class="{'true':'go-right'}[showUserCenter]"></div>
+
+    <div id="loading-html" class="loading-html">
+        拼命加载中……
+    </div>
+
+    <div id="block-html" class="block-html" ng-class="{'show-block': showBlock, 'deepen': deepen}" ng-click="hideBlock()"></div>
+    <!-- <script>
+        var src = 'https://eruda.liriliri.io/eruda.min.js';
+        // if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+        var script = document.createElement('script');
+        script.setAttribute('src', src);
+        document.body.appendChild(script);
+        script.onload = function() {
+            eruda.init()
+        }
+    </script> -->
+    <!-- 微信接口 -->
+    <script charset="utf-8" src="https://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+    <script id="baiduJs" charset="utf-8" src="https://api.map.baidu.com/api?v=2.0&ak=BORW59HeNs0amhebvmy1qvrwySYgcWDI"></script>
+    <!-- 插件 -->
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-ocLazyLoad.js"></script>
+    <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-touch/angular-touch.min.js"></script>
+    <script type="text/javascript" src="bower_components/fastclick/lib/fastclick.js"></script>
+
+
+    <!-- 
+    <script type="text/javascript" src="scripts/common.js"></script>
+    <script type="text/javascript" src="scripts/router.js"></script>
+    <script type="text/javascript" src="scripts/controllers/mineCtrl.js"></script>
+    <script type="text/javascript" src="scripts/controllers/indexCtrl.js"></script>
+    <script type="text/javascript" src="scripts/services/baseService.js"></script>
+    <script type="text/javascript" src="scripts/services/httpinterceptor.js"></script>
+    <script type="text/javascript" src="scripts/services/appointmentService.js"></script> -->
+    <script type="text/javascript" src="scripts/all.js"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.10&key=8a9f5605ad0cf7180977d11e612a8a07"></script>
+    <script type="text/javascript" src="./publicViews/plug/jquery.min.js"></script>
+
+    <script>
+        window.debug = true;
+        //强制禁止用户修改微信客户端的字体大小---begin--- -->
+        (function() {
+            if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+                handleFontSize();
+            } else {
+                if (document.addEventListener) {
+                    document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+                } else if (document.attachEvent) {
+                    document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+                    document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+                }
+            }
+
+            function handleFontSize() {
+                if (!WeixinJSBridge) return;
+                // 设置网页字体为默认大小
+                WeixinJSBridge.invoke('setFontSizeCallback', {
+                    'fontSize': 0
+                });
+                // 重写设置网页字体大小的事件
+                WeixinJSBridge.on('menu:setfont', function() {
+                    WeixinJSBridge.invoke('setFontSizeCallback', {
+                        'fontSize': 0
+                    });
+                });
+            }
+
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+<style>
+    #open-invoice .contant{height: 1rem;padding: 0 .24rem;display: flex;justify-content: space-between;align-items: center;background: #fff;}
+    #open-invoice .contant img{width: 0.12rem}
+    #open-invoice .contant.openBtn{margin: 0.2rem 0}
+    #open-invoice .contant.openInfo{border-top: 1px solid #e7e7e7;}
+</style>
+<!-- 开发票页面 -->
+<div id="open-invoice">
+    <div class="contant openBtn" ng-click="goRouter('choiceInvoiceList')">
+        <p>专车、拼车开票</p>
+        <img src="./imgs/arrow-right-c.png" />
+    </div>
+    <div class="contant" ng-click="goRouter('invoiceHistory')">
+        <p>开票记录</p>
+        <img src="./imgs/arrow-right-c.png" />
+    </div>
+    <div class="contant ">
+        <p>发票抬头管理</p>
+        <img src="./imgs/arrow-right-c.png" />
+    </div>
+    <div class="contant openInfo">
+        <p>开票说明</p>
+        <img src="./imgs/arrow-right-c.png" />
+    </div>
+    
+</div>

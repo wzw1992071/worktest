@@ -1,0 +1,25 @@
+<style type="text/css">
+    .user-center .user-action{border-bottom: solid 1px #e3e3e3}
+</style>
+<div class="user-center show-user-center" style="width: 100%;padding: 0 0.35rem;">
+    <div class="user-name-box">
+        <img class="user-center-header" ng-src="./imgs/user-header.png" alt="">
+        <span class="user-phone">{{userInfo.phone}}</span>
+    </div>
+    <div class="user-action" ng-click="userCenterJump('wallet')" touch-bg>
+        <img class="aciton-img" ng-src="./imgs/wallet-user-center.png" alt="">
+        <span class="action-name">钱包</span>
+    </div>
+    <div class="user-action" ng-click="userCenterJump('orderList')" touch-bg>
+        <img class="aciton-img" ng-src="./imgs/user-center-list.png" alt="">
+        <span class="action-name">行程</span>
+    </div>
+    <div class="user-action" ng-click="userCenterJump('setting')" touch-bg>
+        <img class="aciton-img" ng-src="./imgs/setting-user-center.png" alt="">
+        <span class="action-name">设置</span>
+    </div>
+    <div class="user-action" ng-click="goHelp()" touch-bg>
+        <img class="aciton-img" ng-src="./imgs/help.png" alt="">
+        <span class="action-name">帮助</span>
+    </div>
+</div>

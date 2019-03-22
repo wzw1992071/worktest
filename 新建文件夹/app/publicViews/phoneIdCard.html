@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>身份认证</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+    <div id="bind-box" class="bind-s" ng-if="IsRealValid">
+        <div class="id-img-box">
+            <img src="../imgs/IDImg-s.png" alt="">
+        </div>
+        <div class="bind-id-box">
+            <span class="bind-id-title">姓&#12288;名</span>
+            <span id="userName" class="bind-id-info"></span>
+        </div>
+        <div class="bind-id-box">
+            <span class="bind-id-title">证件号</span>
+            <span id="num" class="bind-id-info"></span>
+        </div>
+    </div>
+    <script src="./plug/jquery.min.js"></script>
+    <script src="./js/simpleini.js"> </script>
+    <script>
+        function display() {
+            var urlParams=getUrlParams(location.href);
+            var name=urlParams['userName'];
+            var number=urlParams['number'];
+            $('#userName').html(name);
+            $('#num').html(number);
+
+            $('body').attr('style', 'opacity:1');
+        }
+    </script>
+</body>
+
+</html>

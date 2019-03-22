@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>乘机人</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" media="screen" href="css/init-05fcb87a71.css">
+    <link rel="stylesheet" href="./css/main-9657c92848.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/airplanePassenger.css" />
+    <!-- <script src="main.js"></script> -->
+    <script src="./plug/vue.min.js"></script>
+    <style>
+        body {
+            background: #fff;
+        }
+        
+        .edit-passenger {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            padding: 0.5rem 0.88rem 0;
+            box-sizing: border-box;
+        }
+        
+        .input-item {
+            border-bottom: 1px solid rgba(230, 230, 230, 1);
+            display: flex;
+            flex-direction: column;
+            padding-top: 0.48rem;
+            padding-bottom: 0.32rem;
+        }
+        
+        .input-item input {
+            color: #333333;
+            font-size: 0.3rem;
+            border: 0;
+            outline: 0;
+            text-transform: uppercase
+        }
+        
+        .input-item input::-webkit-input-placeholder {
+            color: #B8BCC3;
+        }
+        
+        .input-item-title {
+            font-size: 0.26rem;
+            color: #333333;
+            margin-bottom: 0.24rem;
+        }
+        
+        .input-item-title-special {
+            color: #747480;
+            font-weight: normal;
+        }
+        
+        .save {
+            background: rgba(255, 39, 65, 0.5);
+            color: #fff;
+            margin-top: 1.32rem;
+        }
+        
+        .btn-item {
+            width: 100%;
+            height: 0.88rem;
+            line-height: 0.88rem;
+            text-align: center;
+            border-radius: 0.48rem;
+            font-weight: 0.32rem;
+            font-weight: bold;
+        }
+        
+        .del {
+            border: 1px solid rgba(255, 39, 65, 1);
+            color: #FF2741;
+            margin-top: 0.32rem;
+        }
+        
+        .save-can {
+            background: rgba(255, 39, 65, 1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="edit-passenger">
+        <div class="input-item">
+            <span class="input-item-title">证件号</span>
+            <input v-model="IDCardNo " type="text" placeholder="请输入购买机票时使用的证件号">
+        </div>
+        <div class="input-item">
+            <span class="input-item-title">姓名<strong class="input-item-title-special">（选填）</strong></span>
+            <input v-model="PassengerName" type="text" placeholder="请输入乘机人姓名">
+        </div>
+        <div :class="{'save-can': IDCardNo}" class="save btn-item" @click="addPerson">保存</div>
+        <div @click="delP" v-show="ID" class="del btn-item">删除乘机人</div>
+    </div>
+
+    <script src="./js/ini.js"></script>
+    <script>
+        var app;
+
+        function display() {
+            app = new Vue({
+                el: ".edit-passenger",
+                data: {
+                    personNo: false,
+                    PassengerName: '',
+                    IDCardNo: '',
+                    ID: '',
+                    stroke: '',
+                    carType: '',
+                    commonpassengerlist: [],
+                },
+                mounted() {
+                    this.PassengerName = $bw.getUrlInfo("PassengerName") || '';
+                    this.IDCardNo = $bw.getUrlInfo("IDCardNo") || '';
+
+                    this.ID = $bw.getUrlInfo("ID") || '';
+                    this.carType = $bw.getUrlInfo('carType') || '';
+                    this.stroke = $bw.getUrlInfo('stroke') || '';
+                    this.getpassenger();
+                },
+
+                methods: {
+                    getpassenger() {
+                        var t = this;
+                        verifyLogin(function() {
+                            $bw.ajax({
+                                url: "commonpassenger/list",
+                                type: "get",
+                                data: {},
+                                callback: function(reseponse) {
+                                    if (reseponse.Status == 1) {
+                                        t.commonpassengerlist = reseponse.Data;
+                                    }
+                                }
+                            });
+                        });
+                    },
+                    addPerson() {
+                        var _this = this;
+                        verifyLogin(
+                            function() {
+                                if (_this.ID) {
+                                    _this.updatedP();
+                                } else {
+                                    _this.addP();
+                                }
+                            }
+                        );
+                    },
+                    updatedP() {
+                        var _this = this;
+                        var bool = false;
+                        var ft = _this.commonpassengerlist.filter(function(val) {
+                            return val.ID !== _this.ID;
+                        });
+                        ft.forEach(function(val) {
+                            if ((val.IDCardNo).toUpperCase() == (_this.IDCardNo).toUpperCase()) {
+                                $toast.showToast("已存在此乘机人", 1500);
+                                bool = true;
+                            }
+                        });
+                        if (bool) {
+                            return;
+                        }
+                        $bw.ajax({
+                            url: "commonpassenger/update",
+                            type: "post",
+                            data: {
+                                "PassengerName": this.PassengerName,
+                                "IDCardNo": (this.IDCardNo).toUpperCase(),
+                                "ID": this.ID
+                            },
+                            callback: function(reseponse) {
+                                if (reseponse.Status == 1) {
+                                    $toast.showToast("保存成功", 1500);
+                                    window.history.back(-1);
+                                } else {
+                                    $toast.showToast("保存失败" + reseponse.Message, 1500);
+                                }
+                            }
+                        })
+                    },
+                    addP() {
+                        var _this = this;
+                        var ft = _this.commonpassengerlist.filter(function(val) {
+                            return (val.IDCardNo).toUpperCase() == (_this.IDCardNo).toUpperCase();
+                        });
+                        if (ft.length) {
+                            $toast.showToast("已添加过此乘机人", 1500);
+                            return;
+                        }
+
+                        $bw.ajax({
+                            url: "commonpassenger/add",
+                            type: "post",
+                            data: {
+                                "PassengerName": this.PassengerName,
+                                "IDCardNo": (this.IDCardNo).toUpperCase()
+                            },
+                            callback: function(reseponse) {
+                                if (reseponse.Status == 1) {
+                                    $toast.showToast("保存成功", 1500);
+                                    window.history.back(-1);
+                                } else {
+                                    $toast.showToast("保存失败" + reseponse.Message, 1500);
+                                }
+                            }
+                        })
+                    },
+                    delP() {
+                        var that = this;
+                        verifyLogin(
+                            function() {
+
+                                $bw.ajax({
+                                    url: "commonpassenger/del",
+                                    type: "post",
+                                    data: {
+                                        "ID": that.ID
+                                    },
+                                    callback: function(reseponse) {
+                                        if (reseponse.Status == 1) {
+
+                                            $toast.showToast("删除成功", 1500);
+                                            window.history.back(-1);
+                                        } else {
+                                            $toast.showToast("删除失败" + reseponse.Message, 1500);
+                                        }
+                                    }
+                                })
+                            });
+                    }
+                }
+
+            });
+            document.body.setAttribute('style', 'opacity:1');
+        }
+    </script>
+</body>
+
+</html>

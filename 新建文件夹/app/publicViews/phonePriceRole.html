@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>拼车计价规则</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+    <div>
+        <div class="price-role role-box">
+            <div class="role-title">
+                <span class="c-red">一口价</span>
+            </div>
+            <div class="valuation-box role-info">
+                <div class="role-list-title role-info-list">
+                    <span>里程</span>
+                    <span class="role-right">计费</span>
+                </div>
+                <div class="box"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./js/ini.js"></script>
+    <script>
+        function display() {
+            var data = {};
+            if ($bw.getUrlInfo('bookingId')) {
+                data.bookingId = $bw.getUrlInfo('bookingId');
+            }
+            verifyLogin(function() {
+                $bw.ajax({
+                    url: 'BookingPriceRule/GetSharePriceRule',
+                    type: 'get',
+                    data: data,
+                    callback: function(reseponse) {
+                        var str = "";
+                        if (reseponse.Status == 1) {
+                            reseponse.Data.forEach(function(val) {
+                                if (val.DistanceMax == 0) {
+                                    str += '<div class="role-info-list">' +
+                                        '<span>' + val.DistanceMin + '公里以上</span>' +
+                                        '<span class="role-right">' + val.Price + '元/位</span>' +
+                                        '</div>';
+                                } else {
+                                    str += '<div class="role-info-list">' +
+                                        '<span>' + val.DistanceMin + '-' + val.DistanceMax + '公里</span>' +
+                                        '<span class="role-right">' + val.Price + '元/位</span>' +
+                                        '</div>';
+                                }
+
+                            });
+                        }
+                        $('.box').html(str);
+                    }
+                })
+            });
+
+            document.body.setAttribute('style', 'opacity:1;background: #fff;');
+        }
+    </script>
+</body>
+
+</html>

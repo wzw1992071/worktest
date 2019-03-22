@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>取消订单</title>
+    <script type="text/javascript" src="./plug/vue.min.js"></script>
+    <link rel="stylesheet" href="./css/init.css">
+    <link rel="stylesheet" href="./css/cancelOrder.css">
+</head>
+
+<body>
+    <div id="app">
+        <div id="cancel" v-if="isCancel">
+            <div class="cancel-price-box" v-if="!cancelResult.IsFreeCancel">
+                <div class="cancel-price-title">扣除爽约金额（元）</div>
+                <div class="cancel-price">
+                    {{cancelResult.CancelPrice|toFixed(1)}}
+                </div>
+            </div>
+            <div class="cancel-info-box">
+                <div class="info-title">请选择取消原因</div>
+                <div class="info-box">
+                    <div class="info-list" v-for="(item,index) in ReasonsObj" @click="selectReasons(index,item)" :class="item.select?'reasons-select':''">
+                        {{item.str}}
+                    </div>
+                </div>
+            </div>
+            <div class="other-info">
+                <textarea name="" id="" placeholder="其它原因" v-model="otherinfo" @change="otherInfoChange"></textarea>
+            </div>
+            <div class="cancel-bottom">
+                <div class="rule" @click="showRole">
+                    <img src="../imgs/question.png" alt="">
+                    <span>查看取消规则</span>
+                </div>
+                <div class="btn-box">
+                    <span class="bw-btn bw-btn-red bw-big-btn col-19" @click="cancel">确定取消</span>
+                </div>
+            </div>
+        </div>
+        <div id="cancel" class="cancel-result" v-if="isCancelEd">
+            <div class="evaluate-top box" v-if="showDriver">
+                <div class="evaluate-header"><img src="../imgs/driver-header.png" alt=""></div>
+                <div class="evaluate-driver-info">
+                    <div class="driver-name">
+                        <span class="pul-l">{{orderDetail.DriverName}}</span>
+                        <img class="driver-total-img pul-l" src="../imgs/star-small.png" alt="">
+                        <span class="driver-total pul-l">{{orderDetail.DriverRate|toFixed(1)}}</span>
+                    </div>
+                    <div class="driver-car-num">{{orderDetail.CarLicense}}</div>
+                    <div class="driver-car-type">{{orderDetail.CarColor}}•{{orderDetail.CarModel}}</div>
+                </div>
+                <a class="driver-phone" :href=" 'tel:'+ orderDetail.DriverPhone ">
+                    <img src="../imgs/phone.png" />
+                </a>
+            </div>
+            <div class="result-mine">
+                <div class="IsFreeCancel-box" v-if="CancelModel.Rebate==0">
+                    <div>
+                        <img class="cancel-success-img" src="../imgs/cancel-success.png">
+                    </div>
+                    <div class="IsFreeCancel-tips" v-if="CancelModel.CancelAccountType=='-1' || CancelModel.CancelAccountType=='0'">订单已被系统取消</div>
+                    <div class="IsFreeCancel-tips" v-if="CancelModel.CancelAccountType=='1'">订单已被司机取消</div>
+                    <div class="IsFreeCancel-tips" v-if="CancelModel.CancelAccountType=='2'">订单已被您取消</div>
+                </div>
+                <div class="cancelResult-price" v-if="CancelModel.Rebate!==0">
+                    <div>退款金额（元）</div>
+                    <div class="result-words" @click="goCancelResultPrice">{{CancelModel.Rebate|toFixed(1)}}<i class="iconfont">&#xe619;</i></div>
+                    <div class="cancelResult-tips"></div>
+                    <div class="cancelResult-tips" v-if="CancelModel.CancelAccountType=='-1' || CancelModel.CancelAccountType=='0'">
+                    订单被系统取消，退款金额将在3个工作日内到账
+                    </div>
+                    <div class="cancelResult-tips" v-if="CancelModel.CancelAccountType=='1'">订单被司机取消,退款金额将在3个工作日内到账</div>
+                    <div class="cancelResult-tips" v-if="CancelModel.CancelAccountType=='2'">订单被您取消,退款金额将在3个工作日内到账</div>
+                </div>
+
+                <div class="result-info-box">
+                    <span class="result-info-list" v-for="item in CancelModel.CancelReason">{{item}}</span>
+                </div>
+                <div class="evaluated-box" v-if="CancelModel.Note">
+                    <span class="evaluated-title-left"></span>
+                    <span class="evaluated-title">其它原因</span>
+                    <span class="evaluated-title-right"></span>
+                </div>
+                <div class="cancel-result-other" v-if="CancelModel.Note">
+                    {{CancelModel.Note}}
+                </div>
+                <div class="rule" @click="showRole">
+                    <img src="../imgs/question.png" alt="">
+                    <span>查看取消规则</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+var app
+
+function display() {
+    app = new Vue({
+        el: '#app',
+        data: {
+            stroke: '',
+            carType: '',
+            isCancelEd: false,
+            isCancel: false,
+            showDriver: true,
+            orderDetail: {},
+            CancelModel: {},
+            otherCancel: {},
+            otherinfo: '',
+            canceledLabel: {},
+            cancelResult: {},
+            ReasonsObj: []
+        },
+        methods: {
+            goCancelResultPrice: goCancelResultPrice,
+            showRole: showRole,
+            otherInfoChange: otherInfoChange,
+            cancel: cancel,
+            selectReasons: selectReasons
+        },
+        filters: {
+            toFixed: function(text, num) {
+                if (!num) num = 2;
+                if (!text) return '0';
+                text = parseFloat(text);
+                if (num == 1 && text == text.toFixed(0)) {
+                    return text.toFixed(0);
+                }
+                return text.toFixed(num);
+            }
+        }
+    })
+    verifyLogin(function() {
+        getOrderDetail();
+    })
+    addSession({name:'reloadSession',info:true})
+}
+
+function selectReasons(index, item) {
+    app.ReasonsObj[index].select = !item.select;
+}
+
+function cancel() {
+    if (app.cancelResult.CancelPrice > 0) {
+        $toast.showConfirm({
+            text: '现在取消将会支付爽约金，确认取消吗？',
+            sureFn: function() {
+                goCancel();
+            }
+        })
+    } else {
+        goCancel();
+    }
+}
+
+    function goCancel() {
+        var ReasonCodes = [];
+        for (var i in app.ReasonsObj) {
+            var oneInfo = app.ReasonsObj[i];
+            if (oneInfo.select === true) {
+                ReasonCodes.push(oneInfo.code);
+            }
+        }
+        var payload = {
+            ReasonCodes: ReasonCodes,
+            Reason: app.otherinfo
+        }
+        $bw.ajax({
+            url: 'Booking/CancelBooking?bookingId=' + $bw.getUrlInfo('id'),
+            type: 'post',
+            data: payload,
+            callback: function() {
+                $toast.showToast("取消成功", 1500, function() {
+                    contactApp('AppBridgeOrderStatusDidChanged', {
+                        id: $bw.getUrlInfo('id')
+                    }, function() {
+                        window.location.reload();
+                    })
+                });
+            }
+        })
+    }
+
+    function goCancelResultPrice() {
+        jumpByTime('./cancelResultPrice.html', {
+            id: $bw.getUrlInfo('id'),
+            cityId: $bw.getUrlInfo('cityId')
+        })
+    }
+
+    function showRole() {
+        if (app.carType === 'special') {
+            jumpByTime('./phoneCancelRoleSpecial.html', {
+                type: app.stroke,
+                cityId: $bw.getUrlInfo('cityId')
+            })
+        } else {
+            jumpByTime('./phoneCancelRole.html', {
+                type: app.stroke,
+                cityId: $bw.getUrlInfo('cityId')
+            })
+        }
+    }
+
+function otherInfoChange() {
+    if (app.otherinfo.length >= 120) {
+        app.otherinfo = app.otherinfo.substr(0, 120);
+    }
+}
+
+function getOrderDetail() {
+    $bw.ajax({
+        url: 'Booking/GetDetail',
+        type: 'get',
+        data: { bookingId: $bw.getUrlInfo('id') },
+        callback: function(reseponse) {
+            app.orderDetail = reseponse.Data;
+            var orderDetail = reseponse.Data;
+            var status = orderDetail.Status;
+
+            if (status === 'Cancel') {
+                app.isCancelEd = true;
+                setTitle('取消成功');
+            } else {
+                if (!setCancelStatus(orderDetail)) {
+                    $toast.showToast('该订单不可取消', 1500, function() {
+                        window.history.go(-1);return false;
+                    });
+                } else {
+                    app.isCancel = true;
+                }
+                getCancelInfo();
+            }
+
+            if (orderDetail.DriverName === null) {
+                app.showDriver = false;
+            }
+            if (app.isCancelEd) {
+                app.CancelModel = orderDetail.CancelModel;
+                app.otherCancel = orderDetail.CancelModel.Note;
+                app.canceledLabel = orderDetail.CancelModel.CancelReason;
+            }
+            if (orderDetail.TripType == '2') {
+                app.stroke = 'songji';
+            } else {
+                app.stroke = 'jieji';
+            }
+            if (orderDetail.ServiceType == '1') {
+                //如果是拼车
+                app.carType = 'carpooling';
+            } else {
+                app.carType = 'special';
+            }
+            setTimeout(function() { $('#app').show(); }, 500)
+        }
+    })
+}
+
+function getCancelInfo() {
+    $bw.ajax({
+        url: 'Booking/CancelBooking',
+        type: 'get',
+        data: { bookingId: $bw.getUrlInfo('id') },
+        callback: function(reseponse) {
+            app.cancelResult = reseponse.Data;
+            app.ReasonsObj = [];
+            if (reseponse.Data.Reasons.length > 0) {
+                for (var i in reseponse.Data.Reasons) {
+                    app.ReasonsObj.push({ str: reseponse.Data.Reasons[i].Reason, select: false, code: reseponse.Data.Reasons[i].Code });
+                }
+            }
+        }
+    })
+}
+</script>
+<script src="./js/ini.js"></script>
+
+</html>

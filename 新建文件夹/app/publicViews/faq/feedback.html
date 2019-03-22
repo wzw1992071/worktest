@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>反馈与建议</title>
+    <link href="../css/faq.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="list-box category-box">
+        <div class="title">问题类型</div>
+        <div id="list-box"></div>
+        <script type="text/x-dot-template" id="list-box-tpl">
+            {{for(var i in it){}} {{if(it[i].Name!='新手指南'){}}
+            <span class="category-btn" data-id="{{=it[i].ID}}">{{=it[i].Name}}</span> {{ } }}{{ } }}
+            <span class="category-btn" data-id="0">其他</span>
+        </script>
+    </div>
+    <div class="feedback-box">
+        <div class="bw-input-box">
+            <textarea id="content" class="bw-textarea col-20 bw-count" data-num="200" placeholder="请告诉我们您遇到的问题"></textarea>
+            <span class="input-tips">
+                <span class="count-num">0</span>/200
+            </span>
+        </div>
+        <div>
+            <span id="submit" class="bw-btn bw-btn-default col-20">
+                提交
+            </span>
+        </div>
+    </div>
+
+    <script src="../js/ini.js"></script>
+    <script src="../plug/doT.min.js"></script>
+    <script>
+        var submit = null;
+        var subing = false;
+
+        function display() {
+            var id;
+            //设置头部和默认数据
+            submit = $('#submit');
+            setBtn(setCount($('.bw-count')[0]));
+
+            $(document).on('keyup', '.bw-count', function(e) {
+                setBtn(setCount(this));
+            });
+            $('#select-type').click(function() {
+                window.location.href = "./feedSelectType.html?id=" + id;
+            });
+            //获取用户选择数据
+            $('#list-box').on('click', '.category-btn', function() {
+                id = this.dataset.id;
+                $('.category-btn').removeClass('active');
+                $(this).addClass('active');
+            });
+            submit.click(function() {
+                if (subing) return;
+                subing = true;
+                if (!id) {
+                    $toast.showToast('请选择问题类型');
+                    subing = false;
+                    return;
+                }
+                if ($(this).hasClass('bw-btn-danger')) {
+
+                    verifyLogin(function() {
+                        $bw.ajax({
+                            url: 'qa/FeedBack',
+                            type: 'post',
+                            data: {
+                                "Comments": $('#content').val(),
+                                "Phone": $bw.getUrlInfo('phone'),
+                                // "Phone": decode($bw.getUrlInfo('phone')),
+                                "CategoryID": id
+                            },
+                            callback: function(res) {
+
+                                if (res.Status === 1) {
+                                    var data = {
+                                        name: 'feedSelectType',
+                                        info: null
+                                    };
+                                    addSession(data);
+                                    $toast.showToast('问题提交成功', 1500, function() {
+                                        window.history.go(-1);
+                                    });
+                                } else {
+                                    $toast.showToast('问题提交失败');
+                                }
+                            },
+                            errorBack: function(err) {
+
+                                subing = false;
+                                $toast.showToast('网络错误');
+                            }
+                        });
+                    })
+
+                } else {
+                    $toast.showToast('请输入您的问题');
+                    subing = false;
+                }
+                return false;
+            });
+
+            verifyLogin(function() {
+                $bw.ajax({
+                    url: 'qa/GetCategories',
+                    type: 'get',
+                    data: {},
+                    dataType: 'json',
+                    callback: function(res) {
+                        showTpl($('#list-box-tpl'), $('#list-box'), res.Data);
+
+                    }
+                })
+            });
+            $('body').attr('style', 'opacity:1');
+        }
+
+        function setCount(_this) {
+            var val = $(_this).val();
+            var maxLen = _this.dataset.num;
+            var len = val.length;
+            var n = parseInt((maxLen - len) / 2);
+            if (n <= 0) {
+                $(_this).val(val.substring(0, maxLen));
+            }
+            len = len > maxLen ? maxLen : len;
+            $(_this).next().find('.count-num').html(len);
+            return len;
+        }
+
+        function setBtn(len) {
+            if (len <= 0) {
+                if (submit.hasClass('bw-btn-default')) return;
+                submit.removeClass('bw-btn-danger').addClass('bw-btn-default');
+            } else {
+                if (submit.hasClass('bw-btn-danger')) return;
+                submit.removeClass('bw-btn-default').addClass('bw-btn-danger');
+            }
+        }
+    </script>
+</body>
+
+</html>

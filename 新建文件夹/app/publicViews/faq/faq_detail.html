@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>问题详情</title>
+    <link href="../css/faq.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="detail-body">
+        <div class="detail-box">
+            <div id="detail-title" class="detail-title"></div>
+            <div id="detail-content" class="detail-content"></div>
+        </div>
+        <div class="comment-box">
+            <span class="comment-btn useless touchBg" data-isuseful="false"><img src="/imgs/useless.png" alt=""
+                    data-src="/imgs/useless.png">没用</span>
+            <span class="comment-btn useful touchBg" data-isuseful="true"><img src="/imgs/useful.png" alt="" data-src="/imgs/useful.png">有用</span>
+            <img class="layer-html" src="/imgs/useless.pngs.png" alt="">
+            <img class="layer-html" src="/imgs/useful.pngs.png" alt="">
+        </div>
+    </div>
+
+
+    <script src="../js/ini.js"></script>
+    <script>
+        function display() {
+            var CategoryID = $bw.getUrlInfo('parentId');
+            var id = $bw.getUrlInfo('id');
+
+
+            verifyLogin(function() {
+                $bw.ajax({
+                    url: 'qa/ViewContent?id=' + id,
+                    type: 'get',
+                    data: {},
+                    dataType: 'json',
+                    callback: function(res) {
+                        var info = res.Data;
+                        $('#detail-title').html(info.Title);
+                        $('#detail-content').html(info.Content);
+                        // hideLoading();
+                    }
+                })
+            });
+
+            $('.comment-btn').click(function() {
+                if (!$bw.getUrlInfo('phone')) {
+                    $toast.showToast('你没有登录，不能发表反馈');
+                    return;
+                }
+                var _this = this;
+                if ($bw.isClick === true) return;
+                $bw.isClick = true;
+                if ($bw.isComment === true) {
+                    $toast.showToast('亲，你已经发表过反馈了哦。');
+                    $bw.isClick = false;
+                    return false;
+                }
+
+                //
+                verifyLogin(function() {
+                    $bw.ajax({
+                        url: 'qa/FeedBack',
+                        type: 'post',
+                        data: {
+                            "Phone": $bw.getUrlInfo('phone'),
+                            // "Phone": decode($bw.getUrlInfo('phone')),
+                            "ContentID": id,
+                            "CategoryID": CategoryID,
+                            "IsUseful": _this.dataset.isuseful
+                        },
+                        callback: function(res) {
+                            // hideLoading();
+                            if (res.Status === 1) {
+                                $bw.isComment = true;
+                                $bw.isClick = false;
+                                $('.comment-btn').removeClass('active').find('img').each(function(i, e) {
+                                    $(e).attr('src', e.dataset.src);
+                                });
+                                var thisImg = $(_this).addClass('active').find('img');
+                                thisImg.attr('src', thisImg[0].dataset.src + 's.png');
+                            } else {
+                                $bw.isClick = false;
+                                $toast.showToast('问题提交失败');
+                            }
+                        },
+                        errorBack: function(err) {
+                            // hideLoading();
+                            $toast.showToast('网络错误');
+                            $bw.isClick = false;
+                        }
+                    });
+                });
+            })
+            $('body').attr('style', 'opacity:1');
+        }
+    </script>
+</body>
+
+</html>

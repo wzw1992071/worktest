@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>接送机范围</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+        
+        html,
+        body {
+            height: 100%;
+            /* IOS禁止微信调整字体大小 */
+            -webkit-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
+            -moz-text-size-adjust: 100% !important;
+        }
+        
+        #map {
+            height: 100%
+        }
+    </style>
+</head>
+
+<body>
+    <div class="range-map" id="map"></div>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=7UBG6OMH6Udzz4TRvtHQbVnVnAgcMz2H"></script>
+    <script src="./js/ini.js"></script>
+    <script>
+        function display() {
+            var cityId = $bw.getUrlInfo('cityId') || '510100';
+            $.getJSON("./resource/" + cityId + "MapRange.json", function(data) {
+                mapDraw(data);
+            });
+        }
+
+        function mapDraw(cityPointArr) {
+            var pointArr = [];
+            var list, xiongMaoList = false;
+            var args = getUrlParams() || {};
+            args.cityId = args.cityId || 510100;
+            var map = new BMap.Map("map");
+            map.centerAndZoom(new BMap.Point(cityPointArr.center[0], cityPointArr.center[1]), 10);
+            map.enableScrollWheelZoom();
+            if (args.cityId == 510100) {
+                if (args.serviceType == 1) {
+                    list = cityPointArr.pingcheList;
+                    xiongMaoList = cityPointArr.xiongmaoList;
+                } else if (args.tripType == 1) {
+                    list = cityPointArr.zhuanchejieji;
+                } else {
+                    list = cityPointArr.zhuanchesongji;
+                }
+            } else {
+                list = cityPointArr.list;
+            }
+
+            for (var i in list) {
+                pointArr.push(new BMap.Point(list[i].lng, list[i].lat));
+            }
+            //创建多边形
+            var polygon = new BMap.Polygon(pointArr, {
+                strokeColor: "#920000",
+                strokeWeight: 2,
+                strokeOpacity: 0.5,
+                fillColor: '#D23F36',
+                fillOpacity: 0.5
+            });
+            map.addOverlay(polygon); //增加多边形
+
+            if (xiongMaoList) {
+                var xiongmaoPointArr = [];
+                for (var i in xiongMaoList) {
+                    xiongmaoPointArr.push(new BMap.Point(xiongMaoList[i].lng, xiongMaoList[i].lat));
+                }
+                //创建多边形
+                var polygon = new BMap.Polygon(xiongmaoPointArr, {
+                    strokeColor: "#920000",
+                    strokeWeight: 2,
+                    strokeOpacity: 0.5,
+                    fillColor: '#D23F36',
+                    fillOpacity: 0.5
+                });
+                map.addOverlay(polygon); //增加多边形
+            }
+            if (args.longitude && args.latitude) {
+                var point = new BMap.Point(args.longitude, args.latitude);
+                var myIcon
+                if (args.tripType == 1) {
+                    //jieji
+                    myIcon = new BMap.Icon("../imgs/mapjieji.png", new BMap.Size(35, 53), {
+                        imageSize: new BMap.Size(35, 53)
+                    });
+                } else {
+                    //songji
+                    myIcon = new BMap.Icon("../imgs/mapsongji.png", new BMap.Size(35, 53), {
+                        imageSize: new BMap.Size(35, 53)
+                    });
+                }
+
+                var marker = new BMap.Marker(point, {
+                    icon: myIcon,
+                    offset: new BMap.Size(-1, -22)
+                }); // 创建标注
+
+                map.addOverlay(marker); // 将标注添加到地图中
+            }
+        }
+
+        function getUrlParams() {
+            var args = {};
+            url = location.href;
+            try {
+                var pairs = url.split("?")[1].split('&');
+                for (var i = 0; i < pairs.length; i++) {
+                    var pos = pairs[i].split('=');
+                    if (pos.length == 1) {
+                        continue;
+                    }
+                    args[pos[0]] = decodeURIComponent(pos[1]);
+                }
+            } catch (e) {}
+            return args;
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>关于我们</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+    <div id="about-us">
+        <img class="logo-img" src="../imgs/logo-share.png" />
+        <div class="version-words">
+            铁航专线&nbsp;&nbsp;版本v<span id="version"></span>
+        </div>
+        <div class="bw-panel-box">
+            <div class="bw-panel">
+                <span>联系我们</span>
+                <img class="bw-panel-icon" src="../imgs/arrow-right.png" />
+                <div class="bw-panel-tips">
+                    <a href="tel:028-86868686">028-86868686</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./plug/jquery.min.js"></script>
+    <script>
+        window.onload = function() {
+            setRem();
+            window.onresize = function() {
+                setRem();
+            }
+            var version = getUrlParams(location.href)['version'];
+            $('#version').html(version)
+            document.body.setAttribute('style', 'opacity:1')
+        }
+
+        function getUrlParams(url) {
+            var args = {};
+            url = url || location.href;
+            try {
+                var pairs = url.split("?")[1].split('&');
+                for (var i = 0; i < pairs.length; i++) {
+                    var pos = pairs[i].split('=');
+                    if (pos.length == 1) {
+                        continue;
+                    }
+                    args[pos[0]] = decodeURIComponent(pos[1]);
+                }
+            } catch (e) {}
+            return args;
+        };
+
+        function setRem() {
+            var windowWidth = document.body.offsetWidth;
+            RootFontSize = windowWidth / 750 * 100;
+            document.getElementsByTagName("html")[0].style.fontSize = RootFontSize + "px";
+        }
+    </script>
+    <script>
+        //强制禁止用户修改微信客户端的字体大小---begin--- -->
+        (function() {
+            if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+                handleFontSize();
+            } else {
+                if (document.addEventListener) {
+                    document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+                } else if (document.attachEvent) {
+                    document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+                    document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+                }
+            }
+
+            function handleFontSize() {
+                if (!WeixinJSBridge) return;
+                // 设置网页字体为默认大小
+                WeixinJSBridge.invoke('setFontSizeCallback', {
+                    'fontSize': 0
+                });
+                // 重写设置网页字体大小的事件
+                WeixinJSBridge.on('menu:setfont', function() {
+                    WeixinJSBridge.invoke('setFontSizeCallback', {
+                        'fontSize': 0
+                    });
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>

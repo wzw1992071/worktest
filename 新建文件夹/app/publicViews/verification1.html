@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> 减免验证</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/init.css" />
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/verify.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="./plug/lArea/lArea.css" />
+    <script type="text/javascript" src="./plug/vue.min.js"></script>
+
+</head>
+
+<body>
+    <div class="verify" id="verify">
+        <div v-show="!isHosttory" class="no-history">
+            <!--大标题头部--->
+            <div class="title">
+                <h1>验证成功</h1>
+                <h1 v-show="serviceType==2">优惠<strong>{{freePrice}}</strong>元</h1>
+                <h1 v-show="serviceType==1"><strong>免费</strong>乘坐</h1>
+                <div class="verify-rule" @click="toVerifyRule()">
+                    <span>规则说明</span>
+                    <img src="../imgs/arrow-right-w.png" alt="">
+                </div>
+            </div>
+            <!--验证成功列表--->
+            <div class="verify-success" v-show="resultSuccess.length">
+                <h2>验证成功</h2>
+                <ul>
+                    <li v-for="item in resultSuccess">
+                        <!-- <img src="../imgs/verify-success-icon.png" alt=""> -->
+                        <img @click="successDelete(item)" src="../imgs/verify-delete.png" alt="">
+                        <span>{{item.IDCardNo}}</span>
+                    </li>
+                </ul>
+            </div>
+            <!--拼车选择座位-->
+            <div class="select-seat" v-show="serviceType==1" :class="{'select-seat-bor-no-bottom':verifyNum.length==0}">
+                <img src="../imgs/seat.png" alt="">
+                <input id="seat" type="button" :value="pingchetotal">
+                <img src="../imgs/arrow-right.png" alt="">
+            </div>
+            <!--等待验证列表-->
+            <div class="await-verify" v-show="!(!verifyNum.length && serviceType==1)">
+                <img v-show="serviceType==2" class="add-btn" v-on:click="verifyCount()" src="../imgs/verify-add.png">
+                <h3>待验证列表</h3>
+                <ul>
+                    <li v-for="item in verifyNum" :id="item.uuid">
+                        <img v-on:click="verifyDel(item.uuid)" src="../imgs/verify-delete.png" alt="">
+                        <!-- <input v-show="validArr.length" type="text" :value="item.IDCardNo" v-on:focus.prevent="historyInputFocus(item.uuid)" placeholder="请输入乘机人证件号"> -->
+                        <!-- <input @focus="inputFocus(item.uuid)" @blur="inputBlur(item.uuid)" type="text" :value="item.IDCardNo" v-on:keyup="inputChange($event,item.uuid)" placeholder="请输入乘机人证件号"> -->
+                        <input type="text" :value="item.IDCardNo" v-on:keyup="inputChange($event,item.uuid)" placeholder="请输入乘机人证件号">
+                        <!-- <span class="format-error" v-show="!item.format">格式不正确</span> -->
+                    </li>
+                </ul>
+                <div class="submit-btn" @click="commit">提交</div>
+            </div>
+            <!--弹窗提示验证结果,有未通过的-->
+            <div class="verify-result" v-show="isResult">
+                <div class="result-box">
+                    <div class="result-con">验证通过{{resultSuccess.length}}人，不通过{{resultFail.length}}人</div>
+                    <div class="result-hint"><em class="result-hint-bg"></em><span>验证提示</span></div>
+                    <div class="result-hint-con">
+                        <p>请阅读以下内容来解决“验证不通过”的问题：</p>
+                        <p>1、不符合减免资格，会验证不通过，具体参看<strong @click="toVerifyRule()">减免规则说明</strong>;</p>
+                        <p>2、如果您是刚出票，系统同步可能导致验证不通过，请稍后再试（建议出票20分钟后再试） </p>
+                        <p>3、点击下方“后台验证”按钮提交人工验证，我们将尽快处理； </p>
+                        <p>4、拨打客服电话：<a href="tel:028-86868686"><strong>028-86868686</strong></a>咨询</p>
+                    </div>
+                    <div class="result-btn">
+                        <div class="result-btn-item" @click="submitCenterCheckuser()">后台验证</div>
+                        <div class="result-btn-item" @click="goBack()">等会再试</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--历史记录选择-->
+        <div v-show="isHosttory" class="history">
+            <input class="history-input" v-model="historyInput" @focus="tohistoryInputFocus()" type="text" placeholder="请输入乘机人证件号">
+            <div class="history-box" v-show="validArr.length">
+                <div class="history-title">
+                    <img class="history-icon" src="../imgs/clock.png" alt="">
+                    <span class="history-t">历史记录</span>
+                    <img @click="delHis()" class="his-del-icon" src="../imgs/del.png" alt="">
+                </div>
+                <ul>
+                    <li v-for="his in validArr" @click="selHis(his.IDCardNo)" class="his-item">{{his.IDCardNo}}</li>
+                </ul>
+                <div class="affirm">
+                    <div class="affirm-btn" :class="{'affirm-btn-act':(active && historyInput) }" @click="affirm()">确认</div>
+                </div>
+            </div>
+            <div class="history-box" v-show="!validArr.length">
+                <p class="no-history-p">无历史记录</p>
+                <div class="affirm">
+                    <div class="affirm-btn" :class="{'affirm-btn-act':(active && historyInput) }" @click="affirm()">确认</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <script src="./js/ini.js"></script>
+    <script src="./plug//jquery.min.js"></script>
+    <script src="./plug/lArea/lArea.js"></script>
+    <script>
+        var app;
+        //座位选择插件
+        var area = new lArea();
+        var seatJson = [{
+            id: 1,
+            name: '需要1个座位'
+        }, {
+            id: 2,
+            name: '需要2个座位'
+        }, {
+            id: 3,
+            name: '需要3个座位'
+        }, {
+            id: 4,
+            name: '需要4个座位'
+        }, {
+            id: 5,
+            name: '需要5个座位'
+        }, {
+            id: 6,
+            name: '需要6个座位'
+        }];
+        var identity = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+
+        function display() {
+            app = new Vue({
+                el: '#verify',
+                data: {
+                    historyInput: '', //历史记录页面的输入框
+                    active: false, //历史记录页面的确认按钮
+                    verifyNum: [],
+                    // verifySuccess: [],
+                    serviceType: 2, //专车
+                    isResult: false, //显示结果弹窗
+                    resultSuccess: [],
+                    resultFail: [],
+                    appointmentInfo: {},
+                    freePrice: 0,
+                    validArr: [],
+                    isHosttory: false, //显示历史输入框
+                    toHisUuid: '',
+                    pingcheCommitNullNum: 0, //拼车提交的时候空数据的数量，提交后补回空的
+                },
+                computed: {
+                    pingchetotal: function() {
+                        return this.verifyNum.length + this.resultSuccess.length + '人乘车';
+                    }
+                },
+                mounted() {
+
+                    var _t = this;
+                    this.verifyNum.push({
+                        uuid: this.generateUUID(),
+                        IDCardNo: '',
+                        // format: true
+                    });
+                    this.GetPassengerSubsidyPrice();
+                    //获取历史记录
+                    var validArr = getStorage('validIDCard');
+                    this.validArr = validArr ? validArr : [];
+
+
+                    area.init({
+                        'trigger': '#seat',
+                        'data': seatJson,
+                        type: 'string',
+                        callback: function(val) {
+                            //选择座位
+                            var num = seatJson[val[0]].id;
+                            // this.verifyNum = [];
+                            if (num < _t.verifyNum.length + _t.resultSuccess.length) {
+                                if (num < _t.resultSuccess.length) { //如果选择的座位数比已经验证成功过的还多，那么久提示他
+                                    $toast.showConfirm({
+                                        text: '验证成功人数超出设置的座位数，将保留前' + num + '位乘客，请确认操作？',
+                                        sureFn: function() {
+                                            _t.resultSuccess.splice(num, _t.resultSuccess.length - num);
+                                            _t.verifyNum = [];
+                                        },
+                                        cancelFn: function() {}
+                                    })
+                                } else {
+                                    if (_t.verifyNum.length) {
+                                        _t.verifyNum.splice(num, _t.verifyNum.length + _t.resultSuccess.length - num);
+                                    }
+                                }
+
+                            } else {
+                                for (var n = _t.verifyNum.length + _t.resultSuccess.length; n < num; n++) {
+                                    _t.verifyNum.push({
+                                        uuid: _t.generateUUID(),
+                                        IDCardNo: '',
+                                        // format: true
+                                    });
+                                }
+                            }
+                            verifyLogin(function() {
+                                contactApp('AppBridgeOrderAppointmentSeatNum', {
+                                    SeatNum: num
+                                }, function() {
+
+                                })
+
+                            });
+
+                        }
+                    });
+                    verifyLogin(function() {
+                        contactApp('AppBridgeOrderAppointmentInfo', {}, function(res) {
+                            $toast.showToast(JSON.stringify(res), 300000);
+                            _t.appointmentInfo = res;
+                            _t.serviceType = _t.appointmentInfo.ServiceType;
+                            //如果验证过
+                            if (_t.appointmentInfo.Passengers && _t.appointmentInfo.Passengers.length) {
+                                _t.verifyNum = [];
+                                for (var m = 0, mlen = _t.appointmentInfo.Passengers.length; m <
+                                    mlen; m++) {
+                                    if (_t.appointmentInfo.Passengers[m].IsValid) {
+                                        _t.resultSuccess.push(_t.appointmentInfo.Passengers[m]);
+                                    } else {
+                                        _t.verifyNum.push({
+                                            uuid: _t.generateUUID(),
+                                            IDCardNo: _t.appointmentInfo.Passengers[m].IDCardNo,
+                                            // format: true
+                                        });
+                                    }
+                                }
+                            } else {
+                                if (_t.serviceType == 1) {
+                                    _t.verifyNum = [];
+                                    for (var mm = 0, mmlen = _t.appointmentInfo.SeatNum; mm <
+                                        mmlen; mm++) {
+                                        _t.verifyNum.push({
+                                            uuid: _t.generateUUID(),
+                                            IDCardNo: '',
+                                            // format: true
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    })
+                },
+                methods: {
+                    //验证成功的删除
+                    successDelete: function(item) {
+                        var _self = this;
+                        for (var gg = 0, gglen = _self.resultSuccess.length; gg < gglen; gg++) {
+                            if (_self.resultSuccess[gg].IDCardNo == item.IDCardNo) {
+                                _self.resultSuccess.splice(gg, 1);
+                                break;
+                            }
+                        }
+                    },
+                    //查看减免规则
+                    toVerifyRule: function() {
+                        console.log(window.ENV.publicUrl);
+                        if (this.serviceType == 2) {
+                            window.location.href = "/publicViews/phoneIntroduceSpecial.html?timeStr=" + new Date()
+                                .getTime() +
+                                "&cityId=" + $bw.getUrlInfo('cityId');
+                        } else {
+                            window.location.href = "/publicViews/phoneIntroduce.html?timeStr=" + new Date()
+                                .getTime() + "&cityId=" +
+                                $bw.getUrlInfo('cityId');
+                        }
+                    },
+                    //历史记录中确认按钮的显示颜色
+                    tohistoryInputFocus: function() {
+                        this.active = true;
+                    },
+                    //历史记录中确认按钮
+                    affirm: function() {
+                        if (this.active && this.historyInput) {
+                            this.active = false;
+                            this.selHis(this.historyInput);
+                            this.historyInput = '';
+                        }
+                    },
+                    //在历史记录中选择
+                    selHis: function(value) {
+                        for (var i = 0, len = this.verifyNum.length; i < len; i++) {
+                            if (this.verifyNum[i].uuid === this.toHisUuid) {
+                                this.verifyNum[i].IDCardNo = value;
+                                break;
+                            }
+                        }
+                        this.toHisUuid = '';
+                        this.isHosttory = false;
+                    },
+                    //清楚历史记录
+                    delHis: function() {
+                        this.validArr = [];
+                        addStorage({
+                            name: 'validIDCard',
+                            info: []
+                        });
+                    },
+                    //显示历史记录
+                    historyInputFocus: function(uuid) {
+
+                        this.toHisUuid = uuid;
+                        this.isHosttory = true;
+                    },
+                    //判断数组是否有重复
+                    isRepeat: function(arr) {
+                        var hash = {};
+                        for (var i in arr) {
+                            if (hash[arr[i]] && arr[i]) {
+                                return true;
+                            }
+                            hash[arr[i]] = true;
+                        }
+                        return false;
+                    },
+
+                    goBack: function() {
+                        this.isResult = false;
+                    },
+                    commit: function() {
+                        var self = this;
+                        var IDCardNos = [];
+                        var iskong = true; //判断是否所有都是空
+                        for (var i = 0, len = this.verifyNum.length; i < len; i++) {
+                            if (self.serviceType == 1) { //拼车空数据要提交验证，专车不用
+                                IDCardNos.push(this.verifyNum[i].IDCardNo);
+                            } else {
+                                this.verifyNum[i].IDCardNo && IDCardNos.push(this.verifyNum[i].IDCardNo);
+                            }
+                            if (this.verifyNum[i].IDCardNo) {
+                                iskong = false;
+                            }
+                        }
+                        for (var nn = 0, nnlen = this.resultSuccess.length; nn < nnlen; nn++) {
+                            //拼车空数据要提交验证，专车不用
+                            if (self.serviceType == 1) {
+                                IDCardNos.push(this.resultSuccess[nn].IDCardNo);
+                            } else {
+                                this.resultSuccess[nn].IDCardNo && IDCardNos.push(this.resultSuccess[nn].IDCardNo);
+                            }
+                            if (this.resultSuccess[nn].IDCardNo) {
+                                iskong = false;
+                            }
+                        }
+                        if (iskong) {
+                            $toast.showToast('未输入证件号', 1500);
+                            return;
+                        }
+
+                        if (this.isRepeat(IDCardNos)) {
+                            $toast.showToast('重复的身份信息', 1500);
+                            return;
+                        }
+                        verifyLogin(function() {
+                            $bw.ajax({
+                                url: 'Booking/ValidatePassenger',
+                                type: 'post',
+                                data: {
+                                    "FlightNo": self.appointmentInfo.FlightNo,
+                                    "FlightDate": self.appointmentInfo.FlightDate,
+                                    "IDCardNos": IDCardNos
+                                },
+                                callback: function(reseponse) {
+                                    contactApp('AppBridgeOrderAppointmentInfoSave',
+                                        reseponse,
+                                        function() {
+
+                                        });
+                                    if (reseponse.Status == 1) {
+                                        self.resultSuccess = [];
+                                        self.resultFail = [];
+                                        self.verifyNum = [];
+                                        self.appointmentInfo.IDCardNos = IDCardNos;
+                                        self.appointmentInfo.Passengers = reseponse.Data;
+
+                                        for (var j = 0, jlen = reseponse.Data.length; j <
+                                            jlen; j++) {
+                                            if (reseponse.Data[j].IsValid) { //验证成功
+                                                self.resultSuccess.push(reseponse.Data[
+                                                    j]);
+
+                                                // var ishaved = false;
+                                                // for (var n = 0, nlen = self.validArr.length; n < nlen; n++) {
+                                                //     if (self.validArr[n].IDCardNo === reseponse.Data[j].IDCardNo) {
+                                                //         ishaved = true;
+                                                //     }
+                                                // }
+
+                                                // //存入历史记录中
+                                                // if (!ishaved) {
+                                                //     self.validArr.unshift({
+                                                //         Name: reseponse.Data[j].Name,
+                                                //         IDCardNo: reseponse.Data[j].IDCardNo
+                                                //     });
+                                                // }
+
+                                            } else { //验证失败
+                                                self.resultFail.push(reseponse.Data[j]);
+                                                self.verifyNum.push(reseponse.Data[j]);
+                                            }
+                                        }
+                                        //如果是专车并且验证的人都通过了，添加一个空的待验证，看起来页面好看
+                                        // if (self.serviceType === 2 && !self.verifyNum.length) {
+                                        //     self.verifyNum.push({
+                                        //         uuid: self.generateUUID(),
+                                        //         IDCardNo: ''
+                                        //     });
+
+                                        // }
+                                        //删除超过六个的历史记录数据
+                                        if (self.validArr.length > 6) {
+                                            self.validArr.splice(6, self.validArr.length -
+                                                6);
+                                        }
+
+                                        addStorage({
+                                            name: 'validIDCard',
+                                            info: self.validArr
+                                        });
+                                        if (self.resultFail.length) {
+                                            self.isResult = true;
+                                        } else {
+                                            $toast.showTips('验证成功' + self.resultSuccess
+                                                .length + '人',
+                                                function() {
+                                                    window.history.go(-1);
+                                                })
+                                        }
+
+                                    } else {
+                                        $toast.showToast(reseponse.Message, 1500);
+                                    }
+
+                                }
+                            })
+                        })
+                    },
+                    inputChange: function(event, uuid) {
+                        for (var i = 0, len = this.verifyNum.length; i < len; i++) {
+                            if (this.verifyNum[i].uuid == uuid) {
+                                this.verifyNum[i].IDCardNo = event.target.value;
+                            }
+                        }
+                    },
+                    submitCenterCheckuser: function() { //提交后台验证
+                        var _this = this;
+                        var IDCardNos = [];
+
+                        // _this.appointmentInfo.IDCardNos = IDCardNos;
+                        // _this.appointmentInfo.Passengers = _this.resultSuccess.concat(_this.resultFail);
+                        // $toast.showToast(JSON.stringify(_this.appointmentInfo), 3000);
+
+                        verifyLogin(function() {
+                            $bw.ajax({
+                                url: 'ValidPassenger/AddVerification',
+                                type: 'post',
+                                data: _this.appointmentInfo,
+                                callback: function(reseponse) {
+                                    if (reseponse.Status == 1) {
+                                        _this.isResult = false;
+                                        $toast.showTips(
+                                            "提交后台验证成功，验证结果将以短信的方式发送给您，请注意查收！",
+                                            function() {
+                                                window.history.go(-1);
+                                            })
+                                    }
+                                }
+                            })
+                        })
+
+                    },
+                    //加人，添加
+                    verifyCount: function() {
+                        if (this.verifyNum.length + this.resultSuccess.length + 1 > this.appointmentInfo.CarSeats) {
+                            $toast.showToast("已超过当前车型的最大乘车人数", 1500);
+                            return;
+                        }
+                        this.verifyNum.push({
+                            uuid: this.generateUUID(),
+                            IDCardNo: '',
+                            format: true
+                        });
+                    },
+                    //减人
+                    verifyDel: function(uuid) {
+                        // if (this.verifyNum.length >= 1) {
+                        var tem = this.verifyNum.filter(function(ele) {
+                            return ele.uuid != uuid;
+                        });
+                        this.verifyNum = tem;
+                        // }
+                        if (this.serviceType == 1) {
+                            verifyLogin(function() {
+                                contactApp('AppBridgeOrderAppointmentSeatNum', {
+                                    SeatNum: num
+                                }, function() {
+
+                                })
+
+                            });
+                        }
+                    },
+                    //获取焦点提示隐藏
+                    inputFocus: function(uuid) {
+                        for (var r = 0, rlen = this.verifyNum.length; r < rlen; r++) {
+                            if (this.verifyNum[r].uuid == uuid) {
+                                this.verifyNum[r].format = true;
+                            }
+                        }
+                    },
+                    //失去焦点验证
+                    inputBlur: function() {
+                        for (var r = 0, rlen = this.verifyNum.length; r < rlen; r++) {
+                            if (identity.test(this.verifyNum[r].IDCardNo)) {
+                                this.verifyNum[r].format = true;
+                            } else {
+                                this.verifyNum[r].format = false;
+                            }
+                        }
+                    },
+                    //获取每个人优惠价格
+                    GetPassengerSubsidyPrice: function() {
+                        var _th = this;
+                        verifyLogin(function() {
+                            $bw.ajax({
+                                url: 'SystemConfig/GetPassengerSubsidyPrice',
+                                type: 'get',
+                                data: {},
+                                callback: function(reseponse) {
+                                    if (reseponse.Status == 1) {
+                                        _th.freePrice = reseponse.Data.SubsidyPrice;
+                                    }
+                                }
+                            })
+                        })
+                    },
+                    generateUUID: function() {
+                        var d = new Date().getTime();
+                        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                            var r = (d + Math.random() * 16) % 16 | 0;
+                            d = Math.floor(d / 16);
+                            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                        });
+                        return uuid;
+                    },
+                },
+
+
+            });
+
+
+            document.body.setAttribute('style', 'opacity:1');
+        }
+        // var src = 'http://eruda.liriliri.io/eruda.min.js';
+        // // if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+        // var script = document.createElement('script');
+        // script.setAttribute('src', src);
+        // document.body.appendChild(script);
+        // script.onload = function() {
+        //     eruda.init()
+        // }
+    </script>
+</body>
+
+</html>

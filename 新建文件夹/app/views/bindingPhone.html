@@ -1,0 +1,14 @@
+<div id="bind-phone" class="add-info-box box">
+    <!-- <img class="logo-img" ng-src="./imgs/logo.png" alt=""> -->
+    <div class="phone-title">手机号绑定</div>
+    <div class="add-info-list">
+        <img src="./imgs/phone-bind.png" />
+        <input type="tel" name="" input-placeholder="请输入手机号" ng-model="phone">
+    </div>
+    <div id="binding-chaptcha" class="add-info-list">
+        <img src="./imgs/key.png" />
+        <input type="tel" name="" input-placeholder="请输入验证码" ng-model="captcha">
+        <span id="binding-chaptcha-btn"  ng-click="getCaptcha()">{{getCaptchaWords}}</span>
+    </div>
+    <div class="btn-box"><span class="bw-btn login-btn col-20 bw-big-btn bw-btn-red" ng-click="bindPhone()">登录</span></div>
+</div>

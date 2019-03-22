@@ -1,0 +1,41 @@
+<div class="bw-chlid-html" id="edit-user">
+    <div class="edit-user-info">
+        <div class="add-info-list">
+            <img src="./imgs/contact_user.png" />
+            <input type="text" input-placeholder="请输入乘车人姓名" ng-model="editInfo.UserName">
+        </div>
+        <div class="add-info-list">
+            <img src="./imgs/contact_phone.png" />
+            <span class="phone-title">+86</span>
+            <input type="text" input-placeholder="请输入乘车人电话号码" ng-model="editInfo.Phone">
+        </div>
+    </div>
+    <div class="edit-user-info" ng-if="false">
+        <div class="add-info-list" ng-click="switchNotice()">
+            <img src="./imgs/contact_message.png" />
+            <input type="text" value="短信通知乘车人" readonly="readonly">
+            <div class="notice-btn" ng-class="{true:'notice-select'}[typeParams.notice]"><span class="notice-quan">	</span></div>
+        </div>
+    </div>
+    <div ng-if="historyList.length>0">
+        <div class="historyList-title">
+            历史乘车人
+        </div>
+        <div>
+            <div class="add-info-list historyList-list" ng-repeat="app in historyList" ng-click="selectHistory(app)">
+                <img src="./imgs/clock.png" />
+                <span class="history-phone">{{app.Phone}}</span>
+                <span class="history-name">{{app.UserName}}</span>
+            </div>
+        </div>
+        <div class="clean-history" ng-click="cleanHistory()">
+            清除历史记录
+        </div>
+    </div>
+    <div class="edit-user-isnull" ng-if="historyList.length<=0">
+        暂无历史乘车人
+    </div>
+    <div class="btn-box">
+        <span class="bw-btn bw-btn-red bw-big-btn col-19" ng-click="sureEdit();">确定</span>
+    </div>
+</div>

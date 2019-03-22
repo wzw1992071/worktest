@@ -1,0 +1,18 @@
+<div id="walletDetaile">
+    <div ng-if="typeParams.haveList">
+        <div class="wallet-list" ng-repeat="app in walletFlowList">
+            <div class="wallet-info-box">
+                <div class="wallet-info">{{typeName[app.OperationTypeName].name}}</div>
+                <div class="wallet-info-time">{{app.Cdt|date:'yyyy/MM/dd HH:mm'}}</div>
+            </div>
+            <div class="wallet-info-amount pul-r" ng-class="{true:'c-red'}[typeName[app.OperationTypeName].type==='-']">{{typeName[app.OperationTypeName].type}}{{app.Price|toFixed:1}}</div>
+        </div>
+    </div>
+    <div class="none-list" ng-if="!typeParams.haveList">
+        <img class="wallet-null" src="./imgs/null-wallet.png">
+        你还没有钱包流水
+    </div>
+    <div class="none-more" ng-if="typeParams.showNoMore">
+        没有更多了……
+    </div>
+</div>

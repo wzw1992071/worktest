@@ -1,0 +1,31 @@
+<div id="edit-phone">
+    <div ng-show="nowType==='phone'">
+        <div class="e-p-title">更换手机号</div>
+        <div class="e-p-tips">
+            更换后历史订单等信息不变，更换完成后须使用新手机号登录。仅支持修改到未注册手机号，如有未完成订单需订单完成后才能更换手机号。
+        </div>
+        <div class="e-p-main">
+            <img class="e-p-ico" src="./imgs/phone-editNum.png" />
+            <span>+86</span>
+            <input class="e-p-input" type="text" ng-model="userPhone" placeholder="请输入未注册手机号" ng-change="phoneChange()">
+        </div>
+        <div class="btn-box">
+            <span class="bw-btn col-20 bw-big-btn" ng-class="{true:'bw-btn-red',false:'bw-btn-default'}[validPhone]" ng-click="sendMsg()">发送验证码</span>
+        </div>
+    </div>
+    <div ng-show="nowType==='msg'">
+        <div class="e-p-title">短信验证码</div>
+        <div class="e-p-tips">验证码已发送至+86 {{showPhone}}</div>
+        <div class="e-p-main">
+            <img class="e-p-ico" src="./imgs/captcha-editNum.png" />
+            <input class="e-p-input" type="text" ng-model="captcha" ng-change="captchaChange()" placeholder="请输入验证码">
+            <span class="e-p-captcha-ac" ng-show="timgRuning">{{time}}s</span>
+            <span class="e-p-captcha-ac" ng-show="!timgRuning" ng-click="sendMsg()">获取验证码</span>
+        </div>
+        <!-- <div class="e-p-time" ng-show="timgRuning">{{time}}s后可重新获取</div>
+        <div class="e-p-agin" ng-show="!timgRuning" ng-click="sendMsg()"><img class="e-p-ico" src="./imgs/phone-bind.png" />点击重新获取</div> -->
+        <div class="btn-box">
+            <span class="bw-btn col-20 bw-big-btn" ng-class="{true:'bw-btn-red',false:'bw-btn-default'}[validCaptcha]" ng-click="bindPhone()">确定</span>
+        </div>
+    </div>
+</div>

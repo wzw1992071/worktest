@@ -1,0 +1,46 @@
+<div class="selectCity">
+    <!--点击后的字母显示-->
+    <div class="letter-show">
+        <div class="letter-show-box"></div>
+        <!-- <div class="letter-show-box">{{letter}}</div> -->
+    </div>
+    <div class="acronym" ng-show="!serchValue && !serchList.length">
+        <span ng-repeat="letter in letters">{{letter}}</span>
+        <!-- <span ng-repeat="letter in letters" ng-click="clickLetter(letter)">{{letter}}</span> -->
+    </div>
+    <div class="serch">
+        <div class="serch-input">
+            <input ng-model="serchValue" ng-change="change()" ng-focus="serchFocus()" type="text" placeholder="请输入城市名称">
+            <img ng-class="{'serch-del-show':serchValue && isDelete}" ng-click="delete()" class="delete" src="../imgs/delete.png" alt="">
+        </div>
+        <span ng-click="goBack()">返回</span>
+    </div>
+
+    <div class="citys" ng-show="!serchValue && !serchList.length">
+
+        <div class="location">
+            <div class="location-img">
+                <img src="../imgs/location.png" alt="">
+                <span>当前定位城市</span>
+            </div>
+            <h3 ng-click="selCity(curCityName)">{{curCityName}}</h3>
+        </div>
+        <div class="city-item" ng-repeat="(index,city) in citys">
+            <div class="title" id="city-{{index}}">{{index}}</div>
+            <div class="city-name" ng-repeat="cityItem in city">
+                <h3 ng-click="selCity(cityItem.name)">{{cityItem.name}}</h3>
+            </div>
+        </div>
+    </div>
+    <!--查询结果-->
+    <div class="search-result">
+        <div class="city-name" ng-show="serchList.length" ng-repeat="cityname in serchList">
+            <h3 ng-click="selCity(cityname)">{{cityname}}</h3>
+        </div>
+    </div>
+    <!--没有结果-->
+    <div class="no-result" ng-show="serchValue && !serchList.length">
+        <span>没有查询到结果</span>
+    </div>
+
+</div>

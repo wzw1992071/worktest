@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>价格明细</title>
+    <script type="text/javascript" src="./plug/vue.min.js"></script>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/driverPrice.css">
+</head>
+
+<body>
+    <div class="driver-price">
+        <div class="d-p-top">此单收入</div>
+        <div class="d-p-total-box">
+            <span id="DriverIncome-top-value" class="d-p-total"></span>
+            <span>元</span>
+        </div>
+        <div class="price-info-list" v-if="carType === 'special'">
+            <div>
+                <span class="title">车费</span>
+                <span id="OrderPrice" class="info"></span>
+            </div>
+            <div>
+                <span class="title">服务费</span>
+                <span id="ServiceFee" class="info"></span>
+            </div>
+            <div class="ExtraAword" style="display:none">
+                <span class="title">奖励金</span>
+                <span id="ExtraAword" class="info"></span>
+            </div>
+
+        </div>
+        <div class="price-info-list total-list">
+            <div>
+                <span class="title">合计</span>
+                <span id="DriverIncome" class="info"></span>
+            </div>
+        </div>
+        <div class="rule" onClick="jumpRole()">
+            <img src="../imgs/question.png" alt="">
+            <span>查看计价规则</span>
+        </div>
+    </div>
+</body>
+<script src="./plug/jquery.min.js"></script>
+<script src="./js/ini.js"></script>
+<script type="text/javascript">
+    var bookingId = "";
+
+    function display() {
+        var driverPrice = getSession('driverPrice');
+        if (driverPrice && driverPrice.DriverIncome) {
+            diverPriceHandel(driverPrice);
+        } else {
+            contactApp('AppBridgeDriverOrderPriceDetail', {}, function(res) {
+                diverPriceHandel(res);
+            })
+        }
+        document.body.setAttribute('style', 'opacity:1');
+    }
+
+    function diverPriceHandel(params) {
+        if (params.Bookings.length) {
+            bookingId = params.Bookings[0].BookingID;
+        }
+        $('#OrderPrice').html('+' + params.OrderPrice + '元');
+        $('#ServiceFee').html('-' + params.ServiceFee + '元');
+        $('#DriverIncome').html(params.DriverIncome + '元');
+        $('#DriverIncome-top-value').html(params.DriverIncome);
+        //奖励金
+        if (params.ExtraAword) {
+            $(".ExtraAword").css({
+                display: "block"
+            });
+            $('#ExtraAword').html('+' + params.ExtraAword + '元');
+        }
+    }
+
+    function jumpRole() {
+        jumpByTime('./phonePriceRoleSpecial.html', {
+            cityId: $bw.getUrlInfo('cityId'),
+            bookingId: bookingId
+        })
+    }
+</script>
+
+</html>

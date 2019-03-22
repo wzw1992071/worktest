@@ -1,0 +1,152 @@
+<div id="order-detail">
+    <div ng-class="{'true':'filter'}[showBlock]" style="height:100%">
+        <img class="refresh refresh-img" src="./imgs/refresh-detail.png">
+        <div class="refresh refresh-bg" ng-class="{true:'refreshClick'}[typeParams.refreshClick]"></div>
+        <div id="map"></div>
+        <div class="order-info">
+            <div class="driver-info" ng-if="typeParams.showDriver">
+                <div class="header-box"><img src="./imgs/driver-header.png" alt=""></div>
+                <div class="driver-box">
+                    <div class="driver-name">
+                        <span class="pul-l">{{orderDetail.DriverName}}</span>
+                        <img class="driver-total-img pul-l" src="./imgs/star-small.png" alt="">
+                        <span class="driver-total pul-l">{{orderDetail.DriverRate|toFixed:1}}</span>
+                    </div>
+                    <div class="driver-car-num">{{orderDetail.CarLicense}}</div>
+                    <div class="driver-model">{{orderDetail.CarColor}}•{{orderDetail.CarModel}}</div>
+                </div>
+                <div class="phone-box">
+                    <a href="tel:{{orderDetail.DriverPhone}}"><img src="./imgs/phone.png" alt=""></a>
+                </div>
+            </div>
+            <div ng-show="registeredTop" ng-bind-html="registeredTop|trustAsHtml"></div>
+        </div>
+        <div class="order-tipx-box" ng-class="{false:'hide-ongoing'}[typeParams.showInfoBox]">
+            <div class="order-tipx-box-bg">
+                <div class="action-top" ng-click="switchOngoing()" ng-if="typeParams.showSwitch">
+                    <img src="./imgs/arrow_top.png" alt="">
+                </div>
+                <div class="order-type-box">
+                    <div class="order-type">
+                        <!-- <img src="./imgs/success.png" alt=""> -->
+                        <span class="order-type-words">{{orderDetail.lookStatusName}}</span>
+                    </div>
+                    <!-- 接机预约成功查看上车地址 -->
+                    <div class="look-address" ng-if="typeParams.stroke === 'jieji' && orderDetail.Status==='Registered' && typeParams.carType == 'carpooling'" ng-click="showPickupAddress()">
+                        航班到达后，请到指定
+                        <span class="look-address-word">
+                    <img src="./imgs/maker.png" alt="">
+                    <span >乘车地点</span>
+                        </span>
+                        排队等候上车
+                    </div>
+                    <!-- 显示用户提示 -->
+                    <div class="order-tips" ng-bind-html="otherTips|trustAsHtml" ng-show="otherTips"></div>
+                    <!-- 不同状态显示不同界面 拼车-->
+                    <div ng-if="typeParams.carType === 'carpooling'">
+                        <div class="btn-box" ng-if="orderDetail.Status==='Arrived'">
+                            <span class="bw-btn bw-btn-red bw-big-btn col-19" ng-click="sureArrive()">确认到达</span>
+                        </div>
+                        <div class="btn-box" ng-if="orderDetail.Status==='BookSuccess' && typeParams.stroke === 'jieji' && orderDetail.ChildStatus!=='Aboard'">
+                            <span class="bw-btn bw-btn-red bw-big-btn col-19" ng-click="surePickup()">确认上车</span>
+                        </div>
+                        <div class="btn-box" ng-if="orderDetail.Status==='Completed' && !orderDetail.IsComment">
+                            <span class="bw-btn bw-btn-red bw-big-btn col-19" ng-click="goEvaluate()">去评价</span>
+                        </div>
+                        <!-- 接机预约成功查看上车二维码 -->
+                        <div class="btn-box" ng-if="typeParams.stroke === 'jieji' && orderDetail.Status==='Registered'">
+                            <span class="bw-btn bw-btn-red bw-big-btn col-19" ng-click="showCode()">
+                            <img src="./imgs/erweima.png" alt="">
+                            订单二维码
+                        </span>
+                        </div>
+                    </div>
+                    <!-- 不同状态显示不同界面 专车-->
+                    <div ng-if="typeParams.carType === 'special'">
+                        <div ng-if="orderDetail.Status==='Arrived'">
+                            <!-- <div class="arrived-total" ng-click="showPriceDetail()">
+                                <span>应付金额</span><span class="arrived-total-price ">{{orderDetail.ActualPrice|toFixed:1}}</span><span>元</span><i class="iconfont ">&#xe619;</i>
+                            </div>
+                            <div class="arrived-price-list">
+                                <span class="arrived-price-title ">订单金额</span>
+                                <span class="arrived-price-info ">{{orderDetail.TotalPrice|toFixed:1}}元</span>
+                            </div>
+                            <div class="arrived-price-list c-yellow ">
+                                <span class="arrived-price-title ">川航减免抵扣</span>
+                                <span class="arrived-price-info ">- {{orderDetail.TotalPrice-orderDetail.ActualPrice|toFixed:1}}元</span>
+                            </div>
+                            <div ng-if="orderDetail.ActualPrice !=0 ">
+                                <div class="wallet-deduction ">
+                                    <i class="iconfont ">&#xe600;</i>
+                                    <span>钱包扣除</span>
+                                    <span class="pul-r ">-{{walletDeductible|toFixed:1}}元</span>
+                                </div>
+                                <div class="difference-price c-red" ng-if="typeParams.differencePrice">
+                                    还需支付 {{orderDetail.ActualPrice-walletDeductible|toFixed:1}}元
+                                </div>
+                            </div> -->
+                            <div class="btn-box">
+                                <span class="bw-btn bw-btn-red bw-big-btn col-19 " ng-click="privateCarConfirmArrive() ">确认到达</span>
+                            </div>
+                        </div>
+                        <div class="btn-box" ng-if="orderDetail.Status==='Completed' && !orderDetail.IsComment">
+                            <span class="bw-btn bw-btn-red bw-big-btn col-19" ng-click="goEvaluate()">去评价</span>
+                        </div>
+                    </div>
+                    <div class="cancel-box" ng-if="typeParams.cancelStatus">
+                        <div class="cancel-ico" ng-if="!typeParams.showCancel" ng-click="typeParams.showCancel=true">
+                            <img src="./imgs/cancel.png">
+                        </div>
+                        <div class="cancel-btn" ng-class="{true:'cancel-show'}[typeParams.showCancel]" ng-click="cancelOrder()">取消订单</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="arrow-bottom " ng-if="!typeParams.showInfoBox ">
+            <img src="./imgs/arrow-bottom.png " alt=" " ng-click="switchOngoing() ">
+        </div>
+        <div class="pay-derivative" ng-if="typeParams.showPayDerivative">
+            <div class="arrived-total" ng-click="showDerivative()">
+                <span>还需支付</span><span class="arrived-total-price ">{{orderDetail.NotPaidPrice|toFixed:1}}</span><span>元</span><i class="iconfont ">&#xe619;</i>
+            </div>
+            <div class="pay-way-list" ng-click="pay('WeChat','Public')">
+                <img class="pay-img" src="./imgs/pay-wx.png">
+                <span>微信支付</span>
+                <span class="pul-r"><i class="iconfont">&#xe619;</i></span>
+            </div>
+            <div class="pay-way-list" ng-if="orderDetail.Wallet.CurrentBookEnableBalance < orderDetail.NotPaidPrice">
+                <img class="pay-img" src="./imgs/pay-wallet.png">
+                <span>钱包支付</span>
+                <span class="balance">(余额不足)</span>
+                <span class="pul-r"><i class="iconfont">&#xe619;</i></span>
+            </div>
+            <div class="wallet-pay-box" ng-click="pay('Wallet','Wallet')" ng-if="orderDetail.Wallet.CurrentBookEnableBalance >= orderDetail.NotPaidPrice">
+                <img class="pay-img" src="./imgs/pay-wallet.png">
+                <span></span>
+                <div class="wallet-pay">
+                    <div>
+                        <span>钱包支付</span>
+                        <span class="c-red balance">(余额￥{{orderDetail.Wallet.CurrentBookEnableBalance|toFixed:1}})</span>
+                    </div>
+                    <div class="wallet-tips">
+                        直接从钱包余额扣除需支付金额
+                    </div>
+                </div>
+                <span class="pul-r wallet-ico"><i class="iconfont">&#xe619;</i></span>
+            </div>
+        </div>
+    </div>
+    <div class="code-box bw-chlid-html " ng-if="typeParams.showCode " ng-click="hideCode() ">
+        <div class="code-bg ">
+            <div>二维码请在上车时提供给司机扫描</div>
+            <div id="code " class="code-img ">
+                <qrcode data="{{pickupCode}} " size="200 "></qrcode>
+            </div>
+            <div class="code-info ">{{pickupCode}}</div>
+            <div class="code-info2">二维码扫描不了试试手动输入验证码</div>
+        </div>
+    </div>
+    <div ui-view="pickUpAddr"></div>
+    <div ui-view="priceDetailed"></div>
+    <div ui-view="derivativeDetailed"></div>
+</div>

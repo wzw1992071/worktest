@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title id="header-title"></title>
+    <link href="../css/faq.css" rel="stylesheet" />
+</head>
+
+<body id="child">
+    <dl class="list-box" id="list-box"></dl>
+    <dl class="list-box">
+        <dd class="list feedback-list touchBg">
+            <img class="list-ico" src="/imgs/feedback.png" alt="" style="position: static;left:0;vertical-align: top;">
+            <span>反馈与建议</span>
+        </dd>
+    </dl>
+    <script type="text/x-dot-template" id="list-box-tpl">
+        {{for(var i in it){}}
+        <dd class="list touchBg" data-id="{{=it[i].ID}}">
+            <span class="list-title">{{=it[i].Title}}</span>
+            <img class="right-arrow" src="/imgs/arrow-right.png" alt="">
+        </dd>
+        {{ } }}
+    </script>
+    <script src="../js/ini.js"></script>
+    <script src="../plug/doT.min.js"></script>
+    <script>
+        function display() {
+            var id = $bw.getUrlInfo('id');
+            $('#header-title').html($bw.getUrlInfo('name'));
+
+            verifyLogin(function() {
+                $bw.ajax({
+                    url: 'qa/GetContentsByCategory?categoryId=' + id,
+                    type: 'get',
+                    data: {},
+                    dataType: 'json',
+                    callback: function(res) {
+                        showTpl($('#list-box-tpl'), $('#list-box'), res.Data);
+
+                    }
+                })
+            });
+
+            $('.feedback-list').click(function() {
+                window.location.href = "./feedback.html?isini=true&phone=" + $bw.getUrlInfo('phone');
+            });
+            $('#list-box').on('click', '.list', function() {
+                window.location.href = "./faq_detail.html?id=" + this.dataset.id + "&parentId=" + id + "&phone=" +
+                    $bw.getUrlInfo('phone');
+            });
+            $('body').attr('style', 'opacity:1');
+        }
+    </script>
+</body>
+
+</html>

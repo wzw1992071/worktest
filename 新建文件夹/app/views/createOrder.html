@@ -1,0 +1,385 @@
+<div id="creatOrder">
+    <!-- 背景虚化 -->
+    <div ng-class="{'true':'filter'}[showBlock]" style="padding-bottom: 1.4rem">
+        <!-- 菜单栏 -->
+        <div class="choose">
+            <div class="user-center-icon" ng-click="changeUserCenter()"><img src="./imgs/user-center.png" alt=""></div>
+
+            <div class="title-secend">
+                <span class="secend-btn" ng-click="switchCar('special')" ng-class="{'true':'carType-active'}[typeParams.carType==='special']">专车</span>
+                <span class="secend-btn" ng-click="switchCar('carpooling')" ng-class="{'true':'carType-active'}[typeParams.carType==='carpooling']">拼车</span>
+            </div>
+        </div>
+        <!--通知专车-->
+        <div ng-show="appointmentInfo.stepone && activitsSp.length && typeParams.carType==='special'" class="notification" id="notification">
+            <div id="notification1">
+                <div class="notification-item" ng-repeat="item in activitsSp" on-finish-render>
+                    <a ng-href="{{item.toLink}}">
+                        <img src="./imgs/notification-icon.png" alt="">
+                        <span>{{item.AdTitlt}}</span>
+                        <img src="./imgs/arrow-right-c.png" alt="">
+                    </a>
+                </div>
+            </div>
+            <div id="notification2"></div>
+        </div>
+        <!--通知拼车-->
+        <div ng-show="appointmentInfo.stepone && activitsCp.length && typeParams.carType==='carpooling'" class="notification" id="notification-carpooling">
+            <div id="notification-carpooling1">
+                <div class="notification-item" ng-repeat="item in activitsCp" on-finish-render>
+                    <a ng-href="{{item.toLink}}">
+                        <img src="./imgs/notification-icon.png" alt="">
+                        <span>{{item.AdTitlt}}</span>
+                        <img src="./imgs/arrow-right-c.png" alt="">
+                    </a>
+                </div>
+            </div>
+            <div id="notification-carpooling2"></div>
+        </div>
+        <div ng-show="appointmentInfo.stepone" class="choose-title">
+            <span class="title-bg" ng-class="{'true':'title-bg-left'}[typeParams.stroke==='songji']"></span>
+            <span class="title" ng-click="switchStroke('songji')" ng-class="{'true':'active'}[typeParams.stroke==='songji']">送机</span>
+            <span class="title" ng-click="switchStroke('jieji')" ng-class="{'true':'active'}[typeParams.stroke==='jieji']">接机</span>
+        </div>
+        <div class="order-info">
+            <div class="box step-two-top" ng-class="{'order-info-box-mb':!(!appointmentInfo.stepone && typeParams.isSiChuanFlight) }">
+                <!-- 送机地址选择 -->
+                <div class="add-info-list" ng-show="typeParams.stroke==='songji'">
+                    <img class="car-pickup" src="./imgs/car-pickup.png" />
+                    <input type="text" ng-model="appointmentInfo.PickupAddress" ng-click="showSelectAddressF()" readonly="readonly" placeholder="请选择上车地址">
+                    <img ng-show="!appointmentInfo.stepone" class="info-arrow" src="./imgs/arrow-right-c.png" alt="">
+                </div>
+                <!--航班选择-->
+                <div class="add-info-list flightno-info-list" ng-click="showSelectFlightF(true)" ng-class="{'flightno-info-h':appointmentInfo.FlightNo}">
+                    <img src="./imgs/airport.png" />
+                    <input type="text" input-placeholder="输入航班号，我们保证在起飞前一小时送达" ng-model="appointmentInfo.FlightNo" readonly="readonly">
+                    <img ng-show="!appointmentInfo.stepone" class="info-arrow" src="./imgs/arrow-right-c.png" alt="">
+                    <div class="flightno-info " ng-class="{'hide-border':typeParams.stroke==='songji'}">
+                        <p ng-show="appointmentInfo.FlightNo && typeParams.stroke==='songji'">{{appointmentInfo.DestAddress}}</p>
+                        <p ng-show="appointmentInfo.FlightNo && typeParams.stroke==='jieji'">{{appointmentInfo.PickupAddress}}</p>
+                        <p ng-show="!appointmentInfo.FlightNo">{{serviceTripType[typeParams.carType][typeParams.stroke]}}</p>
+                        <span ng-show="typeParams.showFlightTips && typeParams.stroke==='songji'">{{appointmentInfo.FlightNo}}{{flightTipsInfoSongji}}</span>
+                        <span ng-show="typeParams.showFlightTips && typeParams.stroke==='jieji'">{{appointmentInfo.FlightNo}}{{flightTipsInfoJieji}}</span>
+                    </div>
+                </div>
+                <!--接机地址选择-->
+                <div class="add-info-list" ng-show="typeParams.stroke==='jieji'">
+                    <img class="car-pickup" src="./imgs/car-down.png" />
+                    <input type="text" ng-model="appointmentInfo.DestAddress" ng-click="showSelectAddressF()" ng-class="{'true':'hide-border'}[typeParams.stroke==='jieji']" readonly="readonly" placeholder="请选择下车地址">
+                    <img ng-show="!appointmentInfo.stepone" class="info-arrow" src="./imgs/arrow-right-c.png" alt="" />
+                </div>
+            </div>
+            <!--下载app-->
+            <div ng-show="appointmentInfo.stepone" class="add-info-list download-app-list">
+                <div class="box download-app">
+                    <span>下载铁航专线APP，快捷用车</span>
+                    <a href="https://wechat.jichangzhuanxian.com/publicViews/passenger.html">
+                        <div class="down-btn">马上下载</div>
+                    </a>
+                </div>
+            </div>
+            <!--验证减免-->
+            <div class="carpooling-verify" ng-if="!appointmentInfo.stepone && typeParams.isSiChuanFlight && typeParams.carType==='carpooling' && typeParams.havePrice" ng-click="showCheckUserF()">
+                <div class="carpooling-verify-tips" ng-if=" appointmentInfo.Passengers.length">验证成功{{verifyMsg.sureValidNum}}人，{{verifyMsg.sureValidNum}}人免费乘坐
+                    <img class="carpooling-right-img" src="./imgs/arrow-right-w.png" />
+                </div>
+                <div class="carpooling-verify-tips" ng-if="!appointmentInfo.Passengers.length">
+                    川航乘客验证成功·免费乘车
+                    <img class="carpooling-right-img" src="./imgs/arrow-right-w.png" />
+                </div>
+                <img class="verify-bg" ng-src="./imgs/carpooling-verify1.png" alt="" />
+            </div>
+            <div class="carpooling-verify" ng-if="!appointmentInfo.stepone && typeParams.isSiChuanFlight && typeParams.carType==='special'" ng-click="showCheckUserF()">
+                <div class="carpooling-verify-tips" ng-if=" appointmentInfo.Passengers.length">
+                    验证成功{{verifyMsg.sureValidNum}}人
+                    <img class="carpooling-right-img" src="./imgs/arrow-right-w.png" />
+                </div>
+                <div class="carpooling-verify-tips" ng-if=" !appointmentInfo.Passengers.length">川航乘客验证成功 立减{{ENV.freePrice}}/人
+                    <img class="carpooling-right-img" src="./imgs/arrow-right-w.png" />
+                </div>
+                <img class="verify-bg" ng-src="./imgs/carpooling-verify1.png" alt="" />
+            </div>
+            <!--第二步需要显示的-->
+            <div ng-show="!appointmentInfo.stepone">
+                <div class="user-and-time-box" ng-show="typeParams.carType==='special'">
+                    <div class="user-and-time">
+                        <!-- 上车时间选择 -->
+                        <div class="user-and-time-list" ng-show="typeParams.carType==='special' ">
+                            <span ng-show="appointmentInfo.PickupTime">{{appointmentInfo.PickupTime}}乘车</span>
+                            <input type="text" ng-click="flightDateSelect()" input-placeholder="乘车时间" id="select-flight-date" type="text" ng-model="appointmentInfo.PickupTime" readonly="readonly">
+                            <span ng-show="!appointmentInfo.PickupTime">乘车时间</span>
+                            <img src="./imgs/arrow-right-c.png" />
+                        </div>
+                        <!--指定司机-->
+                        <div ng-show="appointmentInfo.IsNow" class="special-selected-driver" ng-click="selectDriver(true)">
+                            <span ng-show="!appointmentInfo.diverCarNum">指定司机</span>
+                            <span class="diver-car-num" ng-show="appointmentInfo.diverCarNum" style="text-transform:uppercase;">{{appointmentInfo.diverCarNum}}</span>
+                            <img src="./imgs/arrow-right-c.png" />
+                        </div>
+                        <!---乘车人-->
+                        <div class="user-and-time-list" ng-click="goEditUser();">
+                            <span>{{appointmentInfo.ContactName || appointmentInfo.Phone}}</span>
+                            <img src="./imgs/arrow-right-c.png" />
+                        </div>
+                    </div>
+                </div>
+                <div class="user-and-time-box" ng-show="typeParams.carType==='carpooling'">
+                    <div class="user-and-time">
+                        <!--座位选择-->
+                        <div class="user-and-time-list">
+                            <span>{{typeParams.seatTips}}</span>
+                            <input id="seat" type="text" placeholder="请选择乘车人数" ng-model="typeParams.seatTips" readonly="readonly">
+                            <img src="./imgs/arrow-right-c.png" style="float: inherit;width: 0.12rem;" />
+                        </div>
+                        <!---乘车人-->
+                        <div class="user-and-time-list" ng-click="goEditUser();">
+                            <span>{{appointmentInfo.ContactName || appointmentInfo.Phone}}</span>
+                            <img src="./imgs/arrow-right-c.png" style="float: inherit;width: 0.12rem;" />
+                        </div>
+                    </div>
+                    <!-- 拼车价格展示栏 -->
+                    <div class="carpooling-price-box" ng-show="typeParams.havePrice">
+
+                        <div class="estimate-box" ng-click="showPriceDetail()" ng-if="typeParams.isAllow">
+                            一口价<span class="estimate-price">￥{{orderDetail.ActualPrice|toFixed:1}}</span>
+                            <span class="total-price">￥{{orderDetail.TotalPrice|toFixed:1}}</span>
+                            <img class="topricedetail" src="./imgs/topricedetail.png" alt="" />
+                        </div>
+                        <div class="price-box" ng-if="!typeParams.isAllow">
+                            <span class="old-price">--</span>
+                            <span class="company">元</span>
+                        </div>
+                        <div class="free-tips">
+                            <img ng-src="./imgs/car-price.png" alt="" />
+                            <span>拼车合乘，经济省钱</span>
+                        </div>
+                    </div>
+                    <div class="false-price" ng-show="typeParams.showFalsePriceBox" ng-click="getPrice()">
+                        <img src="./imgs/refresh.png" /> 车费无法预估，点击重试
+                    </div>
+                </div>
+            </div>
+            <!-- 专车车型选择栏 -->
+            <div class="box type-car-box" ng-class="{'true':'type-car-box-h'}[appointmentInfo.stepone || !(typeParams.carType==='special' && typeParams.haveCarList)]">
+                <!-- <div class="box type-car-box" ng-show="typeParams.carType==='special' && typeParams.haveCarList" ng-class="{'true':'type-car-box-h'}[appointmentInfo.stepone]"> -->
+                <div class="swiper-container swiper-container1">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide car-swiper-slide" ng-repeat="app in carTypeList" on-finish-render-filters>
+                            <div class="type-car-list">
+                                <span class="type-car-name">{{app.CarTypeName}}</span>
+                                <img ng-src="{{carTypeImgUrl+app.CarTypeCover}}" onerror="this.onerror=null;this.src='./imgs/phone-car-Normal.png'" alt="" />
+                                <div class="type-car-right" ng-show="typeParams.havePrice" ng-if="typeParams.isAllow">
+                                    <div class="type-car-price-box" ng-click="showPriceDetail()">
+                                        <div class="estimate-box" ng-if="app.CarTypeId==orderDetail.CarTypeId">
+                                            一口价<span class="estimate-price">￥{{orderDetail.EstimatedActualPrice|toFixed:1}}</span>
+                                            <span class="total-price" ng-show="orderDetail.EstimatedActualPrice != orderDetail.EstimatedTotalPrice">￥{{orderDetail.EstimatedTotalPrice|toFixed:1}}</span>
+                                            <img class="topricedetail" src="./imgs/topricedetail.png" alt="" />
+                                        </div>
+                                        <div class="estimate-box" ng-if="app.CarTypeId!=orderDetail.CarTypeId">
+                                            一口价<span class="estimate-price">--</span>元
+                                        </div>
+                                        <div class="sale-price" ng-if="orderDetail.EstimatedTotalPrice-orderDetail.EstimatedActualPrice>0">
+                                            已优惠{{(orderDetail.EstimatedTotalPrice-orderDetail.EstimatedActualPrice)|toFixed:1}}元
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="type-car-right" ng-show="typeParams.havePrice" ng-if="!typeParams.isAllow">
+                                    <div class="type-car-price-box">
+                                        <div class="estimate-box">
+                                            一口价<span>--</span>元
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="type-car-right" ng-show="typeParams.showFalsePriceBox">
+                                    <div class="false-price" ng-click="getPrice()">
+                                        <img src="./imgs/refresh.png" /> 获取价格失败，点击重试
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 如果需要分页器 -->
+                    <div ng-show="carTypeList.length>1" class="swiper-pagination swiper-pagination1"></div>
+                </div>
+            </div>
+            <!--确认用车-->
+            <div class="add-info-list affirm-list">
+                <div class="affirm-btn" ng-click="stepOneClick()">确认用车</div>
+            </div>
+
+        </div>
+
+    </div>
+    <!--成都T2航站楼乘客提示-->
+    <div class="terminal-tips-box" ng-show="showTerminalTips && routerHide" ng-click="selectFlightStop(false)" ng-class="{'true':'terminal-tips-box-show'}[showTerminalTips]">
+    </div>
+    <div class="img-tips-box terminal-tips" ng-class="{'true':'bw-show-box'}[showTerminalTips && routerHide]">
+        <div class="show-checkuser-num ">
+            <div class="s-c-n-body">
+                <!-- <div class="s-c-n-bodytitle">验证提示</div> -->
+                <div>
+                    <div class="s-c-n-list">尊敬的乘客，目前拼车的接机只能固定在成都双流国际机场（T1航站楼停车场B1区）， T2航站楼的乘客需要自行前往T1的固定上车点，确认继续预约吗？
+                    </div>
+                </div>
+            </div>
+            <div class="s-c-n-btnbox">
+                <div class="s-c-n-btn" ng-click="selectFlightStop(false,true)">算了</div>
+                <div class="s-c-n-btn wait-btn" ng-click="selectFlightContinue()">继续</div>
+            </div>
+        </div>
+    </div>
+    <!-- 选择司机弹窗 -->
+    <div class="select-driver" ng-class="{'true':'bw-show-box'}[showSelectDriver && routerHide]">
+        <div class="s-d-box">
+            <div class="s-d-title">指定司机</div>
+            <div class="add-info-list add-info-list-driver">
+                <input class="select-driver-inpout" type="text" placeholder="请输入司机编号或车牌号" ng-model="diverInputCarNum">
+            </div>
+            <div class="s-d-tips" ng-if="showSelectDriverTips">{{selectDriverInfo.tips}}</div>
+            <div class="btn-box diver-btn-box">
+                <div class="diver-appoint" ng-click="unselectDriver($event)" ng-class="{'diver-appoint-hidden':!appointmentInfo.WantDriverCode}">
+                    <span class="iconfont">&#xe629;</span>
+                    <span>已指定：{{appointmentInfo.diverCarNum}}</span>
+                </div>
+                <span class="diver-btn bw-big-btn " ng-click="getSelectDriverInfo($event)">确定</span>
+            </div>
+            <div class="s-d-close-box" ng-click="selectDriver(false)">
+                <img class="s-d-close" src="../imgs/arrow-right.png" alt="" />
+            </div>
+        </div>
+    </div>
+    <!-- 选择航班弹窗 -->
+    <div class="select-flight" ng-class="{'true':'bw-show-box'}[showSelectFlight && routerHide]">
+        <div class="box">
+            <div class="add-info-list">
+                <img ng-src="./imgs/airport.png" />
+                <input type="text" placeholder="请输入航班号,如3U8887" ng-model="flightInputInfo.flightNum" ng-change="verifyFlightNo()">
+            </div>
+            <div class="add-info-list">
+                <img ng-src="./imgs/clock.png" />
+                <input id="flight-time" ng-click="flightTimeSelect()" type="text" placeholder="请选择起飞时间" ng-model="flightInputInfo.flightTime" readonly="readonly" ng-change="hasFlight = false;">
+            </div>
+            <div class="btn-box">
+                <span class="bw-btn bw-btn-red bw-big-btn col-19" ng-click="getTripList()">查询</span>
+            </div>
+        </div>
+        <div ng-show="hasFlight">
+            <div class="add-info-list box">
+                <img src="./imgs/city.png" />
+                <span class="flight-list-title" ng-if="typeParams.stroke==='songji'">请选择送机城市</span>
+                <span class="flight-list-title" ng-if="typeParams.stroke==='jieji'">请选择接机城市</span>
+            </div>
+            <div class="flight-list">
+                <div class="flight-list-one" ng-click="selectFlight(app)" ng-repeat="app in flightList">
+                    <span class="flight-list-city bw-nowrap">{{app.FlightDep}} 至 {{app.FlightArr}}</span>
+                    <!-- <span class="flight-lsit-date">{{app.TakeOffTime|date:'MM月dd日'}}</span> -->
+                    <span class="flight-list-time">{{app.FlightDeptimePlanDate|date:'HH:mm'}}-{{app.FlightArrtimePlanDate|date:'HH:mm'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="flight-list flight-list-null" ng-if="showFlightNoData">
+            没有获取到航班信息
+        </div>
+    </div>
+    <!-- 用户首次进入的引导验证提示 -->
+    <div class="check-user-tips-box" ng-class="{'true':'bw-show-box'}[typeParams.showCheckTips]">
+        <img class="check-user-img" ng-src="./imgs/check-user.png" alt="" />
+        <img class="check-user-btn" ng-src="./imgs/check-user-btn.png" alt="" ng-click="showCheckTips(false,true)" />
+        <img class="check-user-close" ng-src="./imgs/check-user-close.png" alt="" ng-click="showCheckTips(false)" />
+    </div>
+    <!-- 用户首次进入的车型选择引导提示 -->
+    <div class="car-type-tips-box" ng-class="{'true':'bw-show-box'}[typeParams.showCarTypeTips]">
+        <img class="car-type-img" ng-src="./imgs/car-type-tipe.png" alt="" />
+        <img class="car-type-btn" ng-src="./imgs/check-user-btn.png" alt="" ng-click="showCarTypeTips(false,true)" />
+    </div>
+    <!-- 点击预约时如果没有验证过 弹窗提示 -->
+    <div class="create-order-check" ng-class="{'true':'bw-show-box'}[typeParams.showCreateOrderCheck && routerHide]">
+        <img class="c-o-c-bg" ng-src="./imgs/check-tips-carpooling.png" ng-if="typeParams.carType==='carpooling'" />
+        <div class="c-o-c-bg c-o-c-special" ng-if="typeParams.carType==='special'">
+            <img ng-src="./imgs/check-tips-special.png" style="width: 100%;" />
+            <div class="c-o-c-s-word">
+                <div class="c-o-c-s-one">川航优惠</div>
+                <div class="c-o-c-s-two">验证成功</div>
+                <div class="c-o-c-s-price">立减{{ENV.freePrice}}元</div>
+            </div>
+        </div>
+        <img class="c-o-c-btn" ng-src="./imgs/check-tips-go.png" ng-click="showCreateOrderCheck(false);showCheckUserF()" />
+        <img class="c-o-c-close" ng-src="./imgs/check-user-close.png" ng-click="showCreateOrderCheck(false);verifyAddOrder();" />
+    </div>
+    <!-- 输入推荐码 弹窗提示 -->
+    <div class="recommend" ng-class="{'true':'bw-show-box'}[typeParams.showRecommend]">
+        <div class="r-box">
+            <div class="r-title">请输入司机推荐码</div>
+            <img class="r-img" src="./imgs/driver-header.png" />
+            <div class="r-input-box">
+                <span class="r-input-span" ng-class="{'true':'active'}[recommend.index===0]">{{recommend.one}}</span>
+                <span class="r-input-span" ng-class="{'true':'active'}[recommend.index===1]">{{recommend.two}}</span>
+                <span class="r-input-span" ng-class="{'true':'active'}[recommend.index===2]">{{recommend.thr}}</span>
+                <span class="r-input-span" ng-class="{'true':'active'}[recommend.index===3]">{{recommend.four}}</span>
+                <input id="rInput" class="r-input" type="text" ng-model="recommend.inputVal" ng-change="recommendIn()" ng-keydown="recommendKey($event)">
+            </div>
+            <div>
+                <span class="bw-btn bw-btn-red r-btn" ng-click="BindReferralDriver()">提交</span>
+            </div>
+            <div class="r-close">
+                <img src="./imgs/check-user-close.png" ng-click="showRecommend(false)" />
+            </div>
+        </div>
+    </div>
+    <div class="recharge-box" ng-class="{'true':'bw-show-box'}[typeParams.showRecharge]">
+        <img ng-src="./imgs/warning.png" />
+        <div class="recharge-tips">您的账户余额已不足</div>
+        <span class="bw-btn bw-small-btn" ng-click="creatOrderRecharge()">立即充值</span>
+    </div>
+    <!--活动列表-->
+    <div class="img-tips-box" ng-class="{'bw-show-box':typeParams.showTipsSpecial && (!isgetActivitySpSession || !isgetActivityCpSession)}">
+
+        <div class="swiper-container swiper-container2 swiper-container-horizontal">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" ng-repeat="plan in eventPlan" on-finish-render-activity>
+                    <a ng-href="{{ENV.img_url + plan.ContentLink + nowTime}}">
+                        <img ng-show="!plan.isimg" class="activity-img" ng-src="./imgs/activiry.png" alt="" />
+                        <img ng-show="plan.isimg" class="activity-img" ng-src="{{plan.isimg?ENV.img_url +plan.AdCover:''}}" alt="" />
+                    </a>
+                </div>
+                <!-- <div ng-show="eventPlan.length==1" class="swiper-slide" ng-repeat="plan1 in eventPlan" on-finish-render-activity>
+                    <a ng-href="{{ENV.img_url + plan1.ContentLink}}">
+                        <img class="activity-img" ng-src="{{ENV.img_url + plan1.AdCover}}" alt="">
+                    </a>
+                </div> -->
+            </div>
+            <div ng-show="eventPlan.length>1" class="swiper-pagination swiper-pagination2"></div>
+        </div>
+        <img class="check-user-close" ng-src="./imgs/check-user-close.png" alt="" ng-click="lookTiplsSpecial(false)" />
+    </div>
+
+    <div class="img-tips-box" ng-class="{'true':'bw-show-box'}[typeParams.showCheckuserNum]">
+        <div class="show-checkuser-num">
+            <div class="s-c-n-title">
+                <img src="./imgs/showCheckuserNum.png" />
+                <div class="s-c-n-tips">验证通过{{verifyMsg.sureValidNum}}人，不通过{{appointmentInfo.SeatNum-verifyMsg.sureValidNum}}人</div>
+            </div>
+            <div class="s-c-n-body">
+                <div class="s-c-n-bodytitle">验证提示</div>
+                <div>
+                    <div class="s-c-n-list">尊敬的用户，请阅读以下内容来解决“验证不通过”的问题：</div>
+                    <div class="s-c-n-list">1、如果您是刚出票，系统同步可能导致验证不通过，请稍后再试（建议出票20分钟以后）</div>
+                    <div class="s-c-n-list">2、点击下方的“后台验证”的按钮提交人工验证，我们将尽快处理。</div>
+                    <div class="s-c-n-list">3、拨打客服电话028-86868686进行咨询。</div>
+                </div>
+            </div>
+            <div class="s-c-n-btnbox">
+                <div class="s-c-n-btn" ng-click="submitCenterCheckuser()">后台验证</div>
+                <div class="s-c-n-btn wait-btn" ng-click="goBack()">稍后再试</div>
+            </div>
+        </div>
+    </div>
+    <!-- 选择航班弹窗结束 -->
+    <div ui-view="selectAddress"></div>
+    <div ui-view="introduce"></div>
+    <div ui-view="priceDetailed"></div>
+    <div ui-view="valuationRules"></div>
+
+    <div ui-view="recharge"></div>
+    <div ui-view="editUser"></div>
+</div>

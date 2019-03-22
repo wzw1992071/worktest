@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>评价</title>
+    <script type="text/javascript" src="./plug/vue.min.js"></script>
+    <link rel="stylesheet" href="./css/init.css">
+    <link rel="stylesheet" href="./css/evaluate.css">
+</head>
+
+<body>
+    <div id="app" class="evaluate-box">
+        <!-- 顶部开始 -->
+        <div class="evaluate-top box">
+            <div class="evaluate-header"><img src="../imgs/driver-header.png" alt=""></div>
+            <div class="evaluate-driver-info">
+                <div class="driver-name">
+                    <span class="pul-l">{{orderDetail.DriverName}}</span>
+                    <img class="driver-total-img pul-l" src="../imgs/star-small.png" alt="">
+                    <span class="driver-total pul-l">{{orderDetail.DriverRate|toFixed(1)}}</span>
+                </div>
+                <div class="driver-car-num">{{orderDetail.CarLicense}}</div>
+                <div class="driver-car-type">{{orderDetail.CarColor}}•{{orderDetail.CarModel}}</div>
+            </div>
+            <a class="driver-phone" :href="'tel:'+orderDetail.DriverPhone">
+                <img src="../imgs/phone.png">
+            </a>
+        </div>
+        <!-- 顶部结束 -->
+        <div class="order-price" @click="goPriceDetaile()" v-show="showPriceBox">
+            <div class="price-tips">最终支付(元)</div>
+            <div class="price-num">
+                {{orderDetail.ActualPrice|toFixed(1)}}<i class="iconfont">&#xe619;</i>
+            </div>
+        </div>
+        <div class="info-title">匿名评价司机</div>
+        <div class="star-box" v-if="!isEvaluated">
+            <img src="../imgs/star.png" alt="" @click="editStar(1)" v-if="evaluateInfo.Rate<1">
+            <img src="../imgs/star-s.png" alt="" @click="editStar(1)" v-if="evaluateInfo.Rate>=1">
+            <img src="../imgs/star.png" alt="" @click="editStar(2)" v-if="evaluateInfo.Rate<2">
+            <img src="../imgs/star-s.png" alt="" @click="editStar(2)" v-if="evaluateInfo.Rate>=2">
+            <img src="../imgs/star.png" alt="" @click="editStar(3)" v-if="evaluateInfo.Rate<3">
+            <img src="../imgs/star-s.png" alt="" @click="editStar(3)" v-if="evaluateInfo.Rate>=3">
+            <img src="../imgs/star.png" alt="" @click="editStar(4)" v-if="evaluateInfo.Rate<4">
+            <img src="../imgs/star-s.png" alt="" @click="editStar(4)" v-if="evaluateInfo.Rate>=4">
+            <img src="../imgs/star.png" alt="" @click="editStar(5)" v-if="evaluateInfo.Rate<5">
+            <img src="../imgs/star-s.png" alt="" @click="editStar(5)" v-if="evaluateInfo.Rate>=5">
+        </div>
+        <div class="star-box" v-if="isEvaluated">
+            <img src="../imgs/star.png" v-if="evaluateInfo.Rate<1">
+            <img src="../imgs/star-s.png" v-if="evaluateInfo.Rate>=1">
+            <img src="../imgs/star.png" v-if="evaluateInfo.Rate<2">
+            <img src="../imgs/star-s.png" v-if="evaluateInfo.Rate>=2">
+            <img src="../imgs/star.png" v-if="evaluateInfo.Rate<3">
+            <img src="../imgs/star-s.png" v-if="evaluateInfo.Rate>=3">
+            <img src="../imgs/star.png" v-if="evaluateInfo.Rate<4">
+            <img src="../imgs/star-s.png" v-if="evaluateInfo.Rate>=4">
+            <img src="../imgs/star.png" v-if="evaluateInfo.Rate<5">
+            <img src="../imgs/star-s.png" v-if="evaluateInfo.Rate>=5">
+        </div>
+        <div class="s-btn-box" v-if="showEvaluateInfo">
+            <span class="s-btn" :class="app.active?'action':''" @click="addTag(index)" v-for="(app,index) in thisTags">{{app.Tag}}</span>
+        </div>
+        <div class="s-btn-box" v-if="isEvaluated">
+            <span class="s-btn" :class="app.active?'action':''" v-for="app in thisTags">{{app.Tag}}</span>
+        </div>
+        <div class="evaluated-box" v-if="isEvaluated">
+            <span class="evaluated-title-left"></span>
+            <span class="evaluated-title">其它评价</span>
+            <span class="evaluated-title-right"></span>
+        </div>
+        <div class="evaluated-info" v-if="isEvaluated && evaluateInfo.Notes">
+            {{evaluateInfo.Notes}}
+        </div>
+        <div class="evaluate-info" v-if="showEvaluateInfo">
+            <textarea name="" id="" placeholder="其它评价" v-model="evaluateInfo.Notes" @keyDown="verifyEvaluateInfo()"></textarea>
+            <div class="max-words">{{nowMaxWords}}字</div>
+        </div>
+        <div class="btn-box" v-if="showEvaluateInfo">
+            <span class="bw-btn bw-btn-red bw-big-btn col-19" @click="goSubmit()">匿名评价</span>
+        </div>
+    </div>
+    <script src="./js/ini.js"></script>
+    <script>
+        var app
+
+        function display() {
+            app = new Vue({
+                el: '#app',
+                data: {
+                    showEvaluateInfo: false,
+                    showPriceBox: true,
+                    isEvaluated: false,
+                    maxWords: 120,
+                    nowMaxWords: 120,
+                    orderDetail: {},
+                    allTags: [],
+                    thisTags: [],
+                    evaluateInfo: {
+                        "BookingId": '',
+                        "DID": "",
+                        "Rate": 0,
+                        "Notes": "",
+                        "TagIds": []
+                    }
+                },
+                methods: {
+                    verifyEvaluateInfo: verifyEvaluateInfo,
+                    editStar: editStar,
+                    addTag: addTag,
+                    goSubmit: goSubmit
+                },
+                filters: {
+                    toFixed: function(text, num) {
+                        if (!num) num = 2;
+                        if (!text) return '0';
+                        text = parseFloat(text);
+                        if (num == 1 && text == text.toFixed(0)) {
+                            return text.toFixed(0);
+                        }
+                        return text.toFixed(num);
+                    }
+                }
+            })
+            app.evaluateInfo.BookingId = $bw.getUrlInfo('id');
+            verifyLogin(function() {
+                GetCommentTags();
+                getOrderDetail();
+
+            })
+            addSession({
+                name: 'reloadSession',
+                info: true
+            })
+        }
+
+        function GetCommentTags() {
+            $bw.ajax({
+                url: 'Booking/GetCommentTags',
+                type: 'get',
+                data: {},
+                callback: function(res) {
+                    app.allTags = res.Data;
+                }
+            })
+        }
+
+        function getOrderDetail() {
+            $bw.ajax({
+                url: 'Booking/GetDetail',
+                type: 'get',
+                data: {
+                    bookingId: $bw.getUrlInfo('id')
+                },
+                callback: function(reseponse) {
+                    app.orderDetail = reseponse.Data;
+                    app.evaluateInfo.DID = reseponse.Data.DID;
+                    if (reseponse.Data.IsComment) {
+                        app.isEvaluated = true;
+                        for (var i in reseponse.Data.Ext) {
+                            if (reseponse.Data.Ext[i].Name === 'Comments') {
+                                eval('var evaluate =' + reseponse.Data.Ext[i].Data);
+                                app.evaluateInfo.Rate = evaluate.Rate;
+                                app.evaluateInfo.Notes = evaluate.Notes;
+                                app.thisTags = evaluate.Tags;
+                            }
+                        }
+
+                    }
+                    setTimeout(function() {
+                        $('#app').show();
+                    }, 500)
+                }
+            })
+        };
+
+        function goPriceDetaile() {
+            jumpByTime('./priceDetail.html', {
+                id: $bw.getUrlInfo('id'),
+                cityId: $bw.getUrlInfo('cityId')
+            })
+        };
+
+        function editStar(num) {
+            app.thisTags = [];
+            app.evaluateInfo.Rate = num;
+            for (var i in app.allTags) {
+                if (app.allTags[i].Rate == num) {
+                    app.allTags[i].active = false;
+                    app.thisTags.push(app.allTags[i]);
+                }
+            }
+            app.showEvaluateInfo = true;
+            app.showPriceBox = false;
+        };
+
+        function verifyEvaluateInfo() {
+            app.nowMaxWords = app.maxWords - app.evaluateInfo.Notes.length;
+            if (app.evaluateInfo.Notes.length >= 120) {
+                app.evaluateInfo.Notes = app.evaluateInfo.Notes.substr(0, 120);
+            }
+        };
+
+        function addTag(index) {
+            var newItem = app.thisTags[index];
+            newItem.active = !app.thisTags[index].active;
+            app.$set(app.thisTags, index, newItem);
+        };
+
+        function goSubmit() {
+            for (var i in app.thisTags) {
+                if (app.thisTags[i].active) {
+                    app.evaluateInfo.TagIds.push(app.thisTags[i].CTID);
+                }
+            }
+            $bw.ajax({
+                url: 'Booking/AddComments',
+                type: 'post',
+                data: app.evaluateInfo,
+                callback: function(reseponse) {
+                    $toast.showToast('评价完成', 1500, function() {
+                        contactApp('AppBridgeOrderStatusDidChanged', {
+                            id: $bw.getUrlInfo('id')
+                        }, function() {
+                            window.location.reload();
+                        })
+                    });
+                }
+            })
+
+        }
+    </script>
+</body>
+
+</html>

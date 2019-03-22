@@ -1,0 +1,22 @@
+<div id="wallet">
+    <div class="wallet-bg">
+        <div class="wallet-detailed" ng-click="goDetaile()">收支明细</div>
+        <div class="wallet-title">账户余额(元)</div>
+        <div class="wallet-balance">{{walletInfo.Balance|toFixed:1}}</div>
+        <div class="wallet-tips">支付车费时优先使用</div>
+        <div class="wallet-type-box">
+            <div class="wallet-type-list">
+                <div class="wallet-info c-red">{{walletInfo.BlockedBalance|toFixed:1}}</div>
+                <div class="wallet-type">行程预估费(已冻结)</div>
+            </div>
+            <div class="wallet-type-list pul-r">
+                <div class="wallet-info c-red">{{walletInfo.EnableBalance|toFixed:1}}</div>
+                <div class="wallet-type">可用余额</div>
+            </div>
+        </div>
+    </div>
+    <div class="wallet-btn-box">
+        <div id="recharge-btn" class="bw-btn bw-big-btn col-19 bw-btn-red" ng-click="goRecharge()">去充值</div>
+        <div id="withdrawals" class="bw-btn bw-big-btn col-19 bw-btn-default" ng-click="withdrawals()">提现</div>
+    </div>
+</div>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>专车计价规则</title>
+    <link rel="stylesheet" type="text/css" href="./plug/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+    <div id="price-role-s">
+        <!-- <div id="cityId_510700" style="display:none"> -->
+        <div>
+            <div class="swiper-container swiper-container1 tpl-box"></div>
+            <script id="tpl" type="text/x-dot-template">
+                <div class="swiper-wrapper">
+                    {{for(var i in it){}}
+                    <div class="swiper-slide">
+                        <div><img class="car-type-img" src="{{=ENV.img_url + it[i].CarTypeCover || '../imgs/phone-car-Normal.png'}}"></div>
+                        <div class="car-type-name">{{=it[i].CarTypeName}},准载{{=it[i].NuclearNum}}人</div>
+                        <div class="role-info-box" id="price-box">
+                            <div class="role-info-list">
+                                <span class="p-role-title">起步价</span>
+                                <span class="role-right">{{=it[i].StartingPrice}}元</span>
+                            </div>
+                            <div class="role-info-list">
+                                <span class="p-role-title">里程费</span>
+                                <span class="role-right">{{=it[i].MilePrice}}元/公里</span>
+                            </div>
+                            <div class="role-info-list">
+                                <span class="p-role-title">时长费</span>
+                                <span class="role-right">{{=it[i].TimePrice}}元/分钟</span>
+                            </div>
+                            <div class="role-info-list">
+                                <span class="p-role-title">远途费</span>
+                                <span class="role-right">{{=it[i].FarPrice}}元/公里</span>
+                            </div>
+                            <div class="role-info-list">
+                                <span class="p-role-title">夜间费</span>
+                                <span class="role-right">{{=it[i].NightPrice}}元/公里</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{ } }}
+                </div>
+                <div class="swiper-pagination swiper-pagination1"></div>
+            </script>
+            <div class="tips-top">
+                <span class="tips-top-title">附加说明</span>
+            </div>
+            <div class="tips-box">
+                <div class="tips-list">
+                    <div class="tips-title">远途费</div>
+                    <div class="tips-info">超出<span class="yuantu">0</span>公里时，超出部分需加收远途费</div>
+                </div>
+                <div class="tips-list">
+                    <div class="tips-title">夜间费</div>
+                    <div class="tips-info">夜间<span class="yejian">（23:00-5:00）</span>行驶时，需加收夜间服务费</div>
+                </div>
+                <div class="tips-list">
+                    <div class="tips-title">动态加价</div>
+                    <div class="tips-info">当处于高峰时段，会根据系数动态调价</div>
+                </div>
+                <div class="tips-list">
+                    <div class="tips-title">附加费用</div>
+                    <div class="tips-info">服务中产生的高速费、过桥费均需用户额外支付</div>
+                </div>
+            </div>
+        </div>
+        <!-- <div id="cityId_510100" style="display:none">
+            <div class="swiper-container swiper-container2 tpl-box"></div>
+            <script class="tpl" type="text/x-dot-template">
+                <div class="swiper-wrapper">
+                    {{for(var i in it){}}
+                    <div class="swiper-slide">
+                        <div><img class="car-type-img" src="{{=getCarItem(it[i].CarTypeId,'CarTypeCover')}}"></div>
+                        <div class="car-type-name">{{=getCarItem(it[i].CarTypeId,'CarTypeName')}},准载{{=it[i].NuclearNum}}人</div>
+                        <div class="role-info-box" id="price-box">
+                            <div class="role-info-list">
+                                <span class="p-role-title">起步价</span>
+                                <span class="role-right">{{=it[i].StartingPrice}}元</span>
+                            </div>
+                            <div class="role-info-list">
+                                <span class="p-role-title">里程费</span>
+                                <span class="role-right">{{=it[i].MilePrice}}元/公里</span>
+                            </div>
+                            <div class="role-info-list">
+                                <span class="p-role-title">时长费</span>
+                                <span class="role-right">{{=it[i].TimePrice}}元/分钟</span>
+                            </div>
+                            <div class="role-info-list">
+                                <span class="p-role-title">远途费</span>
+                                <span class="role-right">{{=it[i].FarPrice}}元/公里</span>
+                            </div>
+                            <div class="role-info-list">
+                                <span class="p-role-title">夜间费</span>
+                                <span class="role-right">{{=it[i].NightPrice}}元/公里</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{ } }}
+                </div>
+
+                <div class="swiper-pagination swiper-pagination2"></div>
+            </script>
+            <div class="tips-top">
+                <span class="tips-top-title">(510100)附加说明</span>
+            </div>
+            <div class="tips-box">
+                <div class="tips-list">
+                    <div class="tips-title">远途费</div>
+                    <div class="tips-info">超出<span class="yuantu">0</span>公里时，超出部分需加收远途费</div>
+                </div>
+                <div class="tips-list">
+                    <div class="tips-title">夜间费</div>
+                    <div class="tips-info">夜间<span class="yejian">（23:00-5:00）</span>行驶时，需加收夜间服务费</div>
+                </div>
+                <div class="tips-list">
+                    <div class="tips-title">动态加价</div>
+                    <div class="tips-info">当处于高峰时段，会根据系数动态调价</div>
+                </div>
+                <div class="tips-list">
+                    <div class="tips-title">附加费用</div>
+                    <div class="tips-info">服务中产生的高速费、过桥费均需用户额外支付</div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <script src="./plug/jquery.min.js"></script>
+    <script src="./toast/toast.js"></script>
+    <script src="./plug/doT.min.js"></script>
+    <script src="../scripts/aconfig.js"></script>
+    <script src="./plug/swiper-3.4.2.min.js"></script>
+    <script src="./js/ini.js"></script>
+    <script>
+        var cityId = $bw.getUrlInfo('cityId') || '510100'; //"chengdu"
+        cityId && document.getElementById("cityId_" + cityId) && (document.getElementById("cityId_" + cityId).style.display =
+            "block");
+        window.onload = function() {
+            setRem();
+            window.onresize = function() {
+                setRem();
+            }
+            webViewIni(function() {
+                reload();
+            })
+
+        }
+
+        function reload() {
+            document.body.setAttribute('style', 'opacity:1');
+            var data = {};
+            if ($bw.getUrlInfo('bookingId')) {
+                data.bookingId = $bw.getUrlInfo('bookingId');
+            }
+            verifyLogin(function() {
+                $bw.ajax({
+                    url: 'BookingPriceRule/GetPrivatePriceRule',
+                    type: 'get',
+                    data: data,
+                    callback: function(res) {
+                        var interText = doT.template($('#tpl').text());
+                        $('.tpl-box').html(interText(res.Data.RuleList));
+                        // if (cityId == "510700") {
+                        var mySwiper1 = new Swiper('.swiper-container1', {
+                            // 如果需要分页器
+
+                            pagination: '.swiper-pagination',
+                            paginationClickable: true,
+                        });
+
+                        // } else {
+                        //     var mySwiper2 = new Swiper('.swiper-container2', {
+                        //         // 如果需要分页器
+                        //         pagination: {
+                        //             el: '.swiper-container2 .swiper-pagination'
+                        //         }
+                        //     })
+                        // }
+
+
+                        $('.yuantu').html(res.Data.FarMile);
+                        var data = res.Data;
+                        if (data.NightStartMinute == 0) data.NightStartMinute = '00';
+                        if (data.NightEndMinute == 0) data.NightEndMinute = '00';
+
+                        if ((data.NightEndHour + '').length == 1) data.NightEndHour = '0' + data.NightEndHour;
+                        if ((data.NightStartHour + '').length == 1) data.NightStartHour = '0' + data.NightStartHour;
+                        $('.tips-box').show();
+                        $('.tips-top').show();
+                        $('.yejian').html(data.NightStartHour + ':' + data.NightStartMinute + '-' + data.NightEndHour + ':' +
+                            data.NightEndMinute);
+                    }
+                })
+            });
+
+        }
+
+
+
+        function setRem() {
+            var windowWidth = document.body.offsetWidth;
+            RootFontSize = windowWidth / 750 * 100;
+            document.getElementsByTagName("html")[0].style.fontSize = RootFontSize + "px";
+        }
+
+
+        //写入session缓存 时间以秒计算
+        function addSession(obj) {
+            var msg = {
+                info: obj.info,
+                time: new Date().getTime(),
+                livetime: obj.time
+            };
+            sessionStorage[obj.name] = JSON.stringify(msg);
+        }
+        //取session缓存
+        function getSession(name) {
+            if (typeof(sessionStorage[name]) == 'undefined' || sessionStorage[name] === null || sessionStorage[name] ===
+                'null') {
+                return null;
+            } else {
+                msg = JSON.parse(sessionStorage[name]);
+                if (!msg.info || msg.info === null || msg.info.length === 0) return null;
+            }
+            if (msg.livetime) {
+                if (msg.time + msg.livetime * 1000 < new Date().getTime()) return null;
+            }
+            return msg.info;
+        }
+    </script>
+</body>
+
+</html>

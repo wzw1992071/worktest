@@ -1,0 +1,36 @@
+<div id="bind-box" ng-if="!IsRealValid">
+
+    <div class="bind-id-tips"><img src="./imgs/lossBind.png" class="tips-img"></span> 目前仅支持大陆居民身份认证 </div>
+    <div class="id-img-box">
+        <img src="./imgs/IDImg.png" alt="">
+    </div>
+    <div class="box">
+        <div class="bw-input-box bind-input-box">
+            <img src="./imgs/user-bind.png" />
+            <input class="bind-input" type="text" input-placeholder="请输入您的姓名" ng-model="bindInfo.Name" ng-change="nameChange()">
+        </div>
+        <div class="bw-input-box bind-input-box">
+            <img src="./imgs/userID-bind.png" />
+            <input class="bind-input" type="text" input-placeholder="请输入您的身份证号码" ng-model="bindInfo.IDCard" ng-change="IDCardChange()">
+        </div>
+    </div>
+    <div class="bind-btn-box">
+        <div class="btn-box"><span class="bw-btn bw-big-btn col-19 bw-btn-white" ng-click="bindID()" touch-bg>认证</span></div>
+    </div>
+    <!-- <div class="jump"><span ng-click="jump()">跳过</span></div> -->
+</div>
+<div id="bind-box" class="bind-s" ng-if="IsRealValid">
+    <div class="id-img-box">
+        <img src="./imgs/IDImg-s.png" alt="">
+    </div>
+    <div class="box">
+        <div class="bind-id-box">
+            <span class="bind-id-title">姓&#12288;名</span>
+            <span class="bind-id-info">{{userInfo.Name}}</span>
+        </div>
+        <div class="bind-id-box">
+            <span class="bind-id-title">证件号</span>
+            <span class="bind-id-info">{{userInfo.hiddenIDCard}}</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="预约电话：028-86868686">
+    <title>国航免费送机服务开通啦</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0
+    }
+    </style>
+</head>
+
+<body>
+    <img src="./guohang.jpg" style="height:100%;width:100%;display: block;">
+    <script charset="utf-8" src="https://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+    <script>
+    window.ENV={
+        "url": "https://wechat.jichangzhuanxian.com",
+        "api": "https://mgr.jichangzhuanxian.com/api/", //正式接口
+        "appId": "wx4521059bd1734294", //微信正式公众号
+    }
+    window.onload = function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', ENV.api + 'Weixin/GetSignature?url='+encodeURIComponent(location.href.split('#')[0]), true);
+        xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        xhr.setRequestHeader("Accept", "application/json,text/javascript");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                wxSet(xhr.response);
+            }
+        };
+        xhr.send();
+    }
+
+    function wxSet(response) {
+        console.info(response)
+        response=JSON.parse(response)
+        wx.config({
+            debug: false, //是否弹出错误信息
+            appId: ENV.appId,
+            timestamp: response.Data.Timestamp,
+            nonceStr: response.Data.NonceStr,
+            signature: response.Data.Signature,
+            jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone']
+        });
+        wx.ready(function() {
+            shareTo(location.href, ENV.url + '/guohang.jpg');
+        });
+    }
+
+
+    function shareTo(url, img) {
+        var desc = "预约电话：028-86868686";
+        var title = "国航免费送机服务开通啦";
+        wx.onMenuShareAppMessage({
+            title: title, // 分享标题
+            desc: desc, // 分享描述
+            link: url, // 分享链接    
+            imgUrl: img, // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function() {}
+        });
+        wx.onMenuShareTimeline({
+            title: '国航免费送机服务开通啦', // 分享标题
+            link: url, // 分享链接
+            imgUrl: img, // 分享图标
+            success: function() {}
+        });
+        wx.onMenuShareQQ({
+            title: title, // 分享标题
+            desc: desc, // 分享描述
+            link: url, // 分享链接
+            imgUrl: img, // 分享图标
+            success: function() {}
+        });
+        wx.onMenuShareWeibo({
+            title: title, // 分享标题
+            desc: desc, // 分享描述
+            link: url, // 分享链接
+            imgUrl: img, // 分享图标
+            success: function() {}
+        });
+        wx.onMenuShareQZone({
+            title: title, // 分享标题
+            desc: desc, // 分享描述
+            link: url, // 分享链接
+            imgUrl: img, // 分享图标
+            success: function() {}
+        });
+    }
+    </script>
+</body>
+
+</html>

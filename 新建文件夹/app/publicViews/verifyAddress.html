@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>接送机范围</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+        
+        html,
+        body {
+            height: 100%;
+            /* IOS禁止微信调整字体大小 */
+            -webkit-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
+            -moz-text-size-adjust: 100% !important;
+        }
+        
+        #map {
+            height: 100%
+        }
+    </style>
+</head>
+
+<body>
+    <div style="position: absolute; top: 15px;left: 30px;z-index: 2">
+        <div id="r-result">请输入地址:
+            <input type="text" id="suggestId" size="20" value="" style="width:250px;" />
+        </div>
+        <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+    </div>
+    <div id="map"></div>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=7yqnu8ZMk9qK0sQwfzmOAGouVWrHNoPO"></script>
+    <script>
+        var map, marker
+        window.onload = function() {
+            var cityPointArr = {
+                510100: {
+                    center: ['104.072241', '30.663491'],
+                    pingcheList: [{
+                        lng: '104.086578',
+                        lat: '30.595825'
+                    }, {
+                        lng: '104.085213',
+                        lat: '30.593369'
+                    }, {
+                        lng: '104.084961',
+                        lat: '30.590758'
+                    }, {
+                        lng: '104.086614',
+                        lat: '30.586064'
+                    }, {
+                        lng: '104.080074',
+                        lat: '30.578571'
+                    }, {
+                        lng: '104.080362',
+                        lat: '30.577203'
+                    }, {
+                        lng: '104.081871',
+                        lat: '30.575586'
+                    }, {
+                        lng: '104.087907',
+                        lat: '30.575773'
+                    }, {
+                        lng: '104.089776',
+                        lat: '30.57428'
+                    }, {
+                        lng: '104.089479',
+                        lat: '30.573231'
+                    }, {
+                        lng: '104.090953',
+                        lat: '30.573557'
+                    }, {
+                        lng: '104.091442',
+                        lat: '30.573973'
+                    }, {
+                        lng: '104.09261',
+                        lat: '30.574004'
+                    }, {
+                        lng: '104.093778',
+                        lat: '30.574067'
+                    }, {
+                        lng: '104.095071',
+                        lat: '30.574067'
+                    }, {
+                        lng: '104.096257',
+                        lat: '30.572574'
+                    }, {
+                        lng: '104.098278',
+                        lat: '30.572613'
+                    }, {
+                        lng: '104.098781',
+                        lat: '30.57496'
+                    }, {
+                        lng: '104.099482',
+                        lat: '30.575209'
+                    }, {
+                        lng: '104.099985',
+                        lat: '30.575676'
+                    }, {
+                        lng: '104.102033',
+                        lat: '30.576018'
+                    }, {
+                        lng: '104.103794',
+                        lat: '30.576678'
+                    }, {
+                        lng: '104.104279',
+                        lat: '30.575575'
+                    }, {
+                        lng: '104.106749',
+                        lat: '30.576391'
+                    }, {
+                        lng: '104.107378',
+                        lat: '30.57681'
+                    }, {
+                        lng: '104.107845',
+                        lat: '30.576484'
+                    }, {
+                        lng: '104.109642',
+                        lat: '30.576981'
+                    }, {
+                        lng: '104.110037',
+                        lat: '30.576329'
+                    }, {
+                        lng: '104.110181',
+                        lat: '30.575645'
+                    }, {
+                        lng: '104.115948',
+                        lat: '30.573546'
+                    }, {
+                        lng: '104.119362',
+                        lat: '30.566114'
+                    }, {
+                        lng: '104.114044',
+                        lat: '30.559646'
+                    }, {
+                        lng: '104.114205',
+                        lat: '30.554468'
+                    }, {
+                        lng: '104.118122',
+                        lat: '30.552696'
+                    }, {
+                        lng: '104.120493',
+                        lat: '30.552836'
+                    }, {
+                        lng: '104.1215',
+                        lat: '30.55338'
+                    }, {
+                        lng: '104.121751',
+                        lat: '30.555028'
+                    }, {
+                        lng: '104.122506',
+                        lat: '30.554779'
+                    }, {
+                        lng: '104.123656',
+                        lat: '30.554997'
+                    }, {
+                        lng: '104.125668',
+                        lat: '30.554188'
+                    }, {
+                        lng: '104.127105',
+                        lat: '30.55453'
+                    }, {
+                        lng: '104.128219',
+                        lat: '30.552229'
+                    }, {
+                        lng: '104.127249',
+                        lat: '30.551794'
+                    }, {
+                        lng: '104.128255',
+                        lat: '30.551047'
+                    }, {
+                        lng: '104.131345',
+                        lat: '30.54887'
+                    }, {
+                        lng: '104.133213',
+                        lat: '30.547066'
+                    }, {
+                        lng: '104.131093',
+                        lat: '30.545978'
+                    }, {
+                        lng: '104.126997',
+                        lat: '30.544796'
+                    }, {
+                        lng: '104.123656',
+                        lat: '30.542774'
+                    }, {
+                        lng: '104.12538',
+                        lat: '30.542401'
+                    }, {
+                        lng: '104.127033',
+                        lat: '30.53786'
+                    }, {
+                        lng: '104.127213',
+                        lat: '30.535931'
+                    }, {
+                        lng: '104.125847',
+                        lat: '30.535745'
+                    }, {
+                        lng: '104.124482',
+                        lat: '30.534625'
+                    }, {
+                        lng: '104.12538',
+                        lat: '30.532821'
+                    }, {
+                        lng: '104.125416',
+                        lat: '30.527719'
+                    }, {
+                        lng: '104.129836',
+                        lat: '30.526444'
+                    }, {
+                        lng: '104.132423',
+                        lat: '30.524484'
+                    }, {
+                        lng: '104.130303',
+                        lat: '30.5224'
+                    }, {
+                        lng: '104.12671',
+                        lat: '30.521342'
+                    }, {
+                        lng: '104.127069',
+                        lat: '30.5182'
+                    }, {
+                        lng: '104.125093',
+                        lat: '30.514808'
+                    }, {
+                        lng: '104.127392',
+                        lat: '30.510608'
+                    }, {
+                        lng: '104.1192',
+                        lat: '30.510297'
+                    }, {
+                        lng: '104.112085',
+                        lat: '30.51067'
+                    }, {
+                        lng: '104.108061',
+                        lat: '30.506812'
+                    }, {
+                        lng: '104.108564',
+                        lat: '30.504634'
+                    }, {
+                        lng: '104.104037',
+                        lat: '30.503763'
+                    }, {
+                        lng: '104.095359',
+                        lat: '30.505832'
+                    }, {
+                        lng: '104.087885',
+                        lat: '30.508726'
+                    }, {
+                        lng: '104.077285',
+                        lat: '30.502285'
+                    }, {
+                        lng: '104.077182',
+                        lat: '30.50092'
+                    }, {
+                        lng: '104.077128',
+                        lat: '30.497808'
+                    }, {
+                        lng: '104.077038',
+                        lat: '30.493903'
+                    }, {
+                        lng: '104.062593',
+                        lat: '30.491289'
+                    }, {
+                        lng: '104.058713',
+                        lat: '30.491444'
+                    }, {
+                        lng: '104.053502',
+                        lat: '30.491662'
+                    }, {
+                        lng: '104.039022',
+                        lat: '30.492222'
+                    }, {
+                        lng: '104.042148',
+                        lat: '30.508465'
+                    }, {
+                        lng: '104.045813',
+                        lat: '30.51811'
+                    }, {
+                        lng: '104.051778',
+                        lat: '30.535095'
+                    }, {
+                        lng: '104.049994',
+                        lat: '30.535449'
+                    }, {
+                        lng: '104.043113',
+                        lat: '30.535321'
+                    }, {
+                        lng: '104.029711',
+                        lat: '30.530499'
+                    }, {
+                        lng: '104.02601',
+                        lat: '30.530842'
+                    }, {
+                        lng: '104.026944',
+                        lat: '30.536783'
+                    }, {
+                        lng: '104.026441',
+                        lat: '30.539396'
+                    }, {
+                        lng: '104.023171',
+                        lat: '30.540857'
+                    }, {
+                        lng: '104.02504',
+                        lat: '30.543968'
+                    }, {
+                        lng: '104.023243',
+                        lat: '30.544994'
+                    }, {
+                        lng: '104.019362',
+                        lat: '30.543626'
+                    }, {
+                        lng: '104.018212',
+                        lat: '30.543532'
+                    }, {
+                        lng: '104.017206',
+                        lat: '30.545989'
+                    }, {
+                        lng: '104.021159',
+                        lat: '30.548633'
+                    }, {
+                        lng: '104.022973',
+                        lat: '30.548618'
+                    }, {
+                        lng: '104.024375',
+                        lat: '30.549395'
+                    }, {
+                        lng: '104.024231',
+                        lat: '30.552256'
+                    }, {
+                        lng: '104.030232',
+                        lat: '30.554464'
+                    }, {
+                        lng: '104.032172',
+                        lat: '30.559969'
+                    }, {
+                        lng: '104.034768',
+                        lat: '30.570184'
+                    }, {
+                        lng: '104.041344',
+                        lat: '30.569344'
+                    }, {
+                        lng: '104.043069',
+                        lat: '30.575967'
+                    }, {
+                        lng: '104.040086',
+                        lat: '30.577211'
+                    }, {
+                        lng: '104.038325',
+                        lat: '30.582838'
+                    }, {
+                        lng: '104.017867',
+                        lat: '30.556315'
+                    }, {
+                        lng: '104.004024',
+                        lat: '30.550818'
+                    }, {
+                        lng: '103.996918',
+                        lat: '30.549838'
+                    }, {
+                        lng: '103.986174',
+                        lat: '30.552054'
+                    }, {
+                        lng: '103.983381',
+                        lat: '30.56674'
+                    }, {
+                        lng: '103.979531',
+                        lat: '30.578229'
+                    }, {
+                        lng: '103.962428',
+                        lat: '30.590603'
+                    }, {
+                        lng: '103.963901',
+                        lat: '30.593525'
+                    }, {
+                        lng: '103.970512',
+                        lat: '30.593027'
+                    }, {
+                        lng: '103.972381',
+                        lat: '30.613045'
+                    }, {
+                        lng: '103.969003',
+                        lat: '30.611678'
+                    }, {
+                        lng: '103.963182',
+                        lat: '30.616153'
+                    }, {
+                        lng: '103.959158',
+                        lat: '30.647973'
+                    }, {
+                        lng: '103.955062',
+                        lat: '30.654373'
+                    }, {
+                        lng: '103.954702',
+                        lat: '30.66537'
+                    }, {
+                        lng: '103.936736',
+                        lat: '30.665681'
+                    }, {
+                        lng: '103.930484',
+                        lat: '30.674068'
+                    }, {
+                        lng: '103.908314',
+                        lat: '30.679969'
+                    }, {
+                        lng: '103.901199',
+                        lat: '30.686429'
+                    }, {
+                        lng: '103.910613',
+                        lat: '30.687578'
+                    }, {
+                        lng: '103.91259',
+                        lat: '30.692267'
+                    }, {
+                        lng: '103.916937',
+                        lat: '30.694068'
+                    }, {
+                        lng: '103.921788',
+                        lat: '30.699099'
+                    }, {
+                        lng: '103.920674',
+                        lat: '30.702577'
+                    }, {
+                        lng: '103.930771',
+                        lat: '30.70978'
+                    }, {
+                        lng: '103.944677',
+                        lat: '30.727942'
+                    }, {
+                        lng: '103.942979',
+                        lat: '30.738217'
+                    }, {
+                        lng: '103.940213',
+                        lat: '30.737876'
+                    }, {
+                        lng: '103.92566',
+                        lat: '30.747497'
+                    }, {
+                        lng: '103.917863',
+                        lat: '30.755846'
+                    }, {
+                        lng: '103.908664',
+                        lat: '30.759384'
+                    }, {
+                        lng: '103.893644',
+                        lat: '30.773378'
+                    }, {
+                        lng: '103.922785',
+                        lat: '30.812202'
+                    }, {
+                        lng: '103.927906',
+                        lat: '30.81031'
+                    }, {
+                        lng: '103.939386',
+                        lat: '30.785789'
+                    }, {
+                        lng: '103.948154',
+                        lat: '30.779212'
+                    }, {
+                        lng: '103.944704',
+                        lat: '30.77493'
+                    }, {
+                        lng: '103.951316',
+                        lat: '30.76919'
+                    }, {
+                        lng: '103.954873',
+                        lat: '30.76348'
+                    }, {
+                        lng: '103.965509',
+                        lat: '30.758329'
+                    }, {
+                        lng: '103.974168',
+                        lat: '30.753953'
+                    }, {
+                        lng: '103.985272',
+                        lat: '30.74607'
+                    }, {
+                        lng: '103.981714',
+                        lat: '30.742687'
+                    }, {
+                        lng: '103.988326',
+                        lat: '30.73592'
+                    }, {
+                        lng: '103.981764',
+                        lat: '30.733607'
+                    }, {
+                        lng: '103.991825',
+                        lat: '30.723674'
+                    }, {
+                        lng: '103.993334',
+                        lat: '30.722059'
+                    }, {
+                        lng: '104.001239',
+                        lat: '30.717465'
+                    }, {
+                        lng: '104.013456',
+                        lat: '30.707095'
+                    }, {
+                        lng: '104.016348',
+                        lat: '30.70902'
+                    }, {
+                        lng: '104.022906',
+                        lat: '30.710945'
+                    }, {
+                        lng: '104.034692',
+                        lat: '30.717092'
+                    }, {
+                        lng: '104.052586',
+                        lat: '30.731373'
+                    }, {
+                        lng: '104.05776',
+                        lat: '30.732676'
+                    }, {
+                        lng: '104.07817',
+                        lat: '30.730007'
+                    }, {
+                        lng: '104.10016',
+                        lat: '30.72504'
+                    }, {
+                        lng: '104.110796',
+                        lat: '30.724667'
+                    }, {
+                        lng: '104.134152',
+                        lat: '30.721687'
+                    }, {
+                        lng: '104.138752',
+                        lat: '30.720197'
+                    }, {
+                        lng: '104.143423',
+                        lat: '30.717713'
+                    }, {
+                        lng: '104.150106',
+                        lat: '30.71585'
+                    }, {
+                        lng: '104.159089',
+                        lat: '30.713801'
+                    }, {
+                        lng: '104.162898',
+                        lat: '30.711504'
+                    }, {
+                        lng: '104.165773',
+                        lat: '30.707902'
+                    }, {
+                        lng: '104.167497',
+                        lat: '30.704176'
+                    }, {
+                        lng: '104.168467',
+                        lat: '30.688183'
+                    }, {
+                        lng: '104.169617',
+                        lat: '30.6718'
+                    }, {
+                        lng: '104.169366',
+                        lat: '30.67034'
+                    }, {
+                        lng: '104.160994',
+                        lat: '30.645985'
+                    }, {
+                        lng: '104.157293',
+                        lat: '30.638124'
+                    }, {
+                        lng: '104.152801',
+                        lat: '30.629206'
+                    }, {
+                        lng: '104.152334',
+                        lat: '30.627776'
+                    }, {
+                        lng: '104.152082',
+                        lat: '30.626067'
+                    }, {
+                        lng: '104.151543',
+                        lat: '30.623705'
+                    }, {
+                        lng: '104.151112',
+                        lat: '30.622711'
+                    }, {
+                        lng: '104.142488',
+                        lat: '30.611056'
+                    }, {
+                        lng: '104.14159',
+                        lat: '30.610124'
+                    }, {
+                        lng: '104.133865',
+                        lat: '30.605897'
+                    }, {
+                        lng: '104.129086',
+                        lat: '30.603534'
+                    }, {
+                        lng: '104.127648',
+                        lat: '30.603037'
+                    }, {
+                        lng: '104.104652',
+                        lat: '30.600426'
+                    }, {
+                        lng: '104.102783',
+                        lat: '30.600488'
+                    }, {
+                        lng: '104.088626',
+                        lat: '30.603286'
+                    }, {
+                        lng: '104.08868',
+                        lat: '30.600892'
+                    }, {
+                        lng: '104.090261',
+                        lat: '30.597861'
+                    }, {
+                        lng: '104.08974',
+                        lat: '30.59654'
+                    }],
+                    xiongmaoList: [{
+                        lng: '104.150016',
+                        lat: '30.746892'
+                    }, {
+                        lng: '104.140907',
+                        lat: '30.744626'
+                    }, {
+                        lng: '104.152675',
+                        lat: '30.738248'
+                    }, {
+                        lng: '104.159341',
+                        lat: '30.742547'
+                    }, {
+                        lng: '104.159161',
+                        lat: '30.744782'
+                    }]
+                }
+            }
+
+            var pointArr = [];
+            var list, xiongMaoList = false;
+            var args = {};
+            args.cityId = 510100;
+            map = new BMap.Map("map");
+            map.centerAndZoom(new BMap.Point(cityPointArr[args.cityId].center[0], cityPointArr[args.cityId].center[1]), 12);
+            map.enableScrollWheelZoom();
+            list = cityPointArr[args.cityId].pingcheList;
+            xiongMaoList = cityPointArr[args.cityId].xiongmaoList;
+
+            for (var i in list) {
+                pointArr.push(new BMap.Point(list[i].lng, list[i].lat));
+            }
+            //创建多边形
+            var polygon = new BMap.Polygon(pointArr, {
+                strokeColor: "#920000",
+                strokeWeight: 2,
+                strokeOpacity: 0.5,
+                fillColor: '#D23F36',
+                fillOpacity: 0.5
+            });
+            map.addOverlay(polygon); //增加多边形
+
+            var xiongmaoPointArr = [];
+            for (var i in xiongMaoList) {
+                xiongmaoPointArr.push(new BMap.Point(xiongMaoList[i].lng, xiongMaoList[i].lat));
+            }
+            //创建多边形
+            var polygon = new BMap.Polygon(xiongmaoPointArr, {
+                strokeColor: "#920000",
+                strokeWeight: 2,
+                strokeOpacity: 0.5,
+                fillColor: '#D23F36',
+                fillOpacity: 0.5
+            });
+            map.addOverlay(polygon); //增加多边形
+
+
+
+            var ac = new BMap.Autocomplete( //建立一个自动完成的对象
+                {
+                    "input": "suggestId",
+                    "location": map
+                });
+
+            ac.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
+                var str = "";
+                var _value = e.fromitem.value;
+                var value = "";
+                if (e.fromitem.index > -1) {
+                    value = _value.province + _value.city + _value.district + _value.street + _value.business;
+                }
+                str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+                value = "";
+                if (e.toitem.index > -1) {
+                    _value = e.toitem.value;
+                    value = _value.province + _value.city + _value.district + _value.street + _value.business;
+                }
+                str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+                G("searchResultPanel").innerHTML = str;
+            });
+
+            var myValue;
+            ac.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
+                var _value = e.item.value;
+                myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+                G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+
+                setPlace(myValue);
+            });
+
+        }
+
+        function setPlace(myValue) {
+            map.removeOverlay(marker); //清除地图上所有覆盖物
+            function myFun() {
+                var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+                map.setCenter(pp);
+                marker = new BMap.Marker(pp);
+                map.addOverlay(marker); //添加标注
+            }
+            var local = new BMap.LocalSearch(map, { //智能搜索
+                onSearchComplete: myFun
+            });
+            local.search(myValue);
+        }
+
+        function G(id) {
+            return document.getElementById(id);
+        }
+    </script>
+    <script>
+        //强制禁止用户修改微信客户端的字体大小---begin--- -->
+        (function() {
+            if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+                handleFontSize();
+            } else {
+                if (document.addEventListener) {
+                    document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+                } else if (document.attachEvent) {
+                    document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+                    document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+                }
+            }
+
+            function handleFontSize() {
+                if (!WeixinJSBridge) return;
+                // 设置网页字体为默认大小
+                WeixinJSBridge.invoke('setFontSizeCallback', {
+                    'fontSize': 0
+                });
+                // 重写设置网页字体大小的事件
+                WeixinJSBridge.on('menu:setfont', function() {
+                    WeixinJSBridge.invoke('setFontSizeCallback', {
+                        'fontSize': 0
+                    });
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>

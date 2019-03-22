@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>专车取消规则</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+    <div id="cancel-role-special">
+        <div class="role-box">
+            <div class="role-title">
+                专车
+            </div>
+            <!--成都规则-->
+            <div class="role-info" id="cityId_510700" style="display:none">
+                <div class="role-header">什么情况下乘客可免费取消行程(510700)</div>
+                <div class="role-info-list">
+                    <span class="role-one">1.司机未接单，乘客可免费取消；</span>
+                    <span class="role-one">2.司机接单后，乘车<span class="c-red">30分钟</span>前可免费取消；</span>
+                    <span class="role-one">3.若司机迟到，乘客可免费取消；</span>
+                    <span class="c-red role-one">4.川航免费乘客享有免费取消特权；</span>
+                </div>
+                <div class="role-header">什么情况下行程取消，乘客将支付取消费</div>
+                <div class="role-info-list">
+                    <span class="role-one">1. 乘车前<span class="c-red">30分钟</span>内，乘客主动取消订单；</span>
+                    <span class="role-one">2. 司机正常到达，乘客主动取消订单；</span>
+                    <span class="role-one">3. 司机正常到达，乘客迟到，超过免费等候期，且无法联系到乘客；</span>
+                    <span class="role-one">以上情况，将收取<span class="c-red">起步价</span>作为取消费。</span>
+                </div>
+                <div class="role-header">关于免费等候期</div>
+                <div class="role-info-list">
+                    <span class="role-one">1. 送机行程，司机可免费等待<span class="c-red">30分钟</span>；</span>
+                    <span class="role-one">2. 接机行程，如输入航班号，可享受航班实际到港前的免费等候，无论延误多少小时，我们都免费等候；</span>
+                    <span class="role-one">3. 接机行程，如不输入航班号，司机可免费等待<span class="c-red">30分钟</span>；</span>
+                </div>
+                <div class="role-header">如何判断司机迟到</div>
+                <div class="role-info-list">
+                    <span class="role-one">司机在出发时间之后的10分钟内未点击“确认乘客起点”，则判定司机迟到。</span>
+                    <span class="role-one">例如，出发时间为上午09:00，司机在09:10还未到达乘客起点，视为司机迟到。</span>
+                </div>
+            </div>
+            <!--绵阳规则-->
+            <div class="role-info" id="cityId_510100" style="display:none">
+                <div class="role-header">什么情况下乘客可免费取消行程(510100)</div>
+                <div class="role-info-list">
+                    <span class="role-one">1.司机未接单，乘客可免费取消；</span>
+                    <span class="role-one">2.司机接单后，乘车<span class="c-red">30分钟</span>前可免费取消；</span>
+                    <span class="role-one">3.若司机迟到，乘客可免费取消；</span>
+                    <span class="c-red role-one">4.川航免费乘客享有免费取消特权；</span>
+                </div>
+                <div class="role-header">什么情况下行程取消，乘客将支付取消费</div>
+                <div class="role-info-list">
+                    <span class="role-one">1. 乘车前<span class="c-red">30分钟</span>内，乘客主动取消订单；</span>
+                    <span class="role-one">2. 司机正常到达，乘客主动取消订单；</span>
+                    <span class="role-one">3. 司机正常到达，乘客迟到，超过免费等候期，且无法联系到乘客；</span>
+                    <span class="role-one">以上情况，将收取<span class="c-red">起步价</span>作为取消费。</span>
+                </div>
+                <div class="role-header">关于免费等候期</div>
+                <div class="role-info-list">
+                    <span class="role-one">1. 送机行程，司机可免费等待<span class="c-red">30分钟</span>；</span>
+                    <span class="role-one">2. 接机行程，如输入航班号，可享受航班实际到港前的免费等候，无论延误多少小时，我们都免费等候；</span>
+                    <span class="role-one">3. 接机行程，如不输入航班号，司机可免费等待<span class="c-red">30分钟</span>；</span>
+                </div>
+                <div class="role-header">如何判断司机迟到</div>
+                <div class="role-info-list">
+                    <span class="role-one">司机在出发时间之后的10分钟内未点击“确认乘客起点”，则判定司机迟到。</span>
+                    <span class="role-one">例如，出发时间为上午09:00，司机在09:10还未到达乘客起点，视为司机迟到。</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/ini.js"></script>
+    <script>
+        function display() {
+            $('.role-box').show();
+            $('body').attr('style', 'opacity:1');
+        }
+    </script>
+</body>
+
+</html>

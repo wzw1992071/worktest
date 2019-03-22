@@ -1,0 +1,72 @@
+* {
+    box-sizing: border-box;
+}
+
+.driver-price {
+    height: 100%;
+    background: #fff;
+    padding-top: 0.95rem
+}
+
+.price-info-list {
+    margin: 0 1.12rem;
+    padding-top: 0.46rem;
+    text-align: left;
+    color: #666;
+}
+
+.title {
+    display: inline-block;
+    margin-bottom: 0.36rem;
+    width: 49%;
+}
+
+.info {
+    display: inline-block;
+    width: 49%;
+    text-align: right;
+    padding-bottom: 0.35rem
+}
+
+.rule img {
+    width: .35rem;
+    margin-right: .1rem;
+}
+
+.rule {
+    font-size: .24rem;
+    color: #626262;
+    text-align: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0.7rem;
+}
+
+.d-p-top {
+    color: #A6A6A6;
+    font-size: 0.28rem;
+    text-align: center;
+}
+
+.d-p-total-box {
+    text-align: center;
+    color: #A6A6A6;
+}
+
+.d-p-total {
+    font-size: 0.96rem;
+    color: #E74447;
+}
+
+.total-list {
+    border-top: solid 1px #E5E5E5;
+}

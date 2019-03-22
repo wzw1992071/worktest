@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>反馈与建议</title>
+    <link href="../css/faq.csss" rel="stylesheet" />
+    <style>
+        .right-arrow {
+            padding: 0.22rem 0;
+        }
+    </style>
+</head>
+
+<body style="padding-top:0">
+    <div class="select-type-tips">请选择问题类型</div>
+    <dl id="list-box" class="list-box"></dl>
+    <script type="text/x-dot-template" id="list-box-tpl">
+        {{for(var i in it){}}
+        <dd class="list select-list touchBg" data-id="{{=it[i].ID}}" data-name="{{=it[i].Name}}">
+            <span>{{=it[i].Name}}</span> {{if(it[i].ID==id){}}
+            <img class="right-arrow" src="/imgs/select.png" alt=""> {{}else{}}
+            <img class="right-arrow" src="/imgs/unselect.png" alt=""> {{ } }}
+        </dd>
+        {{ } }}
+        <dd class="list select-list touchBg" data-id="0" data-name="其他">
+            <span>其他</span> {{if(id==='0'){}}
+            <img class="right-arrow" src="/imgs/select.png" alt=""> {{}else{}}
+            <img class="right-arrow" src="/imgs/unselect.png" alt=""> {{ } }}
+        </dd>
+    </script>
+    <script src="../js/ini.js"></script>
+    <script src="../plug/doT.min.js"></script>
+    <script>
+        var id;
+
+        function display() {
+            id = $bw.getUrlInfo('id');
+            $('#list-box').on('click', '.select-list', function() {
+                var info = {
+                    id: this.dataset.id,
+                    name: this.dataset.name
+                }
+                addSession({
+                    name: "feedSelectType",
+                    info: info
+                })
+                $('.select-list').find('img').attr('src', '/imgs/unselect.png');
+                $(this).find('img').attr('src', '/imgs/select.png');
+                window.history.go(-1);
+            });
+
+            verifyLogin(function() {
+                $bw.ajax({
+                    url: 'qa/GetCategories',
+                    type: 'get',
+                    data: {},
+                    dataType: 'json',
+                    callback: function(res) {
+                        showTpl($('#list-box-tpl'), $('#list-box'), res.Data);
+
+                    }
+                })
+            });
+            $('body').attr('style', 'opacity:1');
+
+        }
+    </script>
+</body>
+
+</html>

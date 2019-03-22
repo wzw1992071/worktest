@@ -1,0 +1,213 @@
+.evaluate-top {
+    padding-top: 0.64rem;
+    padding-bottom: 0.64rem;
+    color: #2b2b2b;
+    border-bottom: solid 1px #ecedee;
+}
+
+.evaluate-header {
+    width: 1.12rem;
+    float: left;
+    padding-top: 0.15rem;
+}
+
+.evaluate-header img {
+    display: block;
+    width: 100%
+}
+
+.evaluate-driver-info {
+    float: left;
+    margin-left: 0.24rem;
+    text-align: left;
+}
+
+.driver-name {
+    font-size: 0.3rem;
+    margin-right: 0.7rem;
+    line-height: 0.55rem;
+}
+
+.driver-total {
+    color: #F5BD4D
+}
+
+.driver-total-img {
+    width: 0.25rem;
+    position: relative;
+    top: 0.14rem;
+    margin: 0 0.05rem;
+}
+
+.driver-car-num {
+    padding: 0 0.15rem;
+    font-size: 0.26rem;
+    display: inline-block;
+    line-height: 0.44rem;
+    background-color: #f3f3f3;
+    border: solid 1px #d5d5d5
+}
+
+.driver-car-type {
+    font-size: 0.24rem;
+    color: #666;
+    line-height: 0.5rem;
+}
+
+.driver-phone {
+    float: right;
+    display: block;
+}
+
+.driver-phone img {
+    width: 0.58rem;
+    position: relative;
+    top: 0.5rem;
+}
+
+.evaluate-box .order-price {
+    text-align: center;
+}
+
+.price-tips {
+    color: #626262;
+    padding-top: 0.6rem;
+}
+
+.price-num {
+    font-size: 0.96rem;
+    padding: 0.2rem 0;
+}
+
+.price-num .iconfont {
+    font-size: 0.4rem;
+}
+
+.price-yuan {
+    font-size: 0.28rem;
+}
+
+.star-box {
+    text-align: center;
+}
+
+.star-box img {
+    width: 0.54rem;
+    margin-right: 0.15rem
+}
+
+.info-title {
+    text-align: center;
+    padding: 0.2rem 0;
+    font-size: 0.26rem;
+    color: #9c9c9c
+}
+
+.s-btn-box {
+    padding: 0.3rem 0.52rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.s-btn-box .s-btn {
+    border: solid 1px #dadbdd;
+    width: 39%;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 0.28rem;
+    line-height: 0.7rem;
+    background-color: #f3f3f3;
+    margin-top: 0.26rem;
+    text-align: center;
+}
+
+.s-btn-box .action {
+    background-color: #FFF7F6;
+    border-color: #D23F36;
+}
+
+
+
+.evaluate-info {
+    padding: 0.18rem 0.52rem 0.19rem 0.52rem;
+    height: 2.19rem;
+    color: #9c9c9c;
+    position: relative;
+}
+
+.evaluate-info textarea {
+    resize: none;
+    width: 100%;
+    height: 100%;
+    border: solid 1px #d6d7d8;
+    padding: 0.21rem;
+    font-size: 0.28rem;
+    border-radius: 5px;
+    color: #3a3a3a;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.evaluate-info .max-words {
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.3rem;
+}
+
+.evaluated-info {
+    padding: 0.25rem;
+    border: solid 1px #dadbdd;
+    font-size: 0.28rem;
+    color: #5a5a5a;
+    width: 83%;
+    margin: 0 auto;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.btn-box {
+    background-color: #fff
+}
+
+
+.evaluated-box {
+    text-align: center;
+    padding-bottom: 0.46rem;
+    padding-top: 0.15rem;
+}
+
+.evaluated-title-right,
+.evaluated-title-left {
+    display: inline-block;
+    width: 1.7rem;
+    height: 0.04rem;
+    vertical-align: middle;
+}
+
+.evaluated-title-left {
+    background: -webkit-linear-gradient(left, rgba(222, 222, 222, 0), rgba(222, 222, 222, 0.9));
+    /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, rgba(222, 222, 222, 0), rgba(222, 222, 222, 0.9));
+    /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, rgba(222, 222, 222, 0), rgba(222, 222, 222, 0.9));
+    /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, rgba(222, 222, 222, 0), rgba(222, 222, 222, 0.9));
+    /* 标准的语法 */
+}
+
+.evaluated-title-right {
+    background: -webkit-linear-gradient(left, rgba(222, 222, 222, 0.9), rgba(222, 222, 222, 0));
+    /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, rgba(222, 222, 222, 0.9), rgba(222, 222, 222, 0));
+    /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, rgba(222, 222, 222, 0.9), rgba(222, 222, 222, 0));
+    /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, rgba(222, 222, 222, 0.9), rgba(222, 222, 222, 0));
+    /* 标准的语法 */
+}
+
+.evaluated-title {
+    color: #626262;
+    font-size: 0.28rem;
+}

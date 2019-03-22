@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta charset="utf-8" />
+    <title id="header-title">问题与帮助</title>
+    <link href="../css/faq.css" rel="stylesheet" />
+</head>
+
+<body>
+    <dl id="list-box" class="list-box">
+    </dl>
+    <script type="text/x-dot-template" id="list-box-tpl">
+        {{for(var i in it){}}
+        <dd class="list help-list touchBg" data-id="{{=it[i].ID}}" data-name="{{=it[i].Name}}">
+            <img class="list-ico" src="/imgs/list-{{=it[i].Icon}}.png" alt="">
+            <span>{{=it[i].Name}}</span>
+            <img class="right-arrow" src="/imgs/faq-arrow-right.png" alt="">
+        </dd>
+        {{ } }}
+        <dd class="list service-list touchBg">
+            <a class="worker-phone" href="tel:028-86868686">
+                <img class="list-ico" src="/imgs/list-worker.png" alt="">
+                <span id="list-ico">客服热线</span>
+            </a>
+        </dd>
+    </script>
+    <dl class="list-box worker-box">
+        <dd class="list feedback-list touchBg">
+            <img class="list-ico" src="/imgs/feedback.png" alt="" style="position: static;left:0;vertical-align: top;">
+            <span>反馈与建议</span>
+        </dd>
+    </dl>
+    <script src="../js/ini.js"></script>
+    <script src="../plug/doT.min.js"></script>
+    <script>
+        function display() {
+            $('#list-box').on('click', '.help-list', function() {
+                window.location.href = "./faq_list_child.html?id=" + this.dataset.id + "&name=" + this.dataset.name + "&phone=" +
+                    $bw.getUrlInfo('phone');
+            });
+            $('.feedback-list').click(function() {
+                window.location.href = "./feedback.html?isini=true&phone=" + $bw.getUrlInfo('phone');
+            });
+
+            verifyLogin(function() {
+                $bw.ajax({
+                    url: 'qa/GetCategories',
+                    type: 'get',
+                    data: {},
+                    dataType: 'json',
+                    callback: function(res) {
+                        showTpl($('#list-box-tpl'), $('#list-box'), res.Data);
+                    }
+                })
+            });
+            $('body').attr('style', 'opacity:1');
+        }
+    </script>
+</body>
+
+</html>

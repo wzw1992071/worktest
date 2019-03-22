@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>减免验证</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimum-scale=1,maximum-scale=1">
+    <link rel="stylesheet" media="screen" href="css/init.css">
+    <link rel="stylesheet" href="./css/main-9657c92848.css">
+    <link rel="stylesheet" media="screen" href="css/verify.css">
+    <link rel="stylesheet" media="screen" href="./plug/lArea/lArea.css">
+    <script src="./plug/vue.min.js"></script>
+</head>
+
+<body>
+    <div class="verify" id="verify">
+        <div class="verify-rule" @click="toVerifyRule()"><span>规则说明</span> <img src="../imgs/arrow-right-w.png" alt=""></div>
+        <div class="no-history">
+            <div class="title">
+                <img class="title-img" src="../imgs/verify-bubble.png" alt="">
+                <h1>验证成功</h1>
+                <h1 v-show="serviceType==2">优惠<strong>{{freePrice}}</strong>元</h1>
+                <h1 v-show="serviceType==1"><strong>免费</strong>乘坐</h1>
+            </div>
+            <div class="verify-success">
+                <img v-show="resultSuccess.length" class="verify-success-bg-top" src="../imgs/verif-success-bg-top.png" alt="">
+                <div class="success-bg-box">
+                    <!--成功的-->
+                    <div class="successed orange-box-shadow" v-show="resultSuccess.length">
+                        <div class="success-bg">
+                            <img class="success-bg-img" src="../imgs/verif-success-bg.png" alt="">
+                            <h2>验证成功</h2>
+                        </div>
+                        <ul class="verify-success-ul">
+                            <li v-for="item in resultSuccess">
+                                <img @click="successDelete(item)" src="../imgs/verify-delete.png" alt="">
+                                <span>{{item.Name}}</span>&nbsp;
+                                <span>{{item.IDCardNo}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--待验证的-->
+                    <div class="await-verify orange-box-shadow">
+                        <img class="add-btn" v-on:click="verifyCount()" src="../imgs/verify-add.png">
+                        <h3>待验证乘机人</h3>
+                        <ul>
+                            <li v-for="item in verifyNum" :id="item.uuid">
+                                <img v-on:click="verifyDel(item)" src="../imgs/verify-delete.png" alt="">
+                                <div class="await-verify-p-info">
+                                    <span class="await-verify-p-name">{{item.Name}}</span>
+                                    <span>{{item.IDCardNo}}</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <div v-show="verifyNum.length || resultSuccess.length">
+                            <div class="submit-btn" @click="commit()">提交验证</div>
+                            <div class="back-go-on" @click="goBackOn()">
+                                <img class="back-go-on-img" src="../imgs/arrow-right.png" alt="">
+                                <span class="back-go-on-span">返回继续下单</span>
+                            </div>
+                        </div>
+                        <div v-show="!(verifyNum.length || resultSuccess.length)" class="no-person">
+                            <img class="chengji-person-noimg" src="../imgs/chengjiren-noren.png" alt="">
+                            <span class="chengji-person-nospan">您还没有添加乘机人哦</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="verify-result" v-show="isResult">
+                <div class="result-box">
+                    <div class="result-con">验证通过{{resultSuccess.length}}人，不通过{{resultFail.length}}人</div>
+                    <div class="result-hint"><em class="result-hint-bg"></em><span>验证提示</span></div>
+                    <div class="result-hint-con">
+                        <p>请阅读以下内容来解决“验证不通过”的问题：</p>
+                        <p>1、不符合减免资格，会验证不通过，具体参看<strong @click="toVerifyRule()">减免规则说明</strong>;</p>
+                        <p>2、如果您是刚出票，系统同步可能导致验证不通过，请稍后再试（建议出票20分钟后再试）</p>
+                        <p>3、点击下方“后台验证”按钮提交人工验证，我们将尽快处理；</p>
+                        <p>4、拨打客服电话：<a href="tel:028-86868686"><strong>028-86868686</strong></a>咨询</p>
+                    </div>
+                    <div class="result-btn">
+                        <div class="result-btn-item" @click="submitCenterCheckuser()">后台验证</div>
+                        <div class="result-btn-item" @click="goBack()">等会再试</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/ini.js"></script>
+    <script src="./plug//jquery.min.js"></script>
+
+    <script>
+        var app;
+        $(function() {
+            var isPageHide = false;
+            window.addEventListener('pageshow', function() {
+                if (isPageHide) {
+                    window.location.reload();
+                }
+            });
+            window.addEventListener('pagehide', function() {
+                isPageHide = true;
+            });
+        })
+
+        function display() {
+            app = new Vue({
+                el: '#verify',
+                data: {
+                    resultSuccess: [], //验证成功的
+                    freePrice: 0, //优惠金额单人
+                    resultFail: [],
+                    serviceType: 2, //专车
+                    verifyNum: [],
+                    appointmentInfo: {},
+                    isResult: false,
+                    carType: '',
+                    stroke: '',
+                },
+                mounted() {
+                    var _this = this;
+                    _this.GetPassengerSubsidyPrice();
+                    console.log(location.href);
+                    _this.carType = $bw.getUrlInfo('carType') || '';
+                    _this.stroke = $bw.getUrlInfo('stroke') || '';
+                    var oldtime = getStorage('nowtime') || '';
+                    if (isWxAndH5()) {
+                        _this.appointmentInfoDeal(getSession("appointmentInfo" + _this.stroke + _this.carType) || {});
+                    } else {
+                        var nowtime = $bw.getUrlInfo('nowtime') || '';
+
+                        if (oldtime) {
+                            if (oldtime == nowtime) {
+                                var v = getSession('verifyNum') || [];
+                                var r = getSession('resultSuccess') || [];
+                                verifyLogin(function() {
+                                    contactApp('AppBridgeOrderAppointmentInfo', {}, function(res) {
+                                        res.Passengers = v.concat(r);
+                                        _this.appointmentInfoDeal(res);
+                                    });
+                                });
+                            } else {
+                                verifyLogin(function() {
+                                    contactApp('AppBridgeOrderAppointmentInfo', {}, function(res) {
+                                        _this.appointmentInfoDeal(res);
+                                    });
+                                });
+                            }
+                        } else {
+                            verifyLogin(function() {
+                                contactApp('AppBridgeOrderAppointmentInfo', {}, function(res) {
+                                    _this.appointmentInfoDeal(res);
+                                });
+                            });
+                        }
+                        addStorage({
+                            info: nowtime,
+                            name: "nowtime"
+                        });
+                    }
+
+                },
+                methods: {
+                    addStorgeSave() {
+                        addSession({
+                            info: this.verifyNum,
+                            name: "verifyNum"
+                        });
+                        addSession({
+                            info: this.resultSuccess,
+                            name: "resultSuccess"
+                        });
+                        var t = this;
+                        var tem = [];
+                        t.verifyNum.forEach(function(val) {
+                            if (val.hasOwnProperty('IsValid')) {
+                                tem.push(val);
+                            }
+                        });
+                        t.AppointmentInfoSave([].concat(t.resultSuccess, tem));
+                    },
+                    appointmentInfoDeal(res) {
+                        console.log(JSON.stringify(res));
+                        var _this = this;
+                        _this.appointmentInfo = res;
+
+                        _this.serviceType = _this.appointmentInfo.ServiceType;
+                        //如果验证过
+                        _this.verifyNum = [];
+                        _this.resultSuccess = [];
+                        if (_this.appointmentInfo.Passengers && _this.appointmentInfo.Passengers.length) {
+                            for (var m = 0, mlen = _this.appointmentInfo.Passengers.length; m < mlen; m++) {
+                                if (_this.appointmentInfo.Passengers[m].IsValid) {
+                                    _this.resultSuccess.push(_this.appointmentInfo.Passengers[m]);
+                                } else {
+                                    _this.verifyNum.push(_this.appointmentInfo.Passengers[m]);
+                                }
+                            }
+                        }
+                        _this.getSelP();
+                        addStorage({
+                            info: {
+                                CarSeats: res.CarSeats,
+                                ServiceType: res.ServiceType,
+                                FlightDate: res.FlightDate,
+                                FlightNo: res.FlightNo
+                            },
+                            name: "AppBridgeOrderAppointmentInfoStorge"
+                        });
+                        if (!_this.appointmentInfo.Passengers) {
+                            _this.verifyNum = [];
+                            _this.resultSuccess = [];
+                        }
+                        // _this.addStorgeSave();
+                        addSession({
+                            info: this.verifyNum,
+                            name: "verifyNum"
+                        });
+                        addSession({
+                            info: this.resultSuccess,
+                            name: "resultSuccess"
+                        });
+                    },
+                    //获取选择的乘机人
+                    getSelP() {
+                        var th = this;
+
+                        var tem = getStorage("selNew") || [];
+                        if (tem.length) {
+                            this.verifyNum = this.verifyNum.concat(tem);
+                        }
+                        addStorage({
+                            info: [],
+                            name: "selNew"
+                        })
+                        var InfoStorge = getStorage('AppBridgeOrderAppointmentInfoStorge');
+                        if (InfoStorge && InfoStorge.FlightDate == this.appointmentInfo.FlightDate && InfoStorge.FlightNo ==
+                            this.appointmentInfo.FlightNo) {
+                            var veri = getSession('verifyNum') || [];
+                            var all = th.verifyNum.concat(th.resultSuccess);
+                            console.log(JSON.stringify(all));
+                            veri.forEach(function(val) {
+                                var tm = all.filter(function(vv) {
+                                    return vv.IDCardNo == val.IDCardNo;
+                                });
+                                if (!tm.length) {
+                                    th.verifyNum.push(val);
+                                }
+                            });
+                        }
+
+                    },
+                    goBackOn() {
+                        window.location.href = "../index.html";
+
+                        verifyLogin(function() {
+                            contactApp('backGoOnOrder', {}, function() {
+
+                            })
+                        });
+                    },
+                    //查看减免规则
+                    toVerifyRule() {
+                        if (this.serviceType == 2) {
+                            window.location.href = "/publicViews/phoneIntroduceSpecial.html?timeStr=" + new Date()
+                                .getTime() +
+                                "&cityId=" + $bw.getUrlInfo('cityId') +
+                                "&carType=" + $bw.getUrlInfo('carType') +
+                                "&stroke=" + $bw.getUrlInfo('stroke');
+                        } else {
+                            window.location.href = "/publicViews/phoneIntroduce.html?timeStr=" + new Date()
+                                .getTime() + "&cityId=" +
+                                $bw.getUrlInfo('cityId') + "&carType=" + ($bw.getUrlInfo('carType') || '') +
+                                "&stroke=" + ($bw.getUrlInfo('stroke') || '');
+                        }
+                    },
+                    //验证成功的删除
+                    successDelete(item) {
+                        var _self = this;
+                        $toast.showConfirm({
+                            text: '该乘客已验证成功，确认删除吗？',
+                            sureFn: function() {
+                                for (var gg = _self.resultSuccess.length - 1; gg >= 0; gg--) {
+                                    if (_self.resultSuccess[gg].IDCardNo == item.IDCardNo) {
+                                        _self.resultSuccess.splice(gg, 1);
+                                        break;
+                                    }
+                                }
+                                console.log("successdel: " + JSON.stringify(_self.resultSuccess));
+                                _self.addStorgeSave();
+
+                            },
+                            cancelFn: function() {}
+                        });
+                    },
+                    //待验证列表的添加
+                    verifyCount() {
+
+                        window.location.href = "/publicViews/airplanePassenger.html?timeStr=" + new Date().getTime() +
+                            "&cityId=" + $bw.getUrlInfo('cityId') +
+                            "&carType=" + $bw.getUrlInfo('carType') +
+                            "&stroke=" + $bw.getUrlInfo('stroke');
+                        // this.addStorgeSave();
+
+                    },
+                    //待验证列表的删除
+                    verifyDel(item) {
+                        for (var hh = this.verifyNum.length - 1; hh >= 0; hh--) {
+                            if (this.verifyNum[hh].IDCardNo == item.IDCardNo) {
+                                this.verifyNum.splice(hh, 1);
+                                break;
+                            }
+                        }
+                        this.addStorgeSave();
+                    },
+                    //后台验证
+                    submitCenterCheckuser() {
+                        var _this = this;
+                        var IDCardNos = [];
+                        verifyLogin(function() {
+                            $bw.ajax({
+                                url: 'ValidPassenger/AddVerification',
+                                type: 'post',
+                                data: _this.appointmentInfo,
+                                callback: function(reseponse) {
+                                    if (reseponse.Status == 1) {
+                                        _this.isResult = false;
+                                        _this.addStorgeSave();
+                                        $toast.showTips(
+                                            "提交后台验证成功，验证结果将以短信的方式发送给您，请注意查收！",
+                                            function() {
+                                                _this.goBackOn();
+                                            })
+                                    }
+                                }
+                            })
+                        })
+                    },
+                    //稍后再试
+                    goBack() {
+                        this.isResult = false;
+                    },
+                    //提交验证
+                    commit: function(isHideLoading) {
+                        var self = this;
+                        var IDCardNos = [];
+                        for (var i = 0, len = this.verifyNum.length; i < len; i++) {
+                            IDCardNos.push(this.verifyNum[i].IDCardNo);
+                        }
+                        for (var nn = 0, nnlen = this.resultSuccess.length; nn < nnlen; nn++) {
+                            IDCardNos.push(this.resultSuccess[nn].IDCardNo);
+                        }
+                        verifyLogin(function() {
+                            $bw.ajax({
+                                url: 'Booking/ValidatePassenger',
+                                type: 'post',
+                                data: {
+                                    "FlightNo": self.appointmentInfo.FlightNo,
+                                    "FlightDate": self.appointmentInfo.FlightDate,
+                                    "IDCardNos": IDCardNos
+                                },
+                                isHideLoading: isHideLoading,
+                                callback: function(reseponse) {
+                                    if (reseponse.Status == 1) {
+                                        self.AppointmentInfoSave(reseponse.Data);
+
+                                        self.resultSuccess = [];
+                                        self.resultFail = [];
+                                        self.verifyNum = [];
+                                        self.appointmentInfo.IDCardNos = IDCardNos;
+                                        self.appointmentInfo.Passengers = reseponse.Data;
+                                        addSession({
+                                            info: self.appointmentInfo,
+                                            name: "appointmentInfo" + self.stroke + self.carType
+                                        })
+                                        for (var j = 0, jlen = reseponse.Data.length; j < jlen; j++) {
+                                            if (reseponse.Data[j].IsValid) { //验证成功 
+                                                self.resultSuccess.push(reseponse.Data[j]);
+                                            } else {
+                                                //验证失败 
+                                                self.resultFail.push(reseponse.Data[j]);
+                                                self.verifyNum.push(reseponse.Data[j]);
+                                            }
+                                        }
+                                        if (!isHideLoading) {
+                                            if (self.resultFail.length) {
+                                                self.isResult = true;
+                                            } else {
+                                                $toast.showTips('验证成功' + self.resultSuccess
+                                                    .length + '人',
+                                                    function() {
+                                                        self.goBackOn();
+                                                    });
+                                            }
+                                        }
+
+                                    } else {
+                                        $toast.showToast(reseponse.Message, 1500);
+                                    }
+                                }
+                            })
+                        })
+                    },
+                    AppointmentInfoSave(data) {
+                        console.log("savedata: " + JSON.stringify(data));
+                        if (isWxAndH5()) {
+                            var ami = getSession("appointmentInfo" + this.stroke + this.carType) || {};
+                            ami.Passengers = data;
+                            var ids = [];
+                            data.forEach(function(val) {
+                                ids.push(val.IDCardNo);
+                            });
+                            ami.IDCardNos = ids;
+                            addSession({
+                                info: ami,
+                                name: "appointmentInfo" + this.stroke + this.carType
+                            })
+                        } else {
+                            contactApp('AppBridgeOrderAppointmentInfoSave', {
+                                    "Data": data,
+                                    "Message": "请求成功！",
+                                    "ServerStatus": 1,
+                                    "Status": 1
+                                },
+                                function() {});
+                        }
+
+
+                    },
+                    generateUUID: function() {
+                        var d = new Date().getTime();
+                        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                            var r = (d + Math.random() * 16) % 16 | 0;
+                            d = Math.floor(d / 16);
+                            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                        });
+                        return uuid;
+                    },
+                    //获取每个人优惠价格
+                    GetPassengerSubsidyPrice: function() {
+                        var _th = this;
+                        verifyLogin(function() {
+                            $bw.ajax({
+                                url: 'SystemConfig/GetPassengerSubsidyPrice',
+                                type: 'get',
+                                data: {},
+                                callback: function(reseponse) {
+                                    if (reseponse.Status == 1) {
+                                        _th.freePrice = reseponse.Data.SubsidyPrice;
+                                    }
+                                }
+                            })
+                        })
+                    },
+                }
+
+            });
+            document.body.setAttribute('style', 'opacity:1');
+        }
+        // var src = 'http://eruda.liriliri.io/eruda.min.js';
+        // // if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+        // var script = document.createElement('script');
+        // script.setAttribute('src', src);
+        // document.body.appendChild(script);
+        // script.onload = function() {
+        //     eruda.init()
+        // }
+    </script>
+</body>
+
+</html>

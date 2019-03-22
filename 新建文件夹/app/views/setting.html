@@ -1,0 +1,29 @@
+<div id="setting">
+    <div class="bw-panel-box">
+        <div class="bw-panel" ui-sref="bindID">
+            <span>实名认证</span>
+            <span class="bw-panel-tips check-user-tips" ng-if="!IsRealValid"><img src="./imgs/loss.png">未认证</span>
+            <span class="bw-panel-tips check-user-tips" ng-if="IsRealValid"><img src="./imgs/pass.png">已认证</span>
+            <img class="bw-panel-icon" src="./imgs/arrow-right.png">
+        </div>
+        <div class="bw-panel" ng-click="goEditPhone()">
+            <span>手机号</span>
+            <span class="bw-panel-tips check-user-tips" ng-bind="showPhone"></span>
+            <img class="bw-panel-icon" src="./imgs/arrow-right.png">
+        </div>
+        <div class="bw-panel" ng-click="goCommonAddress()">
+            <span>常用地址</span>
+            <img class="bw-panel-icon" src="./imgs/arrow-right.png">
+        </div>
+        <div class="bw-panel" ng-click="goPassenger()">
+            <span>常用乘机人</span>
+            <img class="bw-panel-icon" src="./imgs/arrow-right.png">
+        </div>
+        <div class="bw-panel" ng-click="goAboutUs()">
+            <span>关于我们</span>
+            <img class="bw-panel-icon" src="./imgs/arrow-right.png">
+        </div>
+    </div>
+    <!-- <div ng-click="SignOut()" class="logout">退出登录</div> -->
+    <div ng-if="notWx" ng-click="SignOut()" class="logout">退出登录</div>
+</div>

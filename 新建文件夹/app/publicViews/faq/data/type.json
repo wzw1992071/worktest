@@ -1,0 +1,56 @@
+{
+    "new": {
+        "name": "新手指南",
+        "list": [
+            { "title": "接机和送机的区别是什么？", "id": "new1" },
+            { "title": "为什么要输入身份证号？", "id": "new2" },
+            { "title": "接送范围是怎样的？", "id": "new3" },
+            { "title": "开通了哪些城市的接送机服务？", "id": "new4" },
+            { "title": "可以帮他人叫车吗？", "id": "new5" }
+        ]
+    },
+    "trip": {
+        "name": "行程相关",
+        "list": [
+            { "title": "如何选择接送时间？", "id": "trip1" },
+            { "title": "如何计价？", "id": "trip2" },
+            { "title": "受理预约时间？", "id": "trip3" },
+            { "title": "预约失败怎么办？", "id": "trip4" },
+            { "title": "如何取消订单？", "id": "trip5" },
+            { "title": "随身物品和行李忘记携带怎么办？", "id": "trip6" },
+            { "title": "乘客迟到了怎么办？", "id": "trip7" },
+            { "title": "司机迟到了怎么办？", "id": "trip8" },
+            { "title": "可以提前多久预约？", "id": "trip9" },
+            { "title": "如何确认是否预约成功？", "id": "trip10" },
+            { "title": "司机会在什么时候和我联系？", "id": "trip11" },
+            { "title": "司机不按时发车怎么办？", "id": "trip12" },
+            { "title": "如何查看订单？", "id": "trip13" }
+        ]
+    },
+    "account": {
+        "name": "账户相关",
+        "list": [
+            { "title": "怎么修改手机号？", "id": "account1" },
+            { "title": "怎么修改个人资料？", "id": "account2" }
+        ]
+    },
+    "pay": {
+        "name": "支付相关",
+        "list": [
+            { "title": "支付方式有哪些？", "id": "pay1" },
+            { "title": "付款失败怎么办？", "id": "pay2" },
+            { "title": "司机要求提前支付怎么办？", "id": "pay3" },
+            { "title": "如何获得车费估算？", "id": "pay4" },
+            { "title": "本来是免费乘坐，由于误操作引起的费用可以退吗？", "id": "pay5" },
+            { "title": "重复支付的车费怎么处理？", "id": "pay6" }
+        ]
+    },
+    "service": {
+        "name": "服务相关",
+        "list": [
+            { "title": "如何投诉？", "id": "service1" },
+            { "title": "如何联系我们？", "id": "service2" },
+            { "title": "如何投诉司机？", "id": "service3" }
+        ]
+    }
+}
