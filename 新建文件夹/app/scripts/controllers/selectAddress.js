@@ -19,18 +19,27 @@ angular.module('bw.controller')
             $state.go('createOrder');
             return;
         }
+        
         $scope.addressWords = '';
+        $scope.historyData = $bw.getStorage('BaiduAddressListHistory')||[];//本地缓存的历史数据
         $scope.mapData = [];
         $scope.toSelectCity = function() {
             $state.go('createOrder.selectAddress.selectCity');
         };
+        $scope.cancel = function(){
+            history.go(-1)
+        }
+        // 地图选点功能
+        $scope.goMapChoice = function(){
+            $state.go('createOrder.mapSelect');
+        }
         // $scope.selectedInteriorCity = $bw.getStorage('indexSelectedInteriorCity') || '';
         $scope.setSelectAddress = function(obj) {
             var history = $bw.getStorage('BaiduAddressListHistory');
             var historyList = [];
             if (!history) history = [];
             for (var i in history) {
-                if (history[i].uid !== obj.uid) {
+                if (history[i].name !== obj.name) {
                     historyList.push(history[i]);
                 }
             }
@@ -143,8 +152,13 @@ angular.module('bw.controller')
                 Query: $scope.addressWords,
                 Region: $scope.selectedInteriorCity || $scope.$parent.appointmentInfo.selAddressCity || $rootScope.curCityName,
                 CityLimit: false
+                // query: $scope.addressWords,
+                // cityName: $scope.selectedInteriorCity || $scope.$parent.appointmentInfo.selAddressCity || $rootScope.curCityName,
+                // output: "json",
+                // limit: false,
+                // ak: ENV.baiduMap.ak
             }
-            var list = $bw.getSession('BaiduAddressListSelAddr' + params.region + params.query);
+            var list = $bw.getSession('BaiduAddressListSelAddr' + params.Region + params.Query);
             if (list) {
                 $scope.mapData = list;
             } else {
@@ -193,10 +207,46 @@ angular.module('bw.controller')
                             name: 'BaiduAddressListSelAddr' + ($scope.selectedInteriorCity || $scope.$parent.appointmentInfo.selAddressCity || $rootScope.curCityName) + $scope.addressWords
                         })
                         $scope.mapData = mapData;
-                        toast.hideLoading(toastId);
+                        // toast.hideLoading(toastId);
+                        toast.hideLoading();
                     }
                 }
             }
+        };
+        $scope.showAddrList2 = function(reseponse) {
+            var list = reseponse.Data.results;
+            var len = list.length;
+            // var toastId = toast.showLoading();
+            if (len === 0) {
+                return;
+            }
+            var mapData = [];
+            var nowCity = $scope.selectedInteriorCity || $scope.selAddressCity || $rootScope.curCityName
+            var nowCityHistory = $scope.historyData.filter(function(value,index){
+                value.isHistory = true;
+                return value.city==nowCity
+            })
+            for(let i=0;i<len;i++ ){
+                if((nowCityHistory.length+mapData.length)>=10) break;
+                var sameItem = nowCityHistory.find(function(value,index){
+                    return value.name==list[i].name
+                })
+                if(!sameItem){
+                    mapData.push(list[i])
+                }
+                
+            }
+            for(let i=0;i<mapData.length;i++ ){
+                $scope.getAddressByPoi(mapData[i].location, function(addressRes) {
+                    if (addressRes && addressRes.formatted_address) {
+                        mapData[i].addressInfo = addressRes.formatted_address;
+                        if(i==(mapData.length-1)){
+                            $scope.mapData = nowCityHistory.concat(mapData)
+                        }
+                    }
+                })
+            }
+            
         };
         $scope.clickAddr = function(type) {
             if ($scope.addrInfo[type]) {
@@ -237,13 +287,45 @@ angular.module('bw.controller')
                 $scope.getAddress();
             }
         };
-        //监听到选择的城市改变
+
+       
+        // 监听到选择的城市改变
         $scope.$watch('selectedInteriorCity', function(newV, oldV) {
             $scope.GetUserAddressBook();
         });
+        $scope.$watch('curCityName', function(newV, oldV) {
+            if($scope.selectedInteriorCity || $scope.$parent.appointmentInfo.selAddressCity){
+                return;
+            }else{
+                if($rootScope.curCityName=="定位中...") return;
+                $scope.GetUserAddressBook();
+            }
+        });
         //获取历史地址
         $scope.GetUserAddressBook = function() {
-            $scope.mapData = $bw.getStorage('BaiduAddressListHistory');
+            $scope.mapData =[];
+            if((!$scope.mapData)||($scope.mapData&&$scope.mapData.length<10)){
+                var params = {
+                    Query: "旅游景点",
+                    Tag:"旅游景点",
+                    Region: $scope.selectedInteriorCity || $scope.selAddressCity || $rootScope.curCityName,
+                    CityLimit: false,
+                    PageSize:20,
+                    ak: ENV.baiduMap.ak,
+                    PageNum:1
+                }
+                baiduService.get_BaiduSugestAddressList(params, function(reseponse) {
+                    if (reseponse.Status == 1 && reseponse.Data && reseponse.Data.results) { //百度地图的成功状态是0
+                        if(reseponse.Data.results.length==36) return false;
+                        $scope.showAddrList2(reseponse);
+                    }
+                });
+            }
         }
-        $scope.GetUserAddressBook();
+        if(($scope.selectedInteriorCity || $scope.selAddressCity || $rootScope.curCityName)=="定位中..."){
+            return;
+        }else{
+            $scope.GetUserAddressBook();
+        }
+        
     }])

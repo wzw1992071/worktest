@@ -55,6 +55,12 @@
   display: block;
   margin: 0 auto
 }
+.toast-btn.NoCancel {
+  border: solid 1px #eee;
+  float: unset;
+  width: 100%;
+ 
+}
 
 .toast-tips .toast-btn {
   width: 100%;

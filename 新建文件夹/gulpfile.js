@@ -65,6 +65,9 @@ gulp.task('publicView', ['publicCss', 'publicJs'], function() {
     gulp.src('app/publicViews/faq/**')
         .pipe(gulp.dest('dist/publicViews/faq'))
         .pipe(gulp.dest('dist/publicViews/faq'))
+    gulp.src('app/publicViews/invoice/**')
+        .pipe(gulp.dest('dist/publicViews/invoice'))
+        .pipe(gulp.dest('dist/publicViews/invoice'))
     return gulp.src('app/publicViews/*.html')
         .pipe(htmlmin({
             removeComments: true, //清除HTML注释
@@ -133,7 +136,7 @@ gulp.task('scriptsF', ['routerRev'], function() {
         .pipe(gulp.dest('dist/scripts'))
         //清除console
         .pipe(stripDebug())
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(rev())
         .pipe(gulp.dest('dist/scripts/'))
         .pipe(rev.manifest())

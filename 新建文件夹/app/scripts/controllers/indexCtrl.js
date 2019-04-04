@@ -7,6 +7,7 @@ angular.module('bw.controller')
         $rootScope.userInfo = window.userInfo;
         $rootScope.selectedCity = window.selectedCity || {};
         $rootScope.curCityName = '定位中...';
+        $rootScope.curCitycode=""
         // if (!ENV.isTest) {
         if ($bw.isWx()) {
             appointmentService.getWxSign({}, function(reseponse) {
@@ -64,9 +65,10 @@ angular.module('bw.controller')
             });
             //解析定位结果
             function onComplete(data) {
-                $rootScope.curCityName = data.addressComponent.city;
-                $rootScope.$apply();
                 $rootScope.userLocation = { longitude: data.position.lng, latitude: data.position.lat };
+                $rootScope.curCityName = data.addressComponent.city;
+                $rootScope.curCitycode = data.addressComponent.citycode;
+                $rootScope.$apply();
                 console.info($rootScope.userLocation)
             }
 
@@ -167,6 +169,10 @@ angular.module('bw.controller')
         };
         //开通城市
         $scope.GetOpenCity();
+        //跳转开发票
+        $scope.goInvoice = function() {
+            window.location.href = window.ENV.publicUrl + "/invoice/openInvoice.html?timeStr=" + new Date().getTime() ;
+        };
         //跳转到帮助页
         $scope.goHelp = function() {
             window.location.href = window.ENV.publicUrl + "/faq/faq_list.html?timeStr=" + new Date().getTime() + '&phone=' + userInfo.phone;

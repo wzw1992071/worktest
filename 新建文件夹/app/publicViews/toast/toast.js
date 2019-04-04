@@ -44,11 +44,16 @@ var toast = function() {
             sureWords: obj.sureWords ? obj.sureWords : '确认'
         }
         var idNum = new Date().getTime() + '-' + Math.ceil(Math.random() * 1000);
-        var html = '<div class="bw-toast" id="bw-toast' + idNum + '"><div class="toast-body toast-confirm" id="toast-body' + idNum + '"><div class="toast-content">' + obj.text + '</div><div><span class="toast-btn toast-cancel" id="toast-cancel' + idNum + '">' + config.cancelWords + '</span><span class="toast-btn toast-sure" id="toast-sure' + idNum + '">' + config.sureWords + '</span></div></div></div>';
+        var html = obj.NoCancel
+            ?'<div class="bw-toast" id="bw-toast' + idNum + '"><div class="toast-body toast-confirm" id="toast-body' + idNum + '"><div class="toast-content">' + obj.text + '</div><div><span class="toast-btn toast-sure NoCancel" id="toast-sure' + idNum + '">' + config.sureWords + '</span></div></div></div>'
+            :'<div class="bw-toast" id="bw-toast' + idNum + '"><div class="toast-body toast-confirm" id="toast-body' + idNum + '"><div class="toast-content">' + obj.text + '</div><div><span class="toast-btn toast-cancel" id="toast-cancel' + idNum + '">' + config.cancelWords + '</span><span class="toast-btn toast-sure" id="toast-sure' + idNum + '">' + config.sureWords + '</span></div></div></div>';
         _self.append(document.getElementsByTagName("body")[0], html, idNum);
-
-        document.getElementById('toast-cancel' + idNum).onclick = function() {
-            _self.hide(idNum, obj.cancelFn);
+        try {
+            document.getElementById('toast-cancel' + idNum).onclick = function() {
+                _self.hide(idNum, obj.cancelFn);
+            }
+        } catch (error) {
+            
         }
         document.getElementById('toast-sure' + idNum).onclick = function() {
             _self.hide(idNum, obj.sureFn);

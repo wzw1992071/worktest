@@ -216,16 +216,6 @@ angular.module('bw.services')
                 url: ENV.api + "BaiduMap/MapDetailAddr",
                 isLoading: false
             },
-            // 获取可开发票列表
-            invoiceOrderList:{
-                method: 'GET',
-                url: ENV.api + "Invoice/InvoiceOrderList"
-            },
-            //获取已开发票列表
-            GetInvoiceHistory: {
-                method: 'GET',
-                url: ENV.api + "Invoice/InvoiceRecordList"
-            },
         });
         return {
             //获取详细地址
@@ -466,16 +456,7 @@ angular.module('bw.services')
                 return resource.GetSupplierList(null, param(params), function(response) {
                     callback && callback(response);
                 });
-            },
-            invoiceOrderList:function(params, callback){
-                return resource.invoiceOrderList(params, null, function(response) {
-                    callback && callback(response);
-                });
-            },
-            GetInvoiceHistory:function(params, callback){
-                return resource.GetInvoiceHistory(params, null, function(response) {
-                    callback && callback(response);
-                });
             }
-        }
+            
+        }   
     }]);

@@ -348,8 +348,9 @@ angular.module('bw.controller')
                 }
             }
         });
-        $scope.selCity = function(city) {
+        $scope.selCity = function(city,code) {
             $scope.$parent.selectedInteriorCity = city;
+            $scope.$parent.selectedInteriorCityID = code;
             // if ($scope.isSession) {
             //     $bw.addStorage({
             //         name: 'indexSelectedInteriorCity',

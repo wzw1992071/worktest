@@ -362,6 +362,10 @@
             }
         }
         return false;
+    },
+    validateEmail:function(email){
+        var re= /\w@\w*\.\w/;
+        return re.test(email);
     }
 }
 
@@ -684,3 +688,4 @@ function contactWX(fn, option, callback) {
     }
     fnObj[fn]();
 }
+

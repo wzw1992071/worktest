@@ -111,7 +111,21 @@ bwApp.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function(
                 }]
             }
         })
-
+        .state('createOrder.mapSelect', {
+            url: '/mapSelect',
+            stateName: '选择地址',
+            views: {
+                "mapSelect": {
+                    controller: 'mapSelect',
+                    templateUrl: "views/mapSelect.html",
+                }
+            },
+            resolve: {
+                loadJq: ['$ocLazyLoad', function($ocLazyLoad) { //依赖JQ
+                    return $ocLazyLoad.load('bower_components/jquery/dist/jquery.min.js');
+                }]
+            }
+        })
     .state('createOrder.priceDetailed', {
             url: '/priceDetailed',
             stateName: '付款明细',
@@ -268,30 +282,8 @@ bwApp.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function(
             controller: 'editPhone',
             templateUrl: "views/editPhone.html",
             cache: true
-        })
-        .state('openInvoice', {
-            url: '/openInvoice',
-            stateName: '发票开具',
-            controller: 'openInvoice',
-            templateUrl: "views/openInvoice.html",
-        })
-        .state('invoiceHistory', {
-            url: '/invoiceHistory',
-            stateName: '开票记录',
-            controller: 'invoiceHistory',
-            templateUrl: "views/invoiceHistory.html",
-        })
-        .state('invoiceDetail', {
-            url: '/invoiceDetail',
-            stateName: '开票详情',
-            templateUrl: "views/invoiceDetail.html",
-        })
-        .state('choiceInvoiceList', {
-            url: '/choiceInvoiceList',
-            stateName: '专车平车开票',
-            controller: 'choiceInvoiceList',
-            templateUrl: "views/choiceInvoiceList.html",
         });
+        
     //默认访问的页面地址
     $urlRouterProvider.otherwise('/index');
     //上传文件http配置信息

@@ -332,13 +332,15 @@ function dateTonum(date) {
  */
 function verifyLogin(callback) {
     contactApp('AppBridgeGetAuthorizationToken', {}, function(res) {
+        console.log(res)
         if (res.token && res.cityIdentity) {
             $bw.userInfo = {};
             $bw.userInfo.AccessToken = res.token;
             $bw.cityIdentity = "";
             $bw.cityIdentity = res.cityIdentity;
-            callback();
+            callback()
         } else {
+            // $toast.showToast(res, 1500, function() {});
             $toast.showToast("没有权限访问", 1500, function() {});
         }
 
@@ -353,6 +355,7 @@ function tofixed(info, num) {
 }
 
 function setRem() {
+    console.log(1)
     var windowWidth = document.body.offsetWidth;
     RootFontSize = windowWidth / 750 * 100;
     document.getElementsByTagName("html")[0].style.fontSize = RootFontSize + "px";

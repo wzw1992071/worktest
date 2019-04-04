@@ -25,6 +25,7 @@ angular.module('bw.controller')
 
         //获取订单内容
         $scope.getOrderDetail = function(callback) {
+            console.log($stateParams)
             appointmentService.GetDetailNoLoading({ bookingId: $stateParams.id }, function(reseponse) {
                 if (reseponse.Status == 1 && reseponse.Data) {
                     if (ongoingTnterval) clearInterval(ongoingTnterval);
